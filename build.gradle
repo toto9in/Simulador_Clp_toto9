@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.simuladorclp'
+version = '1.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // NetBeans AbsoluteLayout - usado para layout GUI
+    implementation 'org.netbeans.external:AbsoluteLayout:RELEASE270'
+}
+
+application {
+    mainClass = 'SimuladorClp'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'SimuladorClp',
+            'Implementation-Version': version
+        )
+    }
+
+    // Incluir dependências no JAR (Fat JAR)
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Configurar estrutura de diretórios (compatível com estrutura Ant)
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src']
+            include '**/*.form'
+            include '**/*.png'
+            include '**/*.jpg'
+            include '**/*.jpeg'
+            include '**/*.gif'
+            exclude '**/*.java'
+        }
+    }
+}
+
+// Task para copiar JAR para dist/ (compatibilidade com estrutura Ant)
+task copyJarToDist(type: Copy) {
+    dependsOn jar
+    from jar.archiveFile
+    into 'dist'
+    rename { "${rootProject.name}.jar" }
+}
+
+// Task customizada que replica o comportamento do Ant
+task dist {
+    dependsOn copyJarToDist
+    group = 'build'
+    description = 'Cria o JAR e copia para dist/ (compatível com build Ant)'
+}
+
+// Garantir limpeza do diretório dist também
+clean {
+    delete 'dist'
+}
