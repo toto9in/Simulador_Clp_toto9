@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Compatibility Fix - 2025-11-11
+
+#### Fixed
+- **Node.js Compatibility**: Fixed compatibility issues for Node.js v21.x and other versions
+  - Downgraded Vite from 7.x to 5.4.11 (supports Node.js 18+)
+  - Downgraded React from 19.x to 18.3.1 (stable LTS)
+  - Downgraded Vitest from 4.x to 2.1.8 (supports Node.js 18+)
+  - Updated all dependencies to compatible versions
+  - Removed invalid TypeScript option 'erasableSyntaxOnly'
+  - Added `engines` field to package.json
+
+#### Added
+- **NODE_VERSION_GUIDE.md**: Comprehensive guide for Node.js version compatibility
+  - Supported versions (18.x, 20.x, 21.x, 22.x)
+  - Installation instructions
+  - Troubleshooting common issues
+  - Dependency version reference
+
+#### Changed
+- React 19 → React 18.3.1 (more stable and widely used)
+- Vite 7 → Vite 5.4.11 (wider Node.js support)
+- Updated version to 0.1.0
+
+---
+
 ### Project Initialization & Core Services - 2025-11-11
 
 #### Added
