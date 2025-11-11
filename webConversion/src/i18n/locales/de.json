@@ -12,7 +12,13 @@
   },
   "scenes": {
     "default": "Panel",
-    "batch": "Simulation 1"
+    "batch": "Simulation 1",
+    "defaultInfo": "Klicken Sie auf die Schaltflächen, um Eingänge umzuschalten. Ausgänge werden durch das IL-Programm gesteuert."
+  },
+  "inputTypes": {
+    "switch": "Schalter",
+    "no": "Schließer (NO)",
+    "nc": "Öffner (NC)"
   },
   "labels": {
     "delay": "Zeitverzögerung (ms):",
@@ -25,6 +31,13 @@
     "accumulated": "Akkumuliert:",
     "done": "DN:",
     "enabled": "EN:"
+  },
+  "editor": {
+    "title": "IL-Code-Editor",
+    "disabledWhileRunning": "Editor während der Ausführung deaktiviert",
+    "placeholder": "Geben Sie hier IL-Anweisungen ein...\n\nBeispiel:\nLD I0.0\nAND I0.1\nST Q0.0",
+    "lines": "Zeilen",
+    "characters": "Zeichen"
   },
   "modes": {
     "program": "PROGRAMM",
@@ -41,7 +54,9 @@
     "type": "Typ",
     "preset": "Voreingestellt",
     "accumulated": "Akkum",
-    "done": "DN"
+    "done": "DN",
+    "noVariables": "Noch keine Speichervariablen erstellt",
+    "count": "Gesamtvariablen"
   },
   "messages": {
     "programSaved": "Programm erfolgreich gespeichert",
@@ -69,13 +84,26 @@
     "ton": "TON - Timer mit Einschaltverzögerung",
     "toff": "TOFF - Timer mit Ausschaltverzögerung",
     "ctu": "CTU - Hochzählen",
-    "ctd": "CTD - Runterzählen"
+    "ctd": "CTD - Runterzählen",
+    "examples": "Beispiele",
+    "exampleBasic": "Grundlegende Logik",
+    "exampleTimer": "Timer-Verwendung",
+    "exampleCounter": "Zählerverwendung"
   },
   "about": {
     "title": "Über",
     "version": "Version",
     "description": "SPS-Simulator - Webversion",
-    "credits": "Als akademisches Projekt entwickelt"
+    "credits": "Als akademisches Projekt entwickelt",
+    "technology": "Technologie",
+    "features": "Funktionen",
+    "instructions": "IL-Anweisungen",
+    "timers": "TON/TOFF-Timer",
+    "counters": "CTU/CTD-Zähler",
+    "multiLanguage": "4 Sprachen (PT, EN, JA, DE)",
+    "multiTheme": "4 Farbthemen",
+    "creditsText": "Als akademisches Projekt für das Studium der Industrieautomatisierung entwickelt",
+    "allRightsReserved": "Alle Rechte vorbehalten"
   },
   "buttons": {
     "ok": "OK",
@@ -83,5 +111,9 @@
     "close": "Schließen",
     "yes": "Ja",
     "no": "Nein"
+  },
+  "batch": {
+    "sensors": "Füllstandssensoren",
+    "info": "Steuern Sie den Tank mit START/STOP. Das IL-Programm steuert die Ventile basierend auf Füllstandssensoren."
   }
 }

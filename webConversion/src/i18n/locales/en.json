@@ -12,7 +12,13 @@
   },
   "scenes": {
     "default": "Panel (default)",
-    "batch": "Batch Simulation"
+    "batch": "Batch Simulation",
+    "defaultInfo": "Click buttons to toggle inputs. Outputs are controlled by the IL program."
+  },
+  "inputTypes": {
+    "switch": "Switch",
+    "no": "Normally Open (NO)",
+    "nc": "Normally Closed (NC)"
   },
   "labels": {
     "delay": "Time delay (ms):",
@@ -25,6 +31,13 @@
     "accumulated": "Accumulated:",
     "done": "DN:",
     "enabled": "EN:"
+  },
+  "editor": {
+    "title": "IL Code Editor",
+    "disabledWhileRunning": "Editor disabled during execution",
+    "placeholder": "Enter IL instructions here...\n\nExample:\nLD I0.0\nAND I0.1\nST Q0.0",
+    "lines": "Lines",
+    "characters": "Characters"
   },
   "modes": {
     "program": "PROGRAM",
@@ -41,7 +54,9 @@
     "type": "Type",
     "preset": "Preset",
     "accumulated": "Accum",
-    "done": "DN"
+    "done": "DN",
+    "noVariables": "No memory variables created yet",
+    "count": "Total variables"
   },
   "messages": {
     "programSaved": "Program saved successfully",
@@ -69,13 +84,26 @@
     "ton": "TON - Timer on-delay",
     "toff": "TOFF - Timer off-delay",
     "ctu": "CTU - Count up",
-    "ctd": "CTD - Count down"
+    "ctd": "CTD - Count down",
+    "examples": "Examples",
+    "exampleBasic": "Basic Logic",
+    "exampleTimer": "Timer Usage",
+    "exampleCounter": "Counter Usage"
   },
   "about": {
     "title": "About",
     "version": "Version",
     "description": "PLC Simulator - Web Version",
-    "credits": "Developed as an academic project"
+    "credits": "Developed as an academic project",
+    "technology": "Technology",
+    "features": "Features",
+    "instructions": "IL Instructions",
+    "timers": "TON/TOFF Timers",
+    "counters": "CTU/CTD Counters",
+    "multiLanguage": "4 Languages (PT, EN, JA, DE)",
+    "multiTheme": "4 Color Themes",
+    "creditsText": "Developed as an academic project for industrial automation study",
+    "allRightsReserved": "All rights reserved"
   },
   "buttons": {
     "ok": "OK",
@@ -83,5 +111,9 @@
     "close": "Close",
     "yes": "Yes",
     "no": "No"
+  },
+  "batch": {
+    "sensors": "Level Sensors",
+    "info": "Control the tank using START/STOP. The IL program controls the valves based on level sensors."
   }
 }

@@ -12,7 +12,13 @@
   },
   "scenes": {
     "default": "Painel (padrão)",
-    "batch": "Simulação Batch"
+    "batch": "Simulação Batch",
+    "defaultInfo": "Clique nos botões para alternar as entradas. As saídas são controladas pelo programa IL."
+  },
+  "inputTypes": {
+    "switch": "Interruptor",
+    "no": "Normalmente Aberto (NA)",
+    "nc": "Normalmente Fechado (NF)"
   },
   "labels": {
     "delay": "Tempo de delay (ms):",
@@ -25,6 +31,13 @@
     "accumulated": "Acumulado:",
     "done": "DN:",
     "enabled": "EN:"
+  },
+  "editor": {
+    "title": "Editor de Código IL",
+    "disabledWhileRunning": "Editor desabilitado durante execução",
+    "placeholder": "Digite as instruções IL aqui...\n\nExemplo:\nLD I0.0\nAND I0.1\nST Q0.0",
+    "lines": "Linhas",
+    "characters": "Caracteres"
   },
   "modes": {
     "program": "PROGRAMA",
@@ -41,7 +54,9 @@
     "type": "Tipo",
     "preset": "Preset",
     "accumulated": "Acum",
-    "done": "DN"
+    "done": "DN",
+    "noVariables": "Nenhuma variável de memória criada ainda",
+    "count": "Total de variáveis"
   },
   "messages": {
     "programSaved": "Programa salvo com sucesso",
@@ -69,13 +84,26 @@
     "ton": "TON - Temporizador com atraso na ativação",
     "toff": "TOFF - Temporizador com atraso na desativação",
     "ctu": "CTU - Contador progressivo",
-    "ctd": "CTD - Contador regressivo"
+    "ctd": "CTD - Contador regressivo",
+    "examples": "Exemplos",
+    "exampleBasic": "Lógica Básica",
+    "exampleTimer": "Uso de Temporizador",
+    "exampleCounter": "Uso de Contador"
   },
   "about": {
     "title": "Sobre",
     "version": "Versão",
     "description": "Simulador de CLP - Versão Web",
-    "credits": "Desenvolvido como projeto acadêmico"
+    "credits": "Desenvolvido como projeto acadêmico",
+    "technology": "Tecnologia",
+    "features": "Características",
+    "instructions": "Instruções IL",
+    "timers": "Temporizadores TON/TOFF",
+    "counters": "Contadores CTU/CTD",
+    "multiLanguage": "4 Idiomas (PT, EN, JA, DE)",
+    "multiTheme": "4 Temas de Cores",
+    "creditsText": "Desenvolvido como projeto acadêmico para estudo de automação industrial",
+    "allRightsReserved": "Todos os direitos reservados"
   },
   "buttons": {
     "ok": "OK",
@@ -83,5 +111,9 @@
     "close": "Fechar",
     "yes": "Sim",
     "no": "Não"
+  },
+  "batch": {
+    "sensors": "Sensores de Nível",
+    "info": "Controle o tanque usando START/STOP. O programa IL controla as válvulas baseado nos sensores de nível."
   }
 }
