@@ -2,6 +2,8 @@
  * File I/O Service
  * Handles saving and loading IL programs
  * Converted from src/save/Save.java
+ *
+ * Supports both web (browser File API) and Electron (native dialogs)
  */
 
 import { FILE_CONFIG } from '../utils/constants';
@@ -11,39 +13,73 @@ import { FILE_CONFIG } from '../utils/constants';
  */
 export class FileIOService {
   /**
+   * Check if running in Electron environment
+   */
+  private static isElectron(): boolean {
+    return typeof window !== 'undefined' && window.electronAPI !== undefined;
+  }
+
+  /**
    * Save program to a text file
+   * Uses native dialog in Electron, browser download in web
    * @param programText - The IL program text to save
    * @param filename - Optional filename (default: "program.txt")
    */
-  static saveProgramToFile(programText: string, filename?: string): void {
+  static async saveProgramToFile(programText: string, filename?: string): Promise<void> {
     try {
-      // Create filename with extension
-      const fullFilename = filename
-        ? filename.endsWith(FILE_CONFIG.PROGRAM_EXTENSION)
-          ? filename
-          : `${filename}${FILE_CONFIG.PROGRAM_EXTENSION}`
-        : FILE_CONFIG.DEFAULT_FILENAME;
+      // Use Electron native dialog if available
+      if (this.isElectron() && window.electronAPI) {
+        const result = await window.electronAPI.saveFile(programText);
 
-      // Create blob with program content
-      const blob = new Blob([programText], { type: FILE_CONFIG.MIME_TYPE });
+        if (result.canceled) {
+          return; // User cancelled
+        }
 
-      // Create download link
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fullFilename;
+        if (result.error) {
+          throw new Error(result.error);
+        }
 
-      // Trigger download
-      document.body.appendChild(link);
-      link.click();
+        // Success - file saved via native dialog
+        return;
+      }
 
-      // Cleanup
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      // Fallback to browser download
+      this.saveProgramToFileWeb(programText, filename);
     } catch (error) {
       console.error('Error saving program:', error);
       throw new Error(`Failed to save program: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+  }
+
+  /**
+   * Save program using browser File API (web version)
+   * @param programText - The IL program text to save
+   * @param filename - Optional filename
+   */
+  private static saveProgramToFileWeb(programText: string, filename?: string): void {
+    // Create filename with extension
+    const fullFilename = filename
+      ? filename.endsWith(FILE_CONFIG.PROGRAM_EXTENSION)
+        ? filename
+        : `${filename}${FILE_CONFIG.PROGRAM_EXTENSION}`
+      : FILE_CONFIG.DEFAULT_FILENAME;
+
+    // Create blob with program content
+    const blob = new Blob([programText], { type: FILE_CONFIG.MIME_TYPE });
+
+    // Create download link
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fullFilename;
+
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   /**
@@ -94,10 +130,10 @@ export class FileIOService {
   }
 
   /**
-   * Create a file input element and trigger file selection
+   * Create a file input element and trigger file selection (web version)
    * @returns Promise with the selected file
    */
-  static async selectFile(): Promise<File> {
+  private static async selectFileWeb(): Promise<File> {
     return new Promise((resolve, reject) => {
       // Create file input
       const input = document.createElement('input');
@@ -128,12 +164,32 @@ export class FileIOService {
 
   /**
    * Open file dialog and load program
-   * Convenience method that combines selectFile and loadProgramFromFile
+   * Uses native dialog in Electron, browser file picker in web
    * @returns Promise with the program text
    */
   static async openProgram(): Promise<string> {
     try {
-      const file = await this.selectFile();
+      // Use Electron native dialog if available
+      if (this.isElectron() && window.electronAPI) {
+        const result = await window.electronAPI.openFile();
+
+        if (result.canceled) {
+          throw new Error('File selection cancelled');
+        }
+
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        if (!result.content) {
+          throw new Error('No file content received');
+        }
+
+        return result.content;
+      }
+
+      // Fallback to browser file picker
+      const file = await this.selectFileWeb();
       return await this.loadProgramFromFile(file);
     } catch (error) {
       throw new Error(
@@ -177,5 +233,13 @@ export class FileIOService {
   static removeFileExtension(filename: string): string {
     const lastDot = filename.lastIndexOf('.');
     return lastDot === -1 ? filename : filename.substring(0, lastDot);
+  }
+
+  /**
+   * Check if running in Electron (public method for UI)
+   * @returns true if running in Electron, false otherwise
+   */
+  static isRunningInElectron(): boolean {
+    return this.isElectron();
   }
 }

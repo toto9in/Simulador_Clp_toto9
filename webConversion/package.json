@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "main": "electron/main.js",
+  "author": "PLC Simulator Team",
+  "description": "Educational PLC Simulator with IL (Instruction List) programming",
+  "homepage": "https://github.com/Kiwiabacaxi/Simulador_Clp",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -16,7 +20,10 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "electron:build": "npm run build && electron .",
+    "electron:dist": "npm run build && electron-builder"
   },
   "dependencies": {
     "i18next": "^23.15.0",
@@ -32,6 +39,10 @@
     "@types/react": "^18.3.17",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^39.1.2",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
@@ -41,6 +52,56 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.18.2",
     "vite": "^5.4.11",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "wait-on": "^9.0.3"
+  },
+  "build": {
+    "appId": "com.plcsimulator.app",
+    "productName": "PLC Simulator",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "public/assets/**/*",
+      "public/examples/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "public/assets",
+        "to": "assets"
+      },
+      {
+        "from": "public/examples",
+        "to": "examples"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "icon": "public/assets/icone.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PLC Simulator"
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "category": "public.app-category.education",
+      "icon": "public/assets/icone.png"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Education",
+      "icon": "public/assets/icone.png"
+    }
   }
 }

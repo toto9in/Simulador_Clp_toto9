@@ -23,7 +23,7 @@ export function MenuBar({ onOpenHelp, onOpenAbout, onOpenDataTable }: MenuBarPro
 
   const handleSave = async () => {
     try {
-      FileIOService.saveProgramToFile(state.programText);
+      await FileIOService.saveProgramToFile(state.programText);
     } catch (error) {
       console.error('Save error:', error);
       alert(t('messages.error') + ': ' + (error as Error).message);
