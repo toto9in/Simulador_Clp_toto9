@@ -115,9 +115,6 @@
 }
 
 .help-instruction {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: var(--spacing-md);
   padding: var(--spacing-sm);
   background-color: var(--color-tertiary);
   border: 2px solid var(--color-border);
@@ -127,6 +124,14 @@
 
 .help-instruction:hover {
   background-color: var(--color-secondary);
+  border-color: var(--color-primary);
+}
+
+.help-instruction__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
 }
 
 .help-instruction__name {
@@ -134,6 +139,18 @@
   font-size: var(--font-md);
   font-weight: 700;
   color: var(--color-primary);
+  padding: 4px 8px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 4px;
+}
+
+.help-instruction__example {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-sm);
+  color: #6b7280;
+  background-color: var(--color-secondary);
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .help-instruction__description {
@@ -146,10 +163,17 @@
 }
 
 .help-example h4 {
-  margin: 0 0 var(--spacing-sm) 0;
+  margin: 0 0 var(--spacing-xs) 0;
   font-size: var(--font-md);
   font-weight: 600;
   color: var(--color-text);
+}
+
+.help-example__desc {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-sm);
+  color: #6b7280;
+  font-style: italic;
 }
 
 .help-code {
@@ -158,10 +182,102 @@
   border: 2px solid var(--color-border);
   border-radius: var(--radius-sm);
   font-family: 'Courier New', Courier, monospace;
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   color: var(--color-text);
   overflow-x: auto;
   line-height: 1.5;
+}
+
+/* Keyboard Shortcuts */
+.help-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.help-shortcut {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-colors);
+}
+
+.help-shortcut:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-primary);
+}
+
+.help-shortcut__key {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-sm);
+  font-weight: 700;
+  padding: 4px 8px;
+  background-color: #e5e7eb;
+  color: #1f2937;
+  border: 2px solid #9ca3af;
+  border-radius: 4px;
+  box-shadow: 0 2px 0 #9ca3af;
+  white-space: nowrap;
+}
+
+.help-shortcut__action {
+  font-size: var(--font-sm);
+  color: var(--color-text);
+}
+
+/* Variables Reference */
+.help-reference {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.help-reference-item {
+  padding: var(--spacing-sm);
+  background-color: var(--color-tertiary);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  color: var(--color-text);
+}
+
+.help-reference-item strong {
+  color: var(--color-primary);
+  margin-right: var(--spacing-xs);
+}
+
+/* Tips */
+.help-tips {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.help-tips li {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  color: var(--color-text);
+  transition: var(--transition-colors);
+}
+
+.help-tips li:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.help-tips li strong {
+  color: var(--color-primary);
 }
 
 .help-dialog__footer {
