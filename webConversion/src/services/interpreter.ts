@@ -83,10 +83,15 @@ export class Interpreter {
     if (parts.length === 0) return null;
 
     const operator = parts[0].toUpperCase();
-    const operandsString = parts.slice(1).join('');
 
-    // Split operands by comma
-    const operands = operandsString ? operandsString.split(',').map((op) => op.trim()) : [];
+    // Get operands from remaining parts
+    // Support both comma-separated (TON T0,50) and space-separated (TON T0 50)
+    const operandsPart = parts.slice(1).join(' '); // Join with space
+
+    // Split by comma if present, otherwise split by space
+    const operands = operandsPart.includes(',')
+      ? operandsPart.split(',').map((op) => op.trim())
+      : operandsPart.split(' ').filter((op) => op.length > 0);
 
     // Validate operator
     if (!this.isValidOperator(operator)) {
