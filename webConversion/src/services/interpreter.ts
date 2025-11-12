@@ -47,6 +47,9 @@ export class Interpreter {
       // Skip empty lines
       if (line === '') continue;
 
+      // Skip comment lines (starting with //)
+      if (line.startsWith('//')) continue;
+
       // Parse the line
       const parsed = this.parseLine(line, i + 1);
       if (parsed) {
@@ -61,8 +64,15 @@ export class Interpreter {
    * Parse a single line into operator and operands
    */
   private static parseLine(line: string, lineNumber: number): InstructionLine | null {
+    // Remove inline comments (everything after //)
+    const commentIndex = line.indexOf('//');
+    const codeOnly = commentIndex >= 0 ? line.substring(0, commentIndex) : line;
+
     // Remove extra spaces and tabs
-    const cleaned = line.replace(/\s+/g, ' ').trim();
+    const cleaned = codeOnly.replace(/\s+/g, ' ').trim();
+
+    // If line becomes empty after removing comments, skip it
+    if (cleaned === '') return null;
 
     // Split by space to get operator and operands
     const parts = cleaned.split(' ');
