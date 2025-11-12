@@ -664,8 +664,13 @@ export class Interpreter {
    * CTR - Counter Reset
    * Format: CTR C0 (Resets counter C0)
    * Resets counter accumulated value to 0 (CTU) or preset (CTD)
+   * Only resets when accumulator is TRUE
    */
   private static executeCTR(variable: string, state: PLCState): void {
+    if (this.accumulator === null) {
+      throw new Error('Accumulator is empty. Use LD or LDN before CTR.');
+    }
+
     const varType = getVariableType(variable);
 
     if (varType !== 'COUNTER') {
@@ -674,8 +679,19 @@ export class Interpreter {
 
     const counter = state.memoryVariables[variable];
     if (counter) {
-      MemoryService.resetCounter(counter);
-      counter.previousEnable = false; // Reset edge detection
+      // DEBUG: Log reset condition
+      if (this.DEBUG_MODE && this.instructionCount < 50) {
+        console.log(`  → CTR ${variable}: accumulator=${this.accumulator}, willReset=${this.accumulator}`);
+      }
+
+      // Only reset if accumulator is TRUE (reset input is active)
+      if (this.accumulator) {
+        MemoryService.resetCounter(counter);
+        counter.previousEnable = false; // Reset edge detection
+        if (this.DEBUG_MODE && this.instructionCount < 50) {
+          console.log(`  → Counter RESET! accumulated=${counter.accumulated}`);
+        }
+      }
     }
   }
 
