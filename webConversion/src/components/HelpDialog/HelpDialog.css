@@ -80,13 +80,25 @@
   border-radius: var(--radius-sm);
   font-size: var(--font-xl);
   cursor: pointer;
-  transition: var(--transition-colors);
+  transition: all 0.2s ease;
+  outline: none;
 }
 
 .help-dialog__close:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.help-dialog__close:active {
+  transform: scale(1.05);
+}
+
+.help-dialog__close:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
 .help-dialog__content {

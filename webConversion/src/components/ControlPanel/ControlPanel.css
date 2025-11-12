@@ -29,24 +29,35 @@
   border: 3px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: var(--transition-colors);
+  transition: all 0.2s ease;
   font-weight: 600;
   font-size: var(--font-md);
+  outline: none;
+  position: relative;
 }
 
 .control-button:hover:not(:disabled) {
   background-color: var(--color-tertiary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .control-button:active:not(:disabled) {
-  transform: translateY(0);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.control-button:focus-visible:not(:disabled) {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
 }
 
 .control-button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  filter: grayscale(50%);
 }
 
 .control-button.active {
