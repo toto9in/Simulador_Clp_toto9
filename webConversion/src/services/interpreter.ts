@@ -401,8 +401,13 @@ export class Interpreter {
   /**
    * TON - Timer On Delay
    * Format: TON T0, 50 (Timer T0, preset 5.0 seconds)
+   * Uses accumulator to enable/disable the timer (matches Java behavior)
    */
   private static executeTON(variable: string, presetStr: string, state: PLCState): void {
+    if (this.accumulator === null) {
+      throw new Error('Accumulator is empty. Use LD or LDN before TON.');
+    }
+
     const varType = getVariableType(variable);
 
     if (varType !== 'TIMER') {
@@ -423,13 +428,21 @@ export class Interpreter {
       timer.timerType = 'TON';
       timer.preset = preset;
     }
+
+    // Set timer enable from accumulator (Java does this in HomePageController)
+    state.memoryVariables[variable].currentValue = this.accumulator;
   }
 
   /**
    * TOFF - Timer Off Delay
    * Format: TOFF T0, 50 (Timer T0, preset 5.0 seconds)
+   * Uses accumulator to enable/disable the timer (matches Java behavior)
    */
   private static executeTOFF(variable: string, presetStr: string, state: PLCState): void {
+    if (this.accumulator === null) {
+      throw new Error('Accumulator is empty. Use LD or LDN before TOFF.');
+    }
+
     const varType = getVariableType(variable);
 
     if (varType !== 'TIMER') {
@@ -450,6 +463,9 @@ export class Interpreter {
       timer.timerType = 'TOFF';
       timer.preset = preset;
     }
+
+    // Set timer enable from accumulator (Java does this in HomePageController)
+    state.memoryVariables[variable].currentValue = this.accumulator;
   }
 
   /**
