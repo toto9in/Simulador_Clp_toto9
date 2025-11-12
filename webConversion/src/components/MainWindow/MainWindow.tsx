@@ -25,6 +25,7 @@ import { TimerCounterStatus } from '../TimerCounterStatus/TimerCounterStatus';
 import { KeyboardShortcuts } from '../KeyboardShortcuts/KeyboardShortcuts';
 import { DragDropOverlay } from '../DragDropOverlay/DragDropOverlay';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import { CollapsiblePanel } from '../CollapsiblePanel/CollapsiblePanel';
 import '../../i18n/config';
 import '../../styles/themes.css';
 import '../../styles/globals.css';
@@ -130,14 +131,14 @@ function MainWindowContent() {
         {/* Editor and Status Panel - Right in batch mode, Left otherwise */}
         <div className={`main-window__editor-panel ${isBatchMode ? 'main-window__editor-panel--batch' : ''}`}>
           {/* Code Editor */}
-          <div className="main-window__editor">
+          <CollapsiblePanel title="IL Code Editor" className="main-window__editor">
             <CodeEditor />
-          </div>
+          </CollapsiblePanel>
 
           {/* Status Panel - Timers/Counters */}
-          <div className="main-window__status">
+          <CollapsiblePanel title="Timers & Counters" className="main-window__status">
             <TimerCounterStatus />
-          </div>
+          </CollapsiblePanel>
         </div>
       </div>
 
