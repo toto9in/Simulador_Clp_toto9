@@ -1,0 +1,12 @@
+// ==================================
+// Timer Off-Delay (TOFF)
+// ==================================
+// Q0.0 turns on immediately when I0.0 is pressed
+// But stays on for 3 seconds after I0.0 is released
+// Useful for cooling fans, lighting delays
+
+LD I0.0
+TOFF T1 30
+
+LD T1
+OUT Q0.0

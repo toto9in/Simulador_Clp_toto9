@@ -11,6 +11,7 @@ import { useLoading } from '../../hooks/useLoading';
 import { FileIOService } from '../../services/fileIO';
 import { SceneType } from '../../types/plc';
 import { UnsavedIndicator } from '../UnsavedIndicator/UnsavedIndicator';
+import { ExamplesMenu } from '../ExamplesMenu/ExamplesMenu';
 import './MenuBar.css';
 
 interface MenuBarProps {
@@ -107,6 +108,11 @@ export function MenuBar({
         <button className="menu-button" onClick={handleLoad}>
           {t('menu.load')}
         </button>
+        <ExamplesMenu
+          hasUnsavedChanges={hasUnsavedChanges}
+          onResetSavedState={onResetSavedState}
+          onLoadingChange={onLoadingChange}
+        />
         <UnsavedIndicator hasUnsavedChanges={hasUnsavedChanges} />
       </div>
 

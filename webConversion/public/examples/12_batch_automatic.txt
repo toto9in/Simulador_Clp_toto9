@@ -1,0 +1,38 @@
+// ==================================
+// Batch Process - Automatic Cycle
+// ==================================
+// Automatic tank filling and mixing
+// I0.0 = Start automatic cycle
+// I0.1 = Emergency stop
+// I0.5/I0.6/I0.7 = Level sensors (MIN/MAX/HIGH)
+// Q0.0 = Inlet valve
+// Q0.1 = Outlet valve
+// Q0.2 = Mixer
+
+// START CYCLE - Open inlet valve when started and below MAX
+LD I0.0
+ANDN I0.1
+ANDN I0.6
+OUT Q0.0
+
+// MIXER - Start mixer when MIN level reached
+LD I0.5
+ANDN I0.1
+OUT Q0.2
+
+// OUTLET - Open outlet valve when HIGH level reached
+LD I0.7
+ANDN I0.1
+OUT Q0.1
+OUT M0
+
+// STOP INLET when MAX reached
+LD I0.6
+ANDN Q0.0
+OUT M1
+
+// Keep cycle running
+LD M0
+OR M1
+AND I0.0
+OUT M2

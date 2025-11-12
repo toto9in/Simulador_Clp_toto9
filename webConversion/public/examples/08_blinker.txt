@@ -1,0 +1,18 @@
+// ==================================
+// Blinker / Flasher
+// ==================================
+// Creates a blinking output at Q0.0
+// Blinks every 1 second (0.5s on, 0.5s off)
+// Enable with I0.0
+
+LD I0.0
+ANDN Q0.0
+TON T0 5
+
+LD I0.0
+AND Q0.0
+TOFF T1 5
+
+LD T0
+OR T1
+OUT Q0.0

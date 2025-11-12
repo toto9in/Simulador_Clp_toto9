@@ -1,0 +1,16 @@
+// ==================================
+// Multiple Outputs Example
+// ==================================
+// I0.0 controls Q0.0
+// I0.1 controls Q0.1
+// I0.2 controls Q0.2 and Q0.3 together
+
+LD I0.0
+OUT Q0.0
+
+LD I0.1
+OUT Q0.1
+
+LD I0.2
+OUT Q0.2
+OUT Q0.3

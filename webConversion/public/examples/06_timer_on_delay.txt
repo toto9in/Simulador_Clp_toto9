@@ -1,0 +1,12 @@
+// ==================================
+// Timer On-Delay (TON)
+// ==================================
+// Press I0.0, wait 5 seconds, then Q0.0 turns on
+// Timer T0 counts to 50 (5.0 seconds, 0.1s per unit)
+// Useful for delayed start operations
+
+LD I0.0
+TON T0 50
+
+LD T0
+OUT Q0.0
