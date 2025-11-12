@@ -580,9 +580,18 @@ export class Interpreter {
     // Detect rising edge (previousEnable was false, accumulator is now true)
     const risingEdge = !counter.previousEnable && this.accumulator;
 
+    // DEBUG: Log counter state
+    if (this.DEBUG_MODE && this.instructionCount < 50) {
+      console.log(`  → Counter ${variable}: prevEnable=${counter.previousEnable}, accum=${this.accumulator}, risingEdge=${risingEdge}`);
+      console.log(`  → Before: accumulated=${counter.accumulated}, preset=${counter.preset}, done=${counter.done}`);
+    }
+
     if (risingEdge) {
       // Increment counter on rising edge
       MemoryService.incrementCounter(counter);
+      if (this.DEBUG_MODE && this.instructionCount < 50) {
+        console.log(`  → COUNTED! After: accumulated=${counter.accumulated}, done=${counter.done}`);
+      }
     }
 
     // Update previousEnable for next scan
