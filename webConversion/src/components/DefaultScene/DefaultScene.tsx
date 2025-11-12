@@ -7,6 +7,7 @@
 import { useTranslation } from 'react-i18next';
 import { usePLCState } from '../../context/PLCStateContext';
 import { InputType } from '../../types/plc';
+import { ASSETS } from '../../utils/assets';
 import './DefaultScene.css';
 
 export function DefaultScene() {
@@ -29,21 +30,19 @@ export function DefaultScene() {
 
     switch (inputType) {
       case InputType.SWITCH:
-        return inputValue ? '/assets/chave_fechada.png' : '/assets/chave_aberta.png';
+        return inputValue ? ASSETS.CHAVE_FECHADA : ASSETS.CHAVE_ABERTA;
       case InputType.NO: // Normally Open
-        return inputValue ? '/assets/botao_fechado.png' : '/assets/buttom.png';
+        return inputValue ? ASSETS.BUTTON_CLOSED : ASSETS.BUTTON;
       case InputType.NC: // Normally Closed
-        return inputValue ? '/assets/buttom_pi.png' : '/assets/button_pi_aberto.png';
+        return inputValue ? ASSETS.BUTTON_PI : ASSETS.BUTTON_PI_OPEN;
       default:
-        return '/assets/chave_aberta.png';
+        return ASSETS.CHAVE_ABERTA;
     }
   };
 
   const getOutputIcon = (index: number): string => {
     const key = `Q0.${index}`;
-    return state.outputs[key]
-      ? '/assets/led_ligado.png'
-      : '/assets/led_desligado.png';
+    return state.outputs[key] ? ASSETS.LED_ON : ASSETS.LED_OFF;
   };
 
   return (

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { ExecutionMode } from '../../types/plc';
 import { useExecutionCycle } from '../../hooks/useExecutionCycle';
 import { usePLCState } from '../../context/PLCStateContext';
+import { ASSETS } from '../../utils/assets';
 import './ControlPanel.css';
 
 export function ControlPanel() {
@@ -45,7 +46,7 @@ export function ControlPanel() {
           disabled={mode === ExecutionMode.IDLE}
           title={t('modes.program')}
         >
-          <img src="/assets/menu.png" alt="Program" className="control-icon" />
+          <img src={ASSETS.MENU} alt="Program" className="control-icon" />
           {!isCompact && <span>{t('modes.program')}</span>}
         </button>
 
@@ -55,7 +56,7 @@ export function ControlPanel() {
           disabled={mode === ExecutionMode.STOPPED}
           title={t('modes.stop')}
         >
-          <img src="/assets/pause.png" alt="Stop" className="control-icon" />
+          <img src={ASSETS.PAUSE} alt="Stop" className="control-icon" />
           {!isCompact && <span>{t('modes.stop')}</span>}
         </button>
 
@@ -66,7 +67,7 @@ export function ControlPanel() {
           title={t('modes.run')}
         >
           <img
-            src={isRunning ? "/assets/start_green.png" : "/assets/start.png"}
+            src={isRunning ? ASSETS.START_GREEN : ASSETS.START}
             alt="Run"
             className="control-icon"
           />

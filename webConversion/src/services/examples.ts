@@ -3,6 +3,8 @@
  * Loads example programs from the public/examples directory
  */
 
+import { getExamplePath, getAssetPath } from '../utils/assets';
+
 export interface Example {
   id: string;
   title: string;
@@ -21,7 +23,7 @@ export interface ExamplesIndex {
  */
 export async function fetchExamplesIndex(): Promise<ExamplesIndex> {
   try {
-    const response = await fetch('/examples/index.json');
+    const response = await fetch(getAssetPath('examples/index.json'));
     if (!response.ok) {
       throw new Error('Failed to fetch examples index');
     }
@@ -37,7 +39,7 @@ export async function fetchExamplesIndex(): Promise<ExamplesIndex> {
  */
 export async function loadExample(fileName: string): Promise<string> {
   try {
-    const response = await fetch(`/examples/${fileName}`);
+    const response = await fetch(getExamplePath(fileName));
     if (!response.ok) {
       throw new Error(`Failed to load example: ${fileName}`);
     }
