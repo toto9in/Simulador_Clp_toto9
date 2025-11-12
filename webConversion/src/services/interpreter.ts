@@ -244,7 +244,7 @@ export class Interpreter {
 
     if (varType === 'OUTPUT') {
       state.outputs[variable] = this.accumulator;
-    } else if (varType === 'MEMORY' || varType === 'COUNTER') {
+    } else if (varType === 'MEMORY' || varType === 'COUNTER' || varType === 'TIMER') {
       // Create memory variable if it doesn't exist
       if (!state.memoryVariables[variable]) {
         state.memoryVariables[variable] = MemoryService.createMemoryVariable(variable);
