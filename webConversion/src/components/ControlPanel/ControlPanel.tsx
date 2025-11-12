@@ -3,6 +3,7 @@
  * PROGRAM / STOP / RUN mode buttons
  */
 
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ExecutionMode } from '../../types/plc';
 import { useExecutionCycle } from '../../hooks/useExecutionCycle';
@@ -13,6 +14,7 @@ export function ControlPanel() {
   const { t } = useTranslation();
   const { mode, start, stop, pause, isRunning } = useExecutionCycle();
   const { dispatch } = usePLCState();
+  const [isCompact, setIsCompact] = useState(false);
 
   const handleProgram = () => {
     pause(); // Sets mode to IDLE
@@ -35,37 +37,40 @@ export function ControlPanel() {
   };
 
   return (
-    <div className="control-panel">
+    <div className={`control-panel ${isCompact ? 'control-panel--compact' : ''}`}>
       <div className="control-panel__buttons">
         <button
           className={`control-button control-button--program ${mode === ExecutionMode.IDLE ? 'active' : ''}`}
           onClick={handleProgram}
           disabled={mode === ExecutionMode.IDLE}
+          title={t('modes.program')}
         >
           <img src="/assets/menu.png" alt="Program" className="control-icon" />
-          <span>{t('modes.program')}</span>
+          {!isCompact && <span>{t('modes.program')}</span>}
         </button>
 
         <button
           className={`control-button control-button--stop ${mode === ExecutionMode.STOPPED ? 'active' : ''}`}
           onClick={handleStop}
           disabled={mode === ExecutionMode.STOPPED}
+          title={t('modes.stop')}
         >
           <img src="/assets/pause.png" alt="Stop" className="control-icon" />
-          <span>{t('modes.stop')}</span>
+          {!isCompact && <span>{t('modes.stop')}</span>}
         </button>
 
         <button
           className={`control-button control-button--run ${isRunning ? 'active' : ''}`}
           onClick={handleRun}
           disabled={isRunning}
+          title={t('modes.run')}
         >
           <img
             src={isRunning ? "/assets/start_green.png" : "/assets/start.png"}
             alt="Run"
             className="control-icon"
           />
-          <span>{t('modes.run')}</span>
+          {!isCompact && <span>{t('modes.run')}</span>}
         </button>
 
         <button
@@ -74,17 +79,31 @@ export function ControlPanel() {
           title="Reset all variables"
         >
           <span className="reset-icon">⟲</span>
-          <span>RESET</span>
+          {!isCompact && <span>RESET</span>}
         </button>
       </div>
 
       <div className="control-panel__status">
         <div className="status-indicator">
-          <span className="status-label">{t('labels.value')}</span>
+          {!isCompact && <span className="status-label">{t('labels.value')}</span>}
           <span className={`status-value status-value--${mode.toLowerCase()}`}>
             {t(`modes.${mode.toLowerCase()}`)}
           </span>
         </div>
+
+        <button
+          className="control-panel__toggle"
+          onClick={() => setIsCompact(!isCompact)}
+          title={isCompact ? 'Expand controls' : 'Compact controls'}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16">
+            {isCompact ? (
+              <path d="M2 8 L8 2 L14 8 M2 14 L8 8 L14 14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            ) : (
+              <path d="M2 2 L8 8 L14 2 M2 8 L8 14 L14 8" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            )}
+          </svg>
+        </button>
       </div>
     </div>
   );

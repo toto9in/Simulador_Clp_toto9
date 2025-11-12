@@ -29,10 +29,10 @@
 
 .collapsible-panel__icon {
   margin-right: 8px;
-  font-size: 12px;
-  transition: transform 0.2s ease;
   min-width: 14px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text);
 }
 
 .collapsible-panel__title {

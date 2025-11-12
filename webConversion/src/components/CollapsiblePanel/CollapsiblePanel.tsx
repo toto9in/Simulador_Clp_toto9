@@ -35,9 +35,15 @@ export function CollapsiblePanel({
           }
         }}
       >
-        <span className="collapsible-panel__icon">
-          {isCollapsed ? '¶' : '¼'}
-        </span>
+        <svg
+          className="collapsible-panel__icon"
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          style={{ transform: isCollapsed ? 'rotate(0deg)' : 'rotate(90deg)', transition: 'transform 0.2s ease' }}
+        >
+          <path d="M4 2 L9 6 L4 10" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
         <h3 className="collapsible-panel__title">{title}</h3>
       </div>
 

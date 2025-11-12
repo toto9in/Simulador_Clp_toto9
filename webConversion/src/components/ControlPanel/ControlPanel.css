@@ -147,6 +147,68 @@
   }
 }
 
+/* Compact Mode */
+.control-panel--compact {
+  padding: var(--spacing-sm);
+}
+
+.control-panel--compact .control-panel__buttons {
+  gap: var(--spacing-sm);
+}
+
+.control-panel--compact .control-button {
+  min-width: auto;
+  padding: var(--spacing-sm);
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+}
+
+.control-panel--compact .control-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.control-panel--compact .reset-icon {
+  font-size: 24px;
+}
+
+.control-panel--compact .status-indicator {
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.control-panel--compact .status-value {
+  font-size: var(--font-md);
+}
+
+/* Toggle Button */
+.control-panel__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text);
+}
+
+.control-panel__toggle:hover {
+  background-color: var(--color-tertiary);
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.control-panel__toggle:active {
+  transform: scale(0.95);
+}
+
+.control-panel__toggle svg {
+  display: block;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .control-panel {
