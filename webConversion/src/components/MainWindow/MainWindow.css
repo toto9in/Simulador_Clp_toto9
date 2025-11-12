@@ -44,32 +44,11 @@
   min-height: 0;
 }
 
-/* Code Editor Side */
-.main-window__editor {
-  flex: 0.5;
-  min-width: 350px;
-  max-width: 500px;
-  background-color: var(--color-white);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Right Side */
-.main-window__right {
+/* Default Mode: Scene on right, editor on left */
+.main-window__scene {
+  order: 2;
   flex: 1.5;
   min-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  overflow: hidden;
-}
-
-/* Scene Area */
-.main-window__scene {
-  flex: 1;
   background-color: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -77,14 +56,50 @@
   min-height: 0;
 }
 
+.main-window__editor-panel {
+  order: 1;
+  flex: 0.5;
+  min-width: 350px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  overflow: hidden;
+}
+
+/* Batch Mode: Scene on left (larger), editor on right */
+.main-window--batch .main-window__scene--batch {
+  order: 1;
+  flex: 2;
+  min-width: 600px;
+}
+
+.main-window--batch .main-window__editor-panel--batch {
+  order: 2;
+  flex: 1;
+  min-width: 400px;
+  max-width: 600px;
+}
+
+/* Code Editor */
+.main-window__editor {
+  flex: 1;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
 /* Status Panel */
 .main-window__status {
-  height: 150px;
+  height: 200px;
   background-color: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
-  overflow: auto;
-  padding: var(--spacing-sm);
+  overflow: hidden;
 }
 
 /* Footer */
@@ -117,13 +132,26 @@
     flex-direction: column;
   }
 
-  .main-window__right {
+  .main-window__scene {
+    order: 1;
     min-width: 100%;
+  }
+
+  .main-window__editor-panel {
+    order: 2;
+    min-width: 100%;
+    max-width: none;
   }
 
   .main-window__editor {
     min-width: 100%;
-    min-height: 200px;
+    min-height: 250px;
+  }
+
+  .main-window--batch .main-window__scene--batch,
+  .main-window--batch .main-window__editor-panel--batch {
+    min-width: 100%;
+    max-width: none;
   }
 }
 
@@ -133,6 +161,6 @@
   }
 
   .main-window__status {
-    height: 100px;
+    height: 150px;
   }
 }
