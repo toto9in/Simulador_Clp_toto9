@@ -10,6 +10,7 @@ import { PLCStateProvider, usePLCState } from '../../context/PLCStateContext';
 import { useExecutionCycle } from '../../hooks/useExecutionCycle';
 import { useTheme } from '../../hooks/useTheme';
 import { useDragAndDrop } from '../../hooks/useDragAndDrop';
+import { useUnsavedChanges } from '../../hooks/useUnsavedChanges';
 import { useToastContext } from '../../context/ToastContext';
 import { FileIOService } from '../../services/fileIO';
 import { SceneType } from '../../types/plc';
@@ -23,6 +24,7 @@ import { AboutDialog } from '../AboutDialog/AboutDialog';
 import { TimerCounterStatus } from '../TimerCounterStatus/TimerCounterStatus';
 import { KeyboardShortcuts } from '../KeyboardShortcuts/KeyboardShortcuts';
 import { DragDropOverlay } from '../DragDropOverlay/DragDropOverlay';
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import '../../i18n/config';
 import '../../styles/themes.css';
 import '../../styles/globals.css';
@@ -40,21 +42,46 @@ function MainWindowContent() {
   const [showHelp, setShowHelp] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showDataTable, setShowDataTable] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState<string>();
 
   // Check if in batch mode to adjust layout
   const isBatchMode = state.currentScene === SceneType.BATCH_SIMULATION;
 
+  // Handle loading state changes
+  const handleLoadingChange = useCallback((loading: boolean, message?: string) => {
+    setIsLoading(loading);
+    setLoadingMessage(message);
+  }, []);
+
+  // Track unsaved changes
+  const { hasUnsavedChanges, markAsSaved, resetSavedState } = useUnsavedChanges({
+    enabled: true,
+    onBeforeUnload: () => {
+      toast.warning('You have unsaved changes!');
+    }
+  });
+
   // Handle file drop
   const handleFileDrop = useCallback(async (file: File) => {
+    // Warn if there are unsaved changes
+    if (hasUnsavedChanges) {
+      const confirmed = window.confirm(
+        'You have unsaved changes. Loading a new file will discard them. Continue?'
+      );
+      if (!confirmed) return;
+    }
+
     try {
       const programText = await FileIOService.loadProgramFromFile(file);
       dispatch({ type: 'SET_PROGRAM_TEXT', programText });
+      resetSavedState(programText);
       toast.success(t('messages.programLoaded'));
     } catch (error) {
       console.error('File drop error:', error);
       toast.error(t('messages.error') + ': ' + (error as Error).message);
     }
-  }, [dispatch, toast, t]);
+  }, [dispatch, toast, t, hasUnsavedChanges, resetSavedState]);
 
   // Enable drag and drop
   const { isDragging } = useDragAndDrop({
@@ -85,6 +112,10 @@ function MainWindowContent() {
           onOpenHelp={() => setShowHelp(true)}
           onOpenAbout={() => setShowAbout(true)}
           onOpenDataTable={() => setShowDataTable(true)}
+          hasUnsavedChanges={hasUnsavedChanges}
+          onMarkAsSaved={markAsSaved}
+          onResetSavedState={resetSavedState}
+          onLoadingChange={handleLoadingChange}
         />
         <ControlPanel />
       </div>
@@ -123,6 +154,9 @@ function MainWindowContent() {
 
       {/* Drag & Drop Overlay */}
       <DragDropOverlay isVisible={isDragging} />
+
+      {/* Loading Indicator */}
+      {isLoading && <LoadingSpinner overlay message={loadingMessage} />}
     </div>
   );
 }

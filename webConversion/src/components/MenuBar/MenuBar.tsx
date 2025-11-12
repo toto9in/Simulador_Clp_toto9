@@ -7,42 +7,81 @@ import { useTranslation } from 'react-i18next';
 import { usePLCState } from '../../context/PLCStateContext';
 import { useToastContext } from '../../context/ToastContext';
 import { useTheme } from '../../hooks/useTheme';
+import { useLoading } from '../../hooks/useLoading';
 import { FileIOService } from '../../services/fileIO';
 import { SceneType } from '../../types/plc';
+import { UnsavedIndicator } from '../UnsavedIndicator/UnsavedIndicator';
 import './MenuBar.css';
 
 interface MenuBarProps {
   onOpenHelp: () => void;
   onOpenAbout: () => void;
   onOpenDataTable: () => void;
+  hasUnsavedChanges?: boolean;
+  onMarkAsSaved?: () => void;
+  onResetSavedState?: (newProgram: string) => void;
+  onLoadingChange?: (isLoading: boolean, message?: string) => void;
 }
 
-export function MenuBar({ onOpenHelp, onOpenAbout, onOpenDataTable }: MenuBarProps) {
+export function MenuBar({
+  onOpenHelp,
+  onOpenAbout,
+  onOpenDataTable,
+  hasUnsavedChanges = false,
+  onMarkAsSaved,
+  onResetSavedState,
+  onLoadingChange
+}: MenuBarProps) {
   const { t, i18n } = useTranslation();
   const { state, dispatch } = usePLCState();
   const { nextTheme, theme } = useTheme();
   const toast = useToastContext();
+  const { withLoading } = useLoading();
 
   const handleSave = async () => {
-    try {
-      await FileIOService.saveProgramToFile(state.programText);
-      toast.success(t('messages.programSaved') || 'Program saved successfully!');
-    } catch (error) {
-      console.error('Save error:', error);
-      toast.error(t('messages.error') + ': ' + (error as Error).message);
-    }
+    await withLoading(async () => {
+      if (onLoadingChange) onLoadingChange(true, 'Saving program...');
+      try {
+        await FileIOService.saveProgramToFile(state.programText);
+        if (onMarkAsSaved) {
+          onMarkAsSaved();
+        }
+        toast.success(t('messages.programSaved') || 'Program saved successfully!');
+      } catch (error) {
+        console.error('Save error:', error);
+        toast.error(t('messages.error') + ': ' + (error as Error).message);
+      } finally {
+        if (onLoadingChange) onLoadingChange(false);
+      }
+    });
   };
 
   const handleLoad = async () => {
-    try {
-      const programText = await FileIOService.openProgram();
-      dispatch({ type: 'SET_PROGRAM_TEXT', programText });
-      toast.success(t('messages.programLoaded'));
-    } catch (error) {
-      if ((error as Error).message.includes('cancelled')) return;
-      console.error('Load error:', error);
-      toast.error(t('messages.error') + ': ' + (error as Error).message);
+    // Warn if there are unsaved changes
+    if (hasUnsavedChanges) {
+      const confirmed = window.confirm(
+        'You have unsaved changes. Loading a new program will discard them. Continue?'
+      );
+      if (!confirmed) return;
     }
+
+    await withLoading(async () => {
+      if (onLoadingChange) onLoadingChange(true, 'Loading program...');
+      try {
+        const programText = await FileIOService.openProgram();
+        dispatch({ type: 'SET_PROGRAM_TEXT', programText });
+        if (onResetSavedState) {
+          onResetSavedState(programText);
+        }
+        toast.success(t('messages.programLoaded'));
+      } catch (error) {
+        if ((error as Error).message.includes('cancelled')) return;
+        console.error('Load error:', error);
+        toast.error(t('messages.error') + ': ' + (error as Error).message);
+      } finally {
+        if (onLoadingChange) onLoadingChange(false);
+      }
+    });
   };
 
   const handleChangeLanguage = () => {
@@ -68,6 +107,7 @@ export function MenuBar({ onOpenHelp, onOpenAbout, onOpenDataTable }: MenuBarPro
         <button className="menu-button" onClick={handleLoad}>
           {t('menu.load')}
         </button>
+        <UnsavedIndicator hasUnsavedChanges={hasUnsavedChanges} />
       </div>
 
       <div className="menu-divider" />
