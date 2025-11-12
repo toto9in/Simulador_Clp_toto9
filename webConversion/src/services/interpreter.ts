@@ -13,6 +13,8 @@ import { MemoryService } from './memory';
  */
 export class Interpreter {
   private static accumulator: boolean | null = null;
+  private static DEBUG_MODE = true; // Set to true for detailed logging
+  private static instructionCount = 0;
 
   /**
    * Valid operators for IL language
@@ -100,10 +102,21 @@ export class Interpreter {
     // Reset accumulator
     this.accumulator = null;
 
+    // Reset instruction count for new scan cycle
+    if (state.scanCount === 0 || state.scanCount % 10 === 0) {
+      this.instructionCount = 0;
+      if (this.DEBUG_MODE && state.scanCount === 0) {
+        console.log('=== STARTING PROGRAM EXECUTION ===');
+      }
+    }
+
     // Parse program if needed
     if (state.program.length === 0 && state.programText.trim() !== '') {
       try {
         state.program = this.parseProgram(state.programText);
+        if (this.DEBUG_MODE) {
+          console.log('Program parsed:', state.program.length, 'instructions');
+        }
       } catch (error) {
         console.error('Parse error:', error);
         throw error;
@@ -147,6 +160,23 @@ export class Interpreter {
     }
 
     const variable = operands[0];
+
+    // DEBUG: Log instruction execution
+    if (this.DEBUG_MODE && this.instructionCount < 50) {
+      const accBefore = this.accumulator;
+      console.log(`[Line ${instruction.line}] ${operator} ${operands.join(',')} | ACC before: ${accBefore}`);
+      this.instructionCount++;
+
+      // Log after execution in a delayed way
+      setTimeout(() => {
+        if (operator === 'ST' || operator === 'STN') {
+          const varType = getVariableType(variable);
+          if (varType === 'OUTPUT') {
+            console.log(`  → Output ${variable} = ${state.outputs[variable]}`);
+          }
+        }
+      }, 0);
+    }
 
     // Handle different instruction types
     switch (operator) {
@@ -431,6 +461,11 @@ export class Interpreter {
 
     // Set timer enable from accumulator (Java does this in HomePageController)
     state.memoryVariables[variable].currentValue = this.accumulator;
+
+    // DEBUG: Log timer enable
+    if (this.DEBUG_MODE && this.instructionCount < 50) {
+      console.log(`  → Timer ${variable} (TON) enabled: ${this.accumulator}, preset: ${preset}`);
+    }
   }
 
   /**
@@ -466,6 +501,11 @@ export class Interpreter {
 
     // Set timer enable from accumulator (Java does this in HomePageController)
     state.memoryVariables[variable].currentValue = this.accumulator;
+
+    // DEBUG: Log timer enable
+    if (this.DEBUG_MODE && this.instructionCount < 50) {
+      console.log(`  → Timer ${variable} (TOFF) enabled: ${this.accumulator}, preset: ${preset}`);
+    }
   }
 
   /**

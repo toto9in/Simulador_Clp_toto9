@@ -36,15 +36,44 @@ export class ScanCycleService {
     const startTime = performance.now();
 
     try {
-      // Step 1: Read inputs (already in state from UI)
-      // In a real PLC, this would read from physical inputs
-      // In our simulator, inputs are updated by UI interactions
+      // DEBUG: Log inputs at start of cycle
+      if (state.scanCount % 10 === 0) { // Log every 10 cycles to avoid spam
+        console.log('=== SCAN CYCLE', state.scanCount, '===');
+        console.log('INPUTS:', {
+          'I0.0': state.inputs['I0.0'],
+          'I0.1': state.inputs['I0.1'],
+          'I1.0': state.inputs['I1.0'],
+          'I1.1': state.inputs['I1.1'],
+        });
+      }
 
       // Step 2: Execute user program
       const newState = Interpreter.executeProgram(state);
 
       // Step 3: Update timers based on their enable conditions
       MemoryService.updateAllTimers(newState.memoryVariables);
+
+      // DEBUG: Log outputs after execution
+      if (state.scanCount % 10 === 0) {
+        console.log('OUTPUTS:', {
+          'Q0.1': newState.outputs['Q0.1'],
+          'Q0.2': newState.outputs['Q0.2'],
+          'Q0.3': newState.outputs['Q0.3'],
+          'Q1.0': newState.outputs['Q1.0'],
+        });
+
+        // Log timers
+        const timers = Object.values(newState.memoryVariables).filter(v => v.type === 'TIMER');
+        if (timers.length > 0) {
+          console.log('TIMERS:', timers.map(t => ({
+            id: t.id,
+            EN: t.currentValue,
+            ACC: t.accumulated,
+            PRE: t.preset,
+            DN: t.done
+          })));
+        }
+      }
 
       // Step 4: Calculate cycle time
       const endTime = performance.now();
