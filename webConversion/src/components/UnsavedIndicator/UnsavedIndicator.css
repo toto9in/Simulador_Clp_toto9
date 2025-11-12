@@ -1,0 +1,54 @@
+/**
+ * Unsaved Changes Indicator Styles
+ */
+
+.unsaved-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #f59e0b;
+  cursor: help;
+  transition: all 0.2s;
+  animation: fade-in 0.3s ease-out;
+}
+
+.unsaved-indicator:hover {
+  background: rgba(245, 158, 11, 0.25);
+  border-color: rgba(245, 158, 11, 0.6);
+}
+
+.unsaved-indicator__dot {
+  font-size: 14px;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.unsaved-indicator__text {
+  white-space: nowrap;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

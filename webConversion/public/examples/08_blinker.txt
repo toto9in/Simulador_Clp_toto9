@@ -1,0 +1,28 @@
+// ==================================
+// Blinker / Flasher
+// ==================================
+// Creates a blinking output at Q0.0
+// Blinks every 1 second (0.5s on, 0.5s off)
+// Enable with I0.0
+// The output will automatically oscillate while I0.0 is ON
+
+// OFF Timer - runs when enabled and output is OFF
+LD I0.0
+ANDN Q0.0
+TON T0 5
+
+// ON Timer - runs when enabled and output is ON
+LD I0.0
+AND Q0.0
+TON T1 5
+
+// Output Logic:
+// Turn ON when OFF timer completes (T0 done)
+// OR keep ON while ON timer is still running (Q0.0 AND NOT T1 done)
+LD T0
+ST M0.0
+
+LD Q0.0
+ANDN T1
+OR M0.0
+OUT Q0.0

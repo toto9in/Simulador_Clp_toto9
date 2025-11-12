@@ -1,0 +1,132 @@
+/**
+ * Theme System - 4 Color Palettes
+ * Converted from src/ilcompiler/edit/Colors.java
+ */
+
+/* Default/Base Colors */
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-light: #f5f5f5;
+  --color-gray-medium: #cccccc;
+  --color-gray-dark: #666666;
+  --color-text: #333333;
+  --color-text-light: #ffffff;
+}
+
+/* Theme 1 - Blue (Default) */
+[data-theme="1"],
+:root {
+  --color-primary: rgb(8, 94, 131);      /* firstColor */
+  --color-secondary: rgb(142, 177, 199);  /* secondColor */
+  --color-tertiary: rgb(131, 177, 246);   /* thirdColor */
+
+  /* Derived colors for better UX */
+  --color-primary-dark: rgb(6, 70, 98);
+  --color-primary-light: rgb(10, 118, 164);
+  --color-background: var(--color-secondary);
+  --color-surface: var(--color-tertiary);
+  --color-border: var(--color-primary);
+}
+
+/* Theme 2 - Green */
+[data-theme="2"] {
+  --color-primary: rgb(0, 66, 2);         /* firstColor */
+  --color-secondary: rgb(181, 198, 169);  /* secondColor */
+  --color-tertiary: rgb(126, 205, 165);   /* thirdColor */
+
+  --color-primary-dark: rgb(0, 50, 1);
+  --color-primary-light: rgb(0, 82, 3);
+  --color-background: var(--color-secondary);
+  --color-surface: var(--color-tertiary);
+  --color-border: var(--color-primary);
+}
+
+/* Theme 3 - Brown/Beige */
+[data-theme="3"] {
+  --color-primary: rgb(99, 58, 1);        /* firstColor */
+  --color-secondary: rgb(198, 188, 169);  /* secondColor */
+  --color-tertiary: rgb(220, 216, 169);   /* thirdColor */
+
+  --color-primary-dark: rgb(75, 44, 1);
+  --color-primary-light: rgb(123, 72, 1);
+  --color-background: var(--color-secondary);
+  --color-surface: var(--color-tertiary);
+  --color-border: var(--color-primary);
+}
+
+/* Theme 4 - Red */
+[data-theme="4"] {
+  --color-primary: rgb(85, 0, 0);         /* firstColor */
+  --color-secondary: rgb(198, 169, 169);  /* secondColor */
+  --color-tertiary: rgb(220, 169, 169);   /* thirdColor */
+
+  --color-primary-dark: rgb(65, 0, 0);
+  --color-primary-light: rgb(105, 0, 0);
+  --color-background: var(--color-secondary);
+  --color-surface: var(--color-tertiary);
+  --color-border: var(--color-primary);
+}
+
+/* LED Colors */
+:root {
+  --led-on: #00ff00;
+  --led-off: #333333;
+  --led-on-glow: rgba(0, 255, 0, 0.6);
+}
+
+/* Button States */
+:root {
+  --button-pressed: rgba(0, 0, 0, 0.2);
+  --button-hover: rgba(255, 255, 255, 0.1);
+}
+
+/* Transitions */
+:root {
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* Shadows */
+:root {
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Border Radius */
+:root {
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+}
+
+/* Spacing */
+:root {
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+/* Font Sizes */
+:root {
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-md: 16px;
+  --font-lg: 18px;
+  --font-xl: 24px;
+}
+
+/* Z-Index Layers */
+:root {
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-modal: 2000;
+  --z-tooltip: 3000;
+  --z-notification: 4000;
+}

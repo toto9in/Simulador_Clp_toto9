@@ -1,0 +1,209 @@
+/**
+ * Default Scene Styles
+ */
+
+.default-scene {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.default-scene__header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.default-scene__title {
+  margin: 0;
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.default-scene__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.default-scene__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.default-scene__section-title {
+  margin: 0;
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+}
+
+.default-scene__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+/* I/O Item */
+.io-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: var(--transition-colors);
+}
+
+.io-item:hover {
+  background-color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.io-item__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  border-radius: var(--radius-sm);
+}
+
+.io-item__button:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.io-item__button:active {
+  transform: scale(0.95);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+.io-item__button:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
+}
+
+.io-item__led-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+}
+
+.io-item__icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.io-item__label {
+  font-weight: 600;
+  font-size: var(--font-md);
+  color: var(--color-text);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.io-item__status {
+  font-weight: 700;
+  font-size: var(--font-sm);
+  color: #666666;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background-color: rgba(0, 0, 0, 0.1);
+  min-width: 24px;
+  text-align: center;
+}
+
+.io-item__status.active {
+  color: #00aa00;
+  background-color: rgba(0, 170, 0, 0.1);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.default-scene__footer {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  border-top: 2px solid var(--color-border);
+}
+
+.default-scene__info {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .default-scene__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .default-scene__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .io-item {
+    padding: var(--spacing-xs);
+  }
+
+  .io-item__button,
+  .io-item__led-container {
+    width: 48px;
+    height: 48px;
+  }
+
+  .io-item__label {
+    font-size: var(--font-sm);
+  }
+
+  .io-item__status {
+    font-size: var(--font-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .default-scene__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}

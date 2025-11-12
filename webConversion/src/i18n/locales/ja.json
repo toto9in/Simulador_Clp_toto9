@@ -1,0 +1,119 @@
+{
+  "menu": {
+    "file": "ファイル",
+    "save": "保存",
+    "load": "ロードするには",
+    "edit": "編集",
+    "theme": "テーマ",
+    "language": "言語",
+    "help": "ヘルプ",
+    "about": "について",
+    "simulation": "シミュレーション"
+  },
+  "scenes": {
+    "default": "パネル",
+    "batch": "シミュレーション 1",
+    "defaultInfo": "ボタンをクリックして入力を切り替えます。出力はILプログラムによって制御されます。"
+  },
+  "inputTypes": {
+    "switch": "スイッチ",
+    "no": "ノーマルオープン (NO)",
+    "nc": "ノーマルクローズ (NC)"
+  },
+  "labels": {
+    "delay": "遅延時間 (ミリ秒):",
+    "inputs": "入力",
+    "outputs": "出力",
+    "code": "コード",
+    "value": "価値:",
+    "type": "タイプ:",
+    "preset": "プリセット:",
+    "accumulated": "累積:",
+    "done": "DN:",
+    "enabled": "EN:"
+  },
+  "editor": {
+    "title": "ILコードエディタ",
+    "disabledWhileRunning": "実行中はエディタが無効です",
+    "placeholder": "ここにIL命令を入力してください...\n\n例:\nLD I0.0\nAND I0.1\nST Q0.0",
+    "lines": "行",
+    "characters": "文字"
+  },
+  "modes": {
+    "program": "プログラム",
+    "stop": "停止",
+    "run": "実行",
+    "idle": "アイドル",
+    "stopped": "停止",
+    "running": "実行中"
+  },
+  "dataTable": {
+    "title": "変数リスト",
+    "variable": "変数",
+    "value": "価値",
+    "type": "タイプ",
+    "preset": "プリセット",
+    "accumulated": "累積",
+    "done": "DN",
+    "noVariables": "メモリ変数はまだ作成されていません",
+    "count": "変数の総数"
+  },
+  "messages": {
+    "programSaved": "プログラムが正常に保存されました",
+    "programLoaded": "プログラムが正常にロードされました",
+    "error": "エラー",
+    "success": "成功",
+    "emptyProgram": "PLCの指示を入力してください！",
+    "invalidSyntax": "構文が正しくありません！",
+    "invalidOperator": "オペレーターが存在しません！",
+    "invalidVariable": "変数が存在しません！",
+    "accumulatorEmpty": "アキュムレータが空です！最初にLDまたはLDNで目的の変数をロードしてください！",
+    "cannotModifyInputs": "入力は変更できません！STとSTNは出力にのみ有効です！"
+  },
+  "help": {
+    "title": "ヘルプ - PLCシミュレータ",
+    "instructions": "利用可能な指示",
+    "ld": "LD - アキュムレータに値をロード",
+    "ldn": "LDN - 否定された値をアキュムレータにロード",
+    "st": "ST - アキュムレータを出力に保存",
+    "stn": "STN - 否定されたアキュムレータを出力に保存",
+    "and": "AND - アキュムレータとの論理AND",
+    "andn": "ANDN - 否定された値との論理AND",
+    "or": "OR - アキュムレータとの論理OR",
+    "orn": "ORN - 否定された値との論理OR",
+    "ton": "TON - オンディレイタイマー",
+    "toff": "TOFF - オフディレイタイマー",
+    "ctu": "CTU - カウントアップ",
+    "ctd": "CTD - カウントダウン",
+    "examples": "例",
+    "exampleBasic": "基本ロジック",
+    "exampleTimer": "タイマーの使用",
+    "exampleCounter": "カウンターの使用"
+  },
+  "about": {
+    "title": "について",
+    "version": "バージョン",
+    "description": "PLCシミュレータ - Webバージョン",
+    "credits": "学術プロジェクトとして開発",
+    "technology": "技術",
+    "features": "特徴",
+    "instructions": "IL命令",
+    "timers": "TON/TOFFタイマー",
+    "counters": "CTU/CTDカウンター",
+    "multiLanguage": "4つの言語（PT、EN、JA、DE）",
+    "multiTheme": "4つのカラーテーマ",
+    "creditsText": "産業オートメーション研究のための学術プロジェクトとして開発",
+    "allRightsReserved": "無断転載を禁じます"
+  },
+  "buttons": {
+    "ok": "OK",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "yes": "はい",
+    "no": "いいえ"
+  },
+  "batch": {
+    "sensors": "レベルセンサー",
+    "info": "START/STOPを使用してタンクを制御します。ILプログラムはレベルセンサーに基づいてバルブを制御します。"
+  }
+}

@@ -1,0 +1,8 @@
+// ==================================
+// Hello World - Basic Input/Output
+// ==================================
+// Press Input I0.0 to turn on Output Q0.0
+// This is the simplest PLC program!
+
+LD I0.0
+OUT Q0.0

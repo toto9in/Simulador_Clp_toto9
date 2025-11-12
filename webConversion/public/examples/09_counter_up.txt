@@ -1,0 +1,16 @@
+// ==================================
+// Counter Up (CTU)
+// ==================================
+// I0.0 = Count pulse (press to count)
+// I0.1 = Reset counter
+// Q0.0 = Turns on after 5 counts
+// Useful for production counting
+
+LD I0.0
+CTU C0 5
+
+LD I0.1
+CTR C0
+
+LD C0
+OUT Q0.0

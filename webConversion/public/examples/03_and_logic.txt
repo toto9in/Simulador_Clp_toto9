@@ -1,0 +1,9 @@
+// ==================================
+// AND Logic - Safety Circuit
+// ==================================
+// Q0.0 only turns on when BOTH I0.0 AND I0.1 are pressed
+// This simulates a two-hand safety control
+
+LD I0.0
+AND I0.1
+OUT Q0.0

@@ -1,0 +1,100 @@
+{
+  "examples": [
+    {
+      "id": "01_hello_world",
+      "title": "Hello World",
+      "description": "Basic input/output - Press I0.0 to control Q0.0",
+      "category": "basics",
+      "difficulty": "beginner",
+      "file": "01_hello_world.txt"
+    },
+    {
+      "id": "02_multiple_outputs",
+      "title": "Multiple Outputs",
+      "description": "Control multiple outputs with different inputs",
+      "category": "basics",
+      "difficulty": "beginner",
+      "file": "02_multiple_outputs.txt"
+    },
+    {
+      "id": "03_and_logic",
+      "title": "AND Logic - Safety Circuit",
+      "description": "Two-hand safety control using AND logic",
+      "category": "logic",
+      "difficulty": "beginner",
+      "file": "03_and_logic.txt"
+    },
+    {
+      "id": "04_or_logic",
+      "title": "OR Logic - Multiple Buttons",
+      "description": "Multiple start buttons using OR logic",
+      "category": "logic",
+      "difficulty": "beginner",
+      "file": "04_or_logic.txt"
+    },
+    {
+      "id": "05_start_stop_seal",
+      "title": "Start/Stop with Seal",
+      "description": "Motor control with latching (seal-in)",
+      "category": "control",
+      "difficulty": "intermediate",
+      "file": "05_start_stop_seal.txt"
+    },
+    {
+      "id": "06_timer_on_delay",
+      "title": "Timer On-Delay (TON)",
+      "description": "5-second delay before output activation",
+      "category": "timers",
+      "difficulty": "intermediate",
+      "file": "06_timer_on_delay.txt"
+    },
+    {
+      "id": "07_timer_off_delay",
+      "title": "Timer Off-Delay (TOFF)",
+      "description": "Output stays on for 3 seconds after input release",
+      "category": "timers",
+      "difficulty": "intermediate",
+      "file": "07_timer_off_delay.txt"
+    },
+    {
+      "id": "08_blinker",
+      "title": "Blinker / Flasher",
+      "description": "Creates a blinking output (1Hz)",
+      "category": "timers",
+      "difficulty": "intermediate",
+      "file": "08_blinker.txt"
+    },
+    {
+      "id": "09_counter_up",
+      "title": "Counter Up (CTU)",
+      "description": "Count up to 5, then activate output",
+      "category": "counters",
+      "difficulty": "intermediate",
+      "file": "09_counter_up.txt"
+    },
+    {
+      "id": "10_counter_down",
+      "title": "Counter Down (CTD)",
+      "description": "Count down from 10 to 0",
+      "category": "counters",
+      "difficulty": "intermediate",
+      "file": "10_counter_down.txt"
+    },
+    {
+      "id": "11_traffic_light",
+      "title": "Traffic Light Sequence",
+      "description": "Automatic traffic light cycle (Red→Green→Yellow)",
+      "category": "sequences",
+      "difficulty": "advanced",
+      "file": "11_traffic_light.txt"
+    },
+    {
+      "id": "12_batch_automatic",
+      "title": "Batch Process - Automatic",
+      "description": "Automatic tank filling, mixing, and draining",
+      "category": "sequences",
+      "difficulty": "advanced",
+      "file": "12_batch_automatic.txt"
+    }
+  ]
+}

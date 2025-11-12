@@ -1,0 +1,174 @@
+/**
+ * Main Window Styles
+ */
+
+.main-window {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  overflow: hidden;
+}
+
+/* Top Bar */
+.main-window__top-bar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary-dark);
+}
+
+.main-window__menu {
+  padding: var(--spacing-sm);
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border-bottom: 1px solid var(--color-primary-dark);
+}
+
+.main-window__controls {
+  padding: var(--spacing-md);
+  background-color: var(--color-secondary);
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+/* Main Content */
+.main-window__content {
+  flex: 1;
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Default Mode: Scene on right, editor on left */
+.main-window__scene {
+  order: 2;
+  flex: 1.5;
+  min-width: 500px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: auto;
+  min-height: 0;
+}
+
+.main-window__editor-panel {
+  order: 1;
+  flex: 0.5;
+  min-width: 350px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  overflow: hidden;
+}
+
+/* Batch Mode: Scene on left (larger), editor on right */
+.main-window--batch .main-window__scene--batch {
+  order: 1;
+  flex: 2;
+  min-width: 600px;
+}
+
+.main-window--batch .main-window__editor-panel--batch {
+  order: 2;
+  flex: 1;
+  min-width: 400px;
+  max-width: 600px;
+}
+
+/* Code Editor - Now using CollapsiblePanel */
+.main-window__editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main-window__editor .collapsible-panel__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Status Panel - Now using CollapsiblePanel */
+.main-window__status {
+  flex: 0 0 auto;
+}
+
+.main-window__status .collapsible-panel__content {
+  min-height: 150px;
+  max-height: 300px;
+  overflow: auto;
+  padding: 8px;
+}
+
+/* Footer */
+.main-window__footer {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-sm);
+  border-top: 1px solid var(--color-primary-dark);
+}
+
+/* Placeholder styles (remove when implementing components) */
+.placeholder {
+  padding: var(--spacing-lg);
+  color: var(--color-gray-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-window__content {
+    flex-direction: column;
+  }
+
+  .main-window__scene {
+    order: 1;
+    min-width: 100%;
+  }
+
+  .main-window__editor-panel {
+    order: 2;
+    min-width: 100%;
+    max-width: none;
+  }
+
+  .main-window__editor {
+    min-width: 100%;
+    min-height: 250px;
+  }
+
+  .main-window--batch .main-window__scene--batch,
+  .main-window--batch .main-window__editor-panel--batch {
+    min-width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-window__controls {
+    flex-wrap: wrap;
+  }
+
+  .main-window__status {
+    height: 150px;
+  }
+}

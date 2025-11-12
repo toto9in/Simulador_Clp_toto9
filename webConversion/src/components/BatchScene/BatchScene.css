@@ -1,0 +1,315 @@
+/**
+ * Batch Simulation Scene Styles
+ */
+
+.batch-scene {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.batch-scene__header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.batch-scene__title {
+  margin: 0;
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.batch-scene__container {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.batch-scene__tank-area {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  background-image: url('/assets/batch_bg.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 400px;
+  position: relative;
+}
+
+/* Tank liquid fill - matches Java drawing coordinates */
+.tank__liquid {
+  position: absolute;
+  left: 28.5%;        /* Tank X position: 178/624 = 28.5% */
+  bottom: 16.2%;      /* Tank base position */
+  width: 51.4%;       /* Tank width: 321/624 = 51.4% */
+  max-height: 67.5%;  /* Tank height proportion */
+  background-color: rgba(255, 255, 0, 0.78); /* Yellow liquid - matches Java Color(255,255,0,200) */
+  transition: height 0.05s linear;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.batch-scene__controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.batch-scene__control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.batch-scene__control-title {
+  margin: 0;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+}
+
+/* Tank Level Display */
+.tank__level-display {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  min-width: 100px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-md);
+}
+
+.tank__level-value {
+  display: block;
+  font-size: var(--font-xxl);
+  font-weight: 700;
+  color: #4CAF50;
+}
+
+.tank__level-label {
+  display: block;
+  font-size: var(--font-sm);
+  margin-top: var(--spacing-xs);
+  opacity: 0.8;
+}
+
+/* Batch Buttons */
+.batch-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: var(--font-md);
+  color: var(--color-text);
+  outline: none;
+}
+
+.batch-button:hover {
+  background-color: var(--color-tertiary);
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.batch-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.batch-button:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
+}
+
+.batch-button.active {
+  background-color: #00aa00;
+  color: #ffffff;
+  border-color: #008800;
+}
+
+.batch-button--emergency.active {
+  background-color: #cc0000;
+  border-color: #990000;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+.batch-button__label {
+  font-weight: 600;
+}
+
+.batch-button__status {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Batch Indicators */
+.batch-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-md);
+  color: var(--color-text);
+}
+
+.batch-indicator__led {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #666666;
+  border: 2px solid var(--color-border);
+  transition: var(--transition-colors);
+}
+
+.batch-indicator.active .batch-indicator__led {
+  background-color: #00aa00;
+  box-shadow: 0 0 15px #00aa00;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.batch-indicator--alarm.active .batch-indicator__led {
+  background-color: #cc0000;
+  box-shadow: 0 0 15px #cc0000;
+  animation: pulse 0.3s ease-in-out infinite;
+}
+
+.batch-indicator__status {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Sensors */
+.batch-scene__sensors {
+  padding: var(--spacing-md);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.sensor-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sensor-item {
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: #666666;
+  transition: var(--transition-colors);
+}
+
+.sensor-item.active {
+  color: #00aa00;
+  border-color: #00aa00;
+  background-color: rgba(0, 170, 0, 0.1);
+}
+
+.batch-scene__footer {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  border-top: 2px solid var(--color-border);
+}
+
+.batch-scene__info {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .batch-scene__container {
+    flex-direction: column;
+  }
+
+  .tank {
+    width: 250px;
+    height: 450px;
+  }
+
+  .tank__body {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tank {
+    width: 200px;
+    height: 400px;
+  }
+
+  .tank__body {
+    height: 300px;
+  }
+
+  .tank__level-display {
+    font-size: var(--font-lg);
+    padding: var(--spacing-sm);
+  }
+
+  .batch-button,
+  .batch-indicator {
+    font-size: var(--font-sm);
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}

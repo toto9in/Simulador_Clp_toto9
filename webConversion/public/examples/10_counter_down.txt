@@ -1,0 +1,16 @@
+// ==================================
+// Counter Down (CTD)
+// ==================================
+// I0.0 = Count down pulse
+// I0.1 = Load counter (preset to 10)
+// Q0.0 = Turns on when counter reaches 0
+// Useful for countdown operations
+
+LD I0.1
+CTL C1 10
+
+LD I0.0
+CTD C1
+
+LD C1
+OUT Q0.0

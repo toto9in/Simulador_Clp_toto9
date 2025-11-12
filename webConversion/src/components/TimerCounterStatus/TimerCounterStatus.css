@@ -1,0 +1,162 @@
+/**
+ * Timer/Counter Status Component Styles
+ */
+
+.timer-counter-status {
+  height: 100%;
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: var(--spacing-sm);
+}
+
+.status-section {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.status-section__title {
+  margin: 0;
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  text-transform: uppercase;
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.status-empty {
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  font-style: italic;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--spacing-sm);
+  overflow-y: auto;
+}
+
+.status-grid--compact {
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+.status-item {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs);
+  transition: var(--transition-colors);
+}
+
+.status-item--active {
+  border-color: var(--color-success);
+  background-color: rgba(0, 170, 0, 0.05);
+}
+
+.status-item--compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.status-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.status-item__id {
+  font-weight: 700;
+  font-size: var(--font-md);
+  color: var(--color-primary);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.status-item__badge {
+  font-size: var(--font-xs);
+  padding: 2px 6px;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.status-item__badge--done {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.status-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-sm);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.status-label {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.status-value {
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 40px;
+  text-align: right;
+}
+
+.status-value--on {
+  color: var(--color-success);
+}
+
+.status-value--done {
+  color: var(--color-success);
+  font-weight: 900;
+}
+
+.status-progress {
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: var(--spacing-xs);
+}
+
+.status-progress__bar {
+  height: 100%;
+  background-color: var(--color-success);
+  transition: width 0.1s linear;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timer-counter-status {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .status-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

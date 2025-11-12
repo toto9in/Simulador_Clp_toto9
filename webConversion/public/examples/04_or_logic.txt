@@ -1,0 +1,9 @@
+// ==================================
+// OR Logic - Multiple Start Buttons
+// ==================================
+// Q0.0 turns on when EITHER I0.0 OR I0.1 is pressed
+// Useful for multiple control stations
+
+LD I0.0
+OR I0.1
+OUT Q0.0

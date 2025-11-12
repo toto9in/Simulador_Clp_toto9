@@ -1,0 +1,12 @@
+// ==================================
+// Start/Stop with Seal (Latching)
+// ==================================
+// I0.0 = Start button
+// I0.1 = Stop button
+// Q0.0 = Motor output
+// The motor stays on after releasing Start, until Stop is pressed
+
+LD I0.0
+OR Q0.0
+ANDN I0.1
+OUT Q0.0
