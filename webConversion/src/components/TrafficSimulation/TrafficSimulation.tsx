@@ -28,7 +28,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
 
   // Collision warning state
   const [showCollisionWarning, setShowCollisionWarning] = useState(false);
-  const collisionTimeoutRef = useRef<NodeJS.Timeout>();
+  const collisionTimeoutRef = useRef<number>();
 
   // Refs to track latest state values without causing re-renders
   const nsTrafficRef = useRef(nsTrafficEnabled);
@@ -86,10 +86,13 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
       // Update NS car position
       if (nsTrafficRef.current) {
         // Check if should stop BEFORE intersection (not inside)
-        const approachingIntersection = nsPos >= STOP_POINT_BEFORE_INTERSECTION && nsPos < INTERSECTION_START;
+        const approachingIntersection =
+          nsPos >= STOP_POINT_BEFORE_INTERSECTION && nsPos < INTERSECTION_START;
 
         // Stop if red light OR if lights are all off (invalid state)
-        const shouldStop = approachingIntersection && (currentNsRed || (!currentNsGreen && !currentNsYellow && !currentNsRed));
+        const shouldStop =
+          approachingIntersection &&
+          (currentNsRed || (!currentNsGreen && !currentNsYellow && !currentNsRed));
 
         if (!shouldStop) {
           nsPos += CAR_SPEED;
@@ -106,10 +109,13 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
       // Update EW car position
       if (ewTrafficRef.current) {
         // Check if should stop BEFORE intersection (not inside)
-        const approachingIntersection = ewPos >= STOP_POINT_BEFORE_INTERSECTION && ewPos < INTERSECTION_START;
+        const approachingIntersection =
+          ewPos >= STOP_POINT_BEFORE_INTERSECTION && ewPos < INTERSECTION_START;
 
         // Stop if red light OR if lights are all off (invalid state)
-        const shouldStop = approachingIntersection && (currentEwRed || (!currentEwGreen && !currentEwYellow && !currentEwRed));
+        const shouldStop =
+          approachingIntersection &&
+          (currentEwRed || (!currentEwGreen && !currentEwYellow && !currentEwRed));
 
         if (!shouldStop) {
           ewPos += CAR_SPEED;
@@ -129,8 +135,14 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
       const nsCanGo = currentNsGreen || currentNsYellow;
       const ewCanGo = currentEwGreen || currentEwYellow;
 
-      if (nsInIntersection && ewInIntersection && nsCanGo && ewCanGo &&
-          nsTrafficRef.current && ewTrafficRef.current) {
+      if (
+        nsInIntersection &&
+        ewInIntersection &&
+        nsCanGo &&
+        ewCanGo &&
+        nsTrafficRef.current &&
+        ewTrafficRef.current
+      ) {
         setShowCollisionWarning(true);
         onCollision?.();
 
@@ -174,7 +186,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
           className={`traffic-toggle ${nsTrafficEnabled ? 'traffic-enabled' : 'traffic-disabled'}`}
           onClick={() => {
             console.log('NS Toggle clicked, current:', nsTrafficEnabled);
-            setNsTrafficEnabled(prev => !prev);
+            setNsTrafficEnabled((prev) => !prev);
           }}
           type="button"
         >
@@ -184,7 +196,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
           className={`traffic-toggle ${ewTrafficEnabled ? 'traffic-enabled' : 'traffic-disabled'}`}
           onClick={() => {
             console.log('EW Toggle clicked, current:', ewTrafficEnabled);
-            setEwTrafficEnabled(prev => !prev);
+            setEwTrafficEnabled((prev) => !prev);
           }}
           type="button"
         >
@@ -192,7 +204,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
         </button>
         <button
           className={`traffic-toggle ${debugMode ? 'traffic-enabled' : 'traffic-disabled'}`}
-          onClick={() => setDebugMode(prev => !prev)}
+          onClick={() => setDebugMode((prev) => !prev)}
           type="button"
         >
           {debugMode ? '🔍 Debug ON' : '🔍 Debug OFF'}
@@ -205,37 +217,74 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
         {debugMode && (
           <>
             {/* NS Spawn Point */}
-            <div className="debug-marker debug-spawn" style={{ top: '0%', left: '45%', width: '10%', height: '2px' }}>
+            <div
+              className="debug-marker debug-spawn"
+              style={{ top: '0%', left: '45%', width: '10%', height: '2px' }}
+            >
               <span className="debug-label">SPAWN (0%)</span>
             </div>
 
             {/* NS Stop Point */}
-            <div className="debug-marker debug-stop" style={{ top: `${STOP_POINT_BEFORE_INTERSECTION}%`, left: '45%', width: '10%', height: '3px' }}>
+            <div
+              className="debug-marker debug-stop"
+              style={{
+                top: `${STOP_POINT_BEFORE_INTERSECTION}%`,
+                left: '45%',
+                width: '10%',
+                height: '3px',
+              }}
+            >
               <span className="debug-label">STOP ({STOP_POINT_BEFORE_INTERSECTION}%)</span>
             </div>
 
             {/* NS Despawn Point */}
-            <div className="debug-marker debug-despawn" style={{ top: '98%', left: '45%', width: '10%', height: '2px' }}>
+            <div
+              className="debug-marker debug-despawn"
+              style={{ top: '98%', left: '45%', width: '10%', height: '2px' }}
+            >
               <span className="debug-label">DESPAWN (100%)</span>
             </div>
 
             {/* EW Spawn Point */}
-            <div className="debug-marker debug-spawn" style={{ left: '0%', top: '45%', width: '2px', height: '10%' }}>
-              <span className="debug-label" style={{ left: '5px' }}>SPAWN (0%)</span>
+            <div
+              className="debug-marker debug-spawn"
+              style={{ left: '0%', top: '45%', width: '2px', height: '10%' }}
+            >
+              <span className="debug-label" style={{ left: '5px' }}>
+                SPAWN (0%)
+              </span>
             </div>
 
             {/* EW Stop Point */}
-            <div className="debug-marker debug-stop" style={{ left: `${STOP_POINT_BEFORE_INTERSECTION}%`, top: '45%', width: '3px', height: '10%' }}>
-              <span className="debug-label" style={{ left: '5px' }}>STOP ({STOP_POINT_BEFORE_INTERSECTION}%)</span>
+            <div
+              className="debug-marker debug-stop"
+              style={{
+                left: `${STOP_POINT_BEFORE_INTERSECTION}%`,
+                top: '45%',
+                width: '3px',
+                height: '10%',
+              }}
+            >
+              <span className="debug-label" style={{ left: '5px' }}>
+                STOP ({STOP_POINT_BEFORE_INTERSECTION}%)
+              </span>
             </div>
 
             {/* EW Despawn Point */}
-            <div className="debug-marker debug-despawn" style={{ left: '98%', top: '45%', width: '2px', height: '10%' }}>
-              <span className="debug-label" style={{ left: '5px' }}>DESPAWN (100%)</span>
+            <div
+              className="debug-marker debug-despawn"
+              style={{ left: '98%', top: '45%', width: '2px', height: '10%' }}
+            >
+              <span className="debug-label" style={{ left: '5px' }}>
+                DESPAWN (100%)
+              </span>
             </div>
 
             {/* Intersection boundaries */}
-            <div className="debug-intersection-marker" style={{ top: `${INTERSECTION_START}%`, left: '32.5%', width: '35%', height: '35%' }}>
+            <div
+              className="debug-intersection-marker"
+              style={{ top: `${INTERSECTION_START}%`, left: '32.5%', width: '35%', height: '35%' }}
+            >
               <span className="debug-label">INTERSECTION ZONE</span>
             </div>
           </>
@@ -268,7 +317,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
           <div
             className={`car car-ns ${debugMode ? 'debug-active' : ''}`}
             style={{
-              top: `${nsCarPosition}%`
+              top: `${nsCarPosition}%`,
             }}
           >
             🚗
@@ -280,7 +329,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
           <div
             className={`car car-ew ${debugMode ? 'debug-active' : ''}`}
             style={{
-              left: `${ewCarPosition}%`
+              left: `${ewCarPosition}%`,
             }}
           >
             🚕
