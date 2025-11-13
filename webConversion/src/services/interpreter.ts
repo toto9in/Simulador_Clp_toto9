@@ -769,6 +769,12 @@ export class Interpreter {
    * Resets a timer, counter, or memory bit
    */
   private static executeRST(variable: string, state: PLCState): void {
+    // RST only executes when accumulator is TRUE (like SET instruction)
+    // This prevents timers from being reset every scan cycle
+    if (this.accumulator !== true) {
+      return; // Skip reset if accumulator is not true
+    }
+
     const varType = getVariableType(variable);
 
     if (varType === 'TIMER' || varType === 'COUNTER') {
@@ -776,6 +782,10 @@ export class Interpreter {
       if (memVar) {
         memVar.accumulated = 0;
         memVar.done = false;
+        memVar.enabled = false;
+        if (memVar.type === 'TIMER') {
+          memVar.startTime = undefined;
+        }
       }
     } else if (varType === 'MEMORY') {
       const memVar = state.memoryVariables[variable];
