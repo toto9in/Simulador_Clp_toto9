@@ -26,60 +26,117 @@
 // ========================================
 // STATE 1: North-South GREEN, East-West RED
 // ========================================
-// North-South: GREEN (5s)
-// East-West: RED
-
 LD I0.0
 ANDN T0
 ANDN T1
 ANDN T2
 ANDN T3
-OUT Q0.2    // NS Green
-OUT Q1.0    // EW Red
+ST M0
+
+LD M0
+OUT Q0.2    // NS Green ON
+LD M0
+NOT
+OUT Q0.1    // NS Yellow OFF
+LD M0
+NOT
+OUT Q0.0    // NS Red OFF
+LD M0
+OUT Q1.0    // EW Red ON
+LD M0
+NOT
+OUT Q1.1    // EW Yellow OFF
+LD M0
+NOT
+OUT Q1.2    // EW Green OFF
+
+LD M0
 TON T0 50
 
 // ========================================
 // STATE 2: North-South YELLOW, East-West RED
 // ========================================
-// North-South: YELLOW (2s)
-// East-West: RED
-
 LD T0
 ANDN T1
-OUT Q0.1    // NS Yellow
-OUT Q1.0    // EW Red
+ST M1
+
+LD M1
+NOT
+OUT Q0.2    // NS Green OFF
+LD M1
+OUT Q0.1    // NS Yellow ON
+LD M1
+NOT
+OUT Q0.0    // NS Red OFF
+LD M1
+OUT Q1.0    // EW Red ON
+LD M1
+NOT
+OUT Q1.1    // EW Yellow OFF
+LD M1
+NOT
+OUT Q1.2    // EW Green OFF
+
+LD M1
 TON T1 20
 
 // ========================================
 // STATE 3: North-South RED, East-West GREEN
 // ========================================
-// North-South: RED
-// East-West: GREEN (5s)
-
 LD T1
 ANDN T2
-OUT Q0.0    // NS Red
-OUT Q1.2    // EW Green
+ST M2
+
+LD M2
+NOT
+OUT Q0.2    // NS Green OFF
+LD M2
+NOT
+OUT Q0.1    // NS Yellow OFF
+LD M2
+OUT Q0.0    // NS Red ON
+LD M2
+NOT
+OUT Q1.0    // EW Red OFF
+LD M2
+NOT
+OUT Q1.1    // EW Yellow OFF
+LD M2
+OUT Q1.2    // EW Green ON
+
+LD M2
 TON T2 50
 
 // ========================================
 // STATE 4: North-South RED, East-West YELLOW
 // ========================================
-// North-South: RED
-// East-West: YELLOW (2s)
-
 LD T2
 ANDN T3
-OUT Q0.0    // NS Red
-OUT Q1.1    // EW Yellow
+ST M3
+
+LD M3
+NOT
+OUT Q0.2    // NS Green OFF
+LD M3
+NOT
+OUT Q0.1    // NS Yellow OFF
+LD M3
+OUT Q0.0    // NS Red ON
+LD M3
+NOT
+OUT Q1.0    // EW Red OFF
+LD M3
+OUT Q1.1    // EW Yellow ON
+LD M3
+NOT
+OUT Q1.2    // EW Green OFF
+
+LD M3
 TON T3 20
 
 // ========================================
 // RESET CYCLE
 // ========================================
-// When T3 completes, reset all timers
-// and restart the sequence
-
 LD T3
 RST T0
 RST T1
