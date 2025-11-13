@@ -93,8 +93,8 @@ export function MenuBar({
     i18n.changeLanguage(languages[nextIndex]);
   };
 
-  const handleChangeScene = () => {
-    const newScene: SceneType = state.currentScene === SceneType.DEFAULT ? SceneType.BATCH_SIMULATION : SceneType.DEFAULT;
+  const handleChangeScene = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newScene = event.target.value as SceneType;
     dispatch({ type: 'SET_SCENE', scene: newScene });
   };
 
@@ -133,9 +133,19 @@ export function MenuBar({
 
       {/* Simulation Menu */}
       <div className="menu-group">
-        <button className="menu-button" onClick={handleChangeScene}>
-          {state.currentScene === 'DEFAULT' ? t('scenes.batch') : t('scenes.default')}
-        </button>
+        <label className="menu-label" htmlFor="scene-select">
+          🎬 {t('menu.scene')}:
+        </label>
+        <select
+          id="scene-select"
+          className="menu-select"
+          value={state.currentScene}
+          onChange={handleChangeScene}
+        >
+          <option value={SceneType.DEFAULT}>{t('scenes.default')}</option>
+          <option value={SceneType.BATCH_SIMULATION}>{t('scenes.batch')}</option>
+          <option value={SceneType.TRAFFIC_LIGHT}>{t('scenes.trafficLight')}</option>
+        </select>
       </div>
 
       <div className="menu-divider" />

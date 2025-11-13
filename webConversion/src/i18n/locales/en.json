@@ -8,12 +8,15 @@
     "language": "Language",
     "help": "Help",
     "about": "About",
-    "simulation": "Simulation"
+    "simulation": "Simulation",
+    "scene": "Scene"
   },
   "scenes": {
     "default": "Panel (default)",
     "batch": "Batch Simulation",
-    "defaultInfo": "Click buttons to toggle inputs. Outputs are controlled by the IL program."
+    "trafficLight": "Traffic Light",
+    "defaultInfo": "Click buttons to toggle inputs. Outputs are controlled by the IL program.",
+    "trafficLightInfo": "Traffic light sequence: Red (5s) → Green (5s) → Yellow (2s). Load example 11_traffic_light.txt"
   },
   "inputTypes": {
     "switch": "Switch",
@@ -30,7 +33,9 @@
     "preset": "Preset:",
     "accumulated": "Accumulated:",
     "done": "DN:",
-    "enabled": "EN:"
+    "enabled": "EN:",
+    "start": "START",
+    "stop": "STOP"
   },
   "editor": {
     "title": "IL Code Editor",

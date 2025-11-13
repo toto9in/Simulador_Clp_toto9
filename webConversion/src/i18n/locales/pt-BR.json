@@ -8,12 +8,15 @@
     "language": "Idioma",
     "help": "Ajuda",
     "about": "Sobre",
-    "simulation": "Simulação"
+    "simulation": "Simulação",
+    "scene": "Cena"
   },
   "scenes": {
     "default": "Painel (padrão)",
     "batch": "Simulação Batch",
-    "defaultInfo": "Clique nos botões para alternar as entradas. As saídas são controladas pelo programa IL."
+    "trafficLight": "Semáforo",
+    "defaultInfo": "Clique nos botões para alternar as entradas. As saídas são controladas pelo programa IL.",
+    "trafficLightInfo": "Sequência de semáforo: Vermelho (5s) → Verde (5s) → Amarelo (2s). Carregue o exemplo 11_traffic_light.txt"
   },
   "inputTypes": {
     "switch": "Interruptor",
@@ -30,7 +33,9 @@
     "preset": "Predefinição:",
     "accumulated": "Acumulado:",
     "done": "DN:",
-    "enabled": "EN:"
+    "enabled": "EN:",
+    "start": "INICIAR",
+    "stop": "PARAR"
   },
   "editor": {
     "title": "Editor de Código IL",
