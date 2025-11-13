@@ -63,8 +63,8 @@ npm run test:watch
 ### Total Test Count
 - **Unit Tests**: 150+ tests
 - **Integration Tests**: 80+ tests
-- **E2E Tests**: 54 tests (23 instructions + 31 traffic lights)
-- **Total**: 284+ tests
+- **E2E Tests**: 70 tests (23 instructions + 16 batch + 31 traffic lights)
+- **Total**: 300+ tests
 
 ### Coverage by Component
 
@@ -77,6 +77,7 @@ npm run test:watch
 | Memory Service | 15+ | - | - |
 | Examples | - | 30+ | - |
 | Instructions (All) | - | - | 23 |
+| Batch Simulation | - | - | 16 |
 | Traffic Lights | - | 30+ | 31 |
 | Complex Scenarios | - | 30+ | - |
 
@@ -363,6 +364,50 @@ Each test:
 3. Toggles inputs as needed
 4. Verifies correct output states
 5. Tests both positive and negative cases
+
+### Batch Simulation E2E Tests (`batch-simulation.spec.ts`)
+
+Comprehensive browser-based tests for batch tank simulation (16 tests):
+
+#### Batch Scene Setup (3 tests)
+- Switch to Batch scene
+- Display tank visualization
+- Show control buttons (START and STOP)
+
+#### Batch Example Loading (1 test)
+- Load "Batch Process - Automatic" example
+
+#### Fill Cycle (2 tests)
+- Fill tank when START pressed
+- Stop filling when tank reaches 100%
+
+#### Mixer Operation (1 test)
+- Start mixer when tank is full
+
+#### Drain Cycle (1 test)
+- Drain tank when STOP pressed
+
+#### Status LEDs (3 tests)
+- Show RUN LED when system operating
+- Show IDLE LED when system stopped
+- Show FULL LED when tank at 100%
+
+#### Complete Batch Cycle (1 test)
+- Execute full cycle: fill → mix → drain
+
+#### Emergency Stop (1 test)
+- Stop filling immediately when STOP pressed
+
+#### Sensor Behavior (2 tests)
+- Activate HI-LEVEL sensor at 100%
+- Deactivate LO-LEVEL sensor when empty
+
+Each batch test verifies:
+- Proper I/O mapping (I0.0=START, I0.1=STOP, I1.0=HI-LEVEL, I1.1=LO-LEVEL)
+- Output control (Q0.1=PUMP1, Q0.2=MIXER, Q0.3=PUMP3)
+- LED indicators (Q1.0=RUN, Q1.1=IDLE, Q1.2=FULL)
+- Tank level sensor behavior
+- Complete automation cycle
 
 ### Traffic Lights E2E Tests (`traffic-lights.spec.ts`)
 
@@ -659,6 +704,24 @@ Tests are run automatically on:
 ---
 
 ## Changelog
+
+### 2025-11-13 (Update 3)
+- **Fixed Batch Simulation IL code** to use correct sensor mapping
+- Changed sensors from I0.5/I0.6/I0.7 to I1.0/I1.1 (matching BatchScene component)
+- Updated batch logic: fill → mix → drain cycle
+- Added comprehensive Batch README documentation with I/O mapping and operation guide
+- **Added 16 E2E tests for Batch Simulation**:
+  - Scene setup (3 tests)
+  - Fill cycle (2 tests)
+  - Mixer operation (1 test)
+  - Drain cycle (1 test)
+  - Status LEDs (3 tests)
+  - Complete cycle (1 test)
+  - Emergency stop (1 test)
+  - Sensor behavior (2 tests)
+  - Complete cycle integration (2 tests)
+- Total E2E tests increased from 54 to 70
+- Total project tests: 300+ (150 unit + 80 integration + 70 E2E)
 
 ### 2025-11-13 (Update 2)
 - Added comprehensive E2E tests for ALL PLC instructions (23 tests)

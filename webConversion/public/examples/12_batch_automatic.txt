@@ -1,38 +1,67 @@
 // ==================================
 // Batch Process - Automatic Cycle
 // ==================================
-// Automatic tank filling and mixing
-// I0.0 = Start automatic cycle
-// I0.1 = Emergency stop
-// I0.5/I0.6/I0.7 = Level sensors (MIN/MAX/HIGH)
-// Q0.0 = Inlet valve
-// Q0.1 = Outlet valve
-// Q0.2 = Mixer
+// Automatic tank filling, mixing, and draining
+//
+// INPUTS:
+// I0.0 = Start button (Normally Open)
+// I0.1 = Stop button (Normally Closed)
+// I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
+// I1.1 = LO-LEVEL sensor (ON when tank > 1%)
+//
+// OUTPUTS:
+// Q0.1 = PUMP1 (Fill valve - opens to fill tank)
+// Q0.2 = MIXER (Mixing motor)
+// Q0.3 = PUMP3 (Drain valve - opens to drain tank)
+// Q1.0 = RUN LED (System running indicator)
+// Q1.1 = IDLE LED (System idle indicator)
+// Q1.2 = FULL LED (Tank full indicator)
 
-// START CYCLE - Open inlet valve when started and below MAX
+// ==================================
+// FILL CYCLE - Start filling when:
+// - Start button pressed (I0.0 = ON)
+// - Stop button not pressed (I0.1 = OFF)
+// - Tank not full (I1.0 = OFF)
+// ==================================
 LD I0.0
+OR Q0.1
 ANDN I0.1
-ANDN I0.6
-OUT Q0.0
+ANDN I1.0
+ST Q0.1
 
-// MIXER - Start mixer when MIN level reached
-LD I0.5
-ANDN I0.1
-OUT Q0.2
+// ==================================
+// MIXER - Start mixer when tank is full
+// ==================================
+LD I0.0
+AND I1.0
+ST Q0.2
 
-// OUTLET - Open outlet valve when HIGH level reached
-LD I0.7
-ANDN I0.1
-OUT Q0.1
-OUT M0
+// ==================================
+// DRAIN CYCLE - Start draining when:
+// - Stop button pressed (I0.1 = ON)
+// - Tank has liquid (I1.1 = ON)
+// ==================================
+LD I0.1
+OR Q0.3
+AND I1.1
+ST Q0.3
 
-// STOP INLET when MAX reached
-LD I0.6
-ANDN Q0.0
-OUT M1
+// ==================================
+// RUN LED - ON when any pump or mixer is active
+// ==================================
+LD Q0.1
+OR Q0.2
+OR Q0.3
+ST Q1.0
 
-// Keep cycle running
-LD M0
-OR M1
-AND I0.0
-OUT M2
+// ==================================
+// IDLE LED - ON when system is idle
+// ==================================
+LDN Q1.0
+ST Q1.1
+
+// ==================================
+// FULL LED - ON when tank is full
+// ==================================
+LD I1.0
+ST Q1.2
