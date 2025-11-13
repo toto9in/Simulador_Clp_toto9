@@ -186,11 +186,19 @@
     },
     {
       "id": "12_batch_automatic",
-      "title": "Batch Process - Automatic",
-      "description": "Automatic tank filling, mixing, and draining",
+      "title": "Batch Process - Manual Control",
+      "description": "Manual tank filling, mixing, and draining with START/STOP buttons",
       "category": "sequences",
       "difficulty": "advanced",
       "file": "12_batch_automatic.txt"
+    },
+    {
+      "id": "12b_batch_fully_automatic",
+      "title": "Batch Process - Fully Automatic",
+      "description": "Complete automatic cycle: Fill → Mix (5s) → Drain with single START button",
+      "category": "sequences",
+      "difficulty": "advanced",
+      "file": "12b_batch_fully_automatic.txt"
     },
     {
       "id": "13_traffic_light_crossroad",

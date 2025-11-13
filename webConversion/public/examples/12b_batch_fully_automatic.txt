@@ -1,0 +1,128 @@
+// ==================================
+// Batch Process - Fully Automatic
+// ==================================
+// Complete automatic cycle with single START button
+// No manual intervention needed after starting
+//
+// SEQUENCE:
+// 1. Press START (I0.0)
+// 2. PUMP1 fills tank until HI-LEVEL (100%)
+// 3. MIXER runs for 5 seconds
+// 4. PUMP3 drains tank until LO-LEVEL (empty)
+// 5. System returns to IDLE
+//
+// INPUTS:
+// I0.0 = START button (triggers automatic cycle)
+// I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
+// I1.1 = LO-LEVEL sensor (ON when tank > 1%)
+//
+// OUTPUTS:
+// Q0.1 = PUMP1 (Fill valve)
+// Q0.2 = MIXER (Mixing motor)
+// Q0.3 = PUMP3 (Drain valve)
+// Q1.0 = RUN LED (System active)
+// Q1.1 = IDLE LED (System idle)
+// Q1.2 = FULL LED (Tank full)
+//
+// MEMORY:
+// M0 = Fill state (filling in progress)
+// M1 = Mix state (mixing in progress)
+// M2 = Drain state (draining in progress)
+// T0 = Mix timer (5 second delay)
+
+// ==================================
+// STATE 1: FILL STATE
+// Start filling when START pressed and not already in other states
+// Continue until tank is full (HI-LEVEL active)
+// ==================================
+LD I0.0
+OR M0
+ANDN M1
+ANDN M2
+ANDN I1.0
+ST M0
+
+// PUMP1 follows fill state
+LD M0
+ST Q0.1
+
+// ==================================
+// STATE 2: MIX STATE
+// Start mixing when tank is full
+// Continue for 5 seconds (timer preset = 50 * 100ms)
+// ==================================
+LD M0
+AND I1.0
+OR M1
+ANDN M2
+ST M1
+
+// Start timer when in mix state
+LD M1
+TON T0,50
+
+// MIXER follows mix state (but only while timer not done)
+LD M1
+ANDN T0
+ST Q0.2
+
+// ==================================
+// STATE 3: DRAIN STATE
+// Start draining when mix timer completes
+// Continue until tank is empty (LO-LEVEL inactive)
+// ==================================
+LD M1
+AND T0
+OR M2
+AND I1.1
+ST M2
+
+// PUMP3 follows drain state
+LD M2
+ST Q0.3
+
+// ==================================
+// RESET CYCLE
+// When drain completes (LO-LEVEL off), reset all states
+// This allows a new cycle to start with START button
+// ==================================
+LD M2
+ANDN I1.1
+ST M3
+
+// Clear all states when cycle completes
+LDN M3
+AND M0
+ST M0
+
+LDN M3
+AND M1
+ST M1
+
+LDN M3
+AND M2
+ST M2
+
+// Reset timer when not in mix state
+LDN M1
+RST T0
+
+// ==================================
+// STATUS INDICATORS
+// ==================================
+
+// RUN LED - ON when any pump or mixer is active
+LD Q0.1
+OR Q0.2
+OR Q0.3
+ST Q1.0
+
+// IDLE LED - ON when system is idle (no states active)
+LD M0
+OR M1
+OR M2
+STN Q1.1
+
+// FULL LED - ON when tank is full
+LD I1.0
+ST Q1.2

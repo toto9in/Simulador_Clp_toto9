@@ -63,8 +63,8 @@ npm run test:watch
 ### Total Test Count
 - **Unit Tests**: 150+ tests
 - **Integration Tests**: 80+ tests
-- **E2E Tests**: 70 tests (23 instructions + 16 batch + 31 traffic lights)
-- **Total**: 300+ tests
+- **E2E Tests**: 87 tests (23 instructions + 16 batch manual + 17 batch auto + 31 traffic lights)
+- **Total**: 317+ tests
 
 ### Coverage by Component
 
@@ -77,7 +77,8 @@ npm run test:watch
 | Memory Service | 15+ | - | - |
 | Examples | - | 30+ | - |
 | Instructions (All) | - | - | 23 |
-| Batch Simulation | - | - | 16 |
+| Batch Manual | - | - | 16 |
+| Batch Fully Auto | - | - | 17 |
 | Traffic Lights | - | 30+ | 31 |
 | Complex Scenarios | - | 30+ | - |
 
@@ -408,6 +409,55 @@ Each batch test verifies:
 - LED indicators (Q1.0=RUN, Q1.1=IDLE, Q1.2=FULL)
 - Tank level sensor behavior
 - Complete automation cycle
+
+### Batch Fully Automatic E2E Tests (`batch-fully-automatic.spec.ts`)
+
+Comprehensive tests for fully automatic batch process with state machine (17 tests):
+
+#### Setup and Loading (2 tests)
+- Load "Batch Process - Fully Automatic" example
+- Display correct state machine logic
+
+#### Automatic Fill Cycle (3 tests)
+- Start fill cycle when START pressed
+- Continue filling after START is released
+- Transition to mix when tank reaches 100%
+
+#### Automatic Mix Cycle (2 tests)
+- Run mixer for exactly 5 seconds
+- Show FULL LED during mixing
+
+#### Automatic Drain Cycle (2 tests)
+- Automatically transition to drain after mixing
+- Complete drain and return to IDLE
+
+#### Complete Automatic Cycle (2 tests)
+- Execute full automatic cycle without intervention
+- Allow multiple cycles with same START button
+
+#### State Machine Behavior (2 tests)
+- Maintain RUN LED throughout entire cycle
+- Properly transition between all three states
+
+#### Timer Behavior (1 test)
+- Use T0 timer for 5-second mix delay
+
+This fully automatic batch process demonstrates:
+- **State machine implementation** with 3 states (M0=Fill, M1=Mix, M2=Drain)
+- **Self-maintaining logic** (seal-in without needing to hold START)
+- **Timer-based sequencing** (TON T0 for 5-second mix)
+- **Automatic state transitions** based on sensors and timers
+- **Complete automation** - only ONE button press needed!
+- **Cycle reset logic** - returns to IDLE when complete
+
+Sequence flow:
+1. Press START (I0.0) → Release immediately
+2. Fill state (M0) activates → PUMP1 fills tank
+3. HI-LEVEL (I1.0) triggers → Mix state (M1)
+4. Timer T0 runs for 5 seconds → MIXER operates
+5. Timer done → Drain state (M2)
+6. PUMP3 drains until LO-LEVEL (I1.1) off
+7. Cycle complete → Returns to IDLE
 
 ### Traffic Lights E2E Tests (`traffic-lights.spec.ts`)
 
