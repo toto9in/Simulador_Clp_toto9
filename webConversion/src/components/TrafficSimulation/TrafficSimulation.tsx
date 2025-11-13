@@ -34,6 +34,9 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
   const nsTrafficRef = useRef(nsTrafficEnabled);
   const ewTrafficRef = useRef(ewTrafficEnabled);
 
+  // Refs for traffic light states to avoid useEffect recreation
+  const stateRef = useRef(state);
+
   // Update refs when state changes
   useEffect(() => {
     nsTrafficRef.current = nsTrafficEnabled;
@@ -43,7 +46,11 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
     ewTrafficRef.current = ewTrafficEnabled;
   }, [ewTrafficEnabled]);
 
-  // Get traffic light states from PLC outputs
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
+  // Get traffic light states from PLC outputs (for rendering only)
   const nsRed = state.outputs['Q0.0'] || false;
   const nsYellow = state.outputs['Q0.1'] || false;
   const nsGreen = state.outputs['Q0.2'] || false;
@@ -68,13 +75,21 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
     let animationFrameId: number;
 
     const animate = () => {
+      // Get current traffic light states from ref
+      const currentNsRed = stateRef.current.outputs['Q0.0'] || false;
+      const currentNsYellow = stateRef.current.outputs['Q0.1'] || false;
+      const currentNsGreen = stateRef.current.outputs['Q0.2'] || false;
+      const currentEwRed = stateRef.current.outputs['Q1.0'] || false;
+      const currentEwYellow = stateRef.current.outputs['Q1.1'] || false;
+      const currentEwGreen = stateRef.current.outputs['Q1.2'] || false;
+
       // Update NS car position
       if (nsTrafficRef.current) {
         // Check if should stop BEFORE intersection (not inside)
         const approachingIntersection = nsPos >= STOP_POINT_BEFORE_INTERSECTION && nsPos < INTERSECTION_START;
 
         // Stop if red light OR if lights are all off (invalid state)
-        const shouldStop = approachingIntersection && (nsRed || (!nsGreen && !nsYellow && !nsRed));
+        const shouldStop = approachingIntersection && (currentNsRed || (!currentNsGreen && !currentNsYellow && !currentNsRed));
 
         if (!shouldStop) {
           nsPos += CAR_SPEED;
@@ -94,7 +109,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
         const approachingIntersection = ewPos >= STOP_POINT_BEFORE_INTERSECTION && ewPos < INTERSECTION_START;
 
         // Stop if red light OR if lights are all off (invalid state)
-        const shouldStop = approachingIntersection && (ewRed || (!ewGreen && !ewYellow && !ewRed));
+        const shouldStop = approachingIntersection && (currentEwRed || (!currentEwGreen && !currentEwYellow && !currentEwRed));
 
         if (!shouldStop) {
           ewPos += CAR_SPEED;
@@ -111,8 +126,8 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
       // Check for collision (both cars inside intersection at same time)
       const nsInIntersection = nsPos >= INTERSECTION_START && nsPos <= INTERSECTION_END;
       const ewInIntersection = ewPos >= INTERSECTION_START && ewPos <= INTERSECTION_END;
-      const nsCanGo = nsGreen || nsYellow;
-      const ewCanGo = ewGreen || ewYellow;
+      const nsCanGo = currentNsGreen || currentNsYellow;
+      const ewCanGo = currentEwGreen || currentEwYellow;
 
       if (nsInIntersection && ewInIntersection && nsCanGo && ewCanGo &&
           nsTrafficRef.current && ewTrafficRef.current) {
@@ -141,7 +156,8 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
         clearTimeout(collisionTimeoutRef.current);
       }
     };
-  }, [nsRed, nsGreen, nsYellow, ewRed, ewGreen, ewYellow, onCollision]);
+    // Empty dependency array - effect runs once and uses refs for all state
+  }, []);
 
   return (
     <div className="traffic-simulation">
