@@ -2,16 +2,16 @@
 // Traffic Light Sequence (1 Light)
 // ==================================
 // Single traffic light controller
-// I0.0 = Start sequence
+// Runs automatically in continuous cycle
 // Q0.0 = Red light (5s)
 // Q0.1 = Yellow light (2s)
 // Q0.2 = Green light (5s)
 // Automatic cycling sequence
 
 // Red light phase (5 seconds)
-LD I0.0
-ANDN T0
+LDN T0
 ANDN T1
+ANDN T2
 OUT Q0.0
 TON T0 50
 

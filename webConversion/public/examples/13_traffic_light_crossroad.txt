@@ -3,13 +3,14 @@
 // ==================================
 // Two independent traffic light controllers
 // for a crossroad intersection
+// Runs automatically in continuous cycle
 //
-// North-South traffic light (I0.0):
+// North-South traffic light:
 //   Q0.0 = Red light (5s)
 //   Q0.1 = Yellow light (2s)
 //   Q0.2 = Green light (5s)
 //
-// East-West traffic light (I0.1):
+// East-West traffic light:
 //   Q1.0 = Red light (5s)
 //   Q1.1 = Yellow light (2s)
 //   Q1.2 = Green light (5s)
@@ -21,9 +22,9 @@
 // ========================================
 
 // Red light phase (5 seconds)
- LD I0.0
-ANDN T0
+LDN T0
 ANDN T1
+ANDN T2
 OUT Q0.0
 TON T0 50
 
@@ -50,9 +51,9 @@ RST T2
 // ========================================
 
 // Red light phase (5 seconds)
- LD I0.1
-ANDN T3
+LDN T3
 ANDN T4
+ANDN T5
 OUT Q1.0
 TON T3 50
 
