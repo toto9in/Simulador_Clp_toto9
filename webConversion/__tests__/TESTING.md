@@ -63,19 +63,20 @@ npm run test:watch
 ### Total Test Count
 - **Unit Tests**: 150+ tests
 - **Integration Tests**: 80+ tests
-- **E2E Tests**: 31 tests
-- **Total**: 260+ tests
+- **E2E Tests**: 54 tests (23 instructions + 31 traffic lights)
+- **Total**: 284+ tests
 
 ### Coverage by Component
 
 | Component | Unit Tests | Integration Tests | E2E Tests |
 |-----------|------------|-------------------|-----------|
-| Interpreter (Basic) | 40+ | - | - |
-| Interpreter (Timers) | 30+ | 12 | - |
-| Interpreter (Counters) | 20+ | 8 | - |
+| Interpreter (Basic) | 40+ | - | 4 |
+| Interpreter (Timers) | 30+ | 12 | 3 |
+| Interpreter (Counters) | 20+ | 8 | 4 |
 | Interpreter (Advanced) | 30+ | - | - |
 | Memory Service | 15+ | - | - |
 | Examples | - | 30+ | - |
+| Instructions (All) | - | - | 23 |
 | Traffic Lights | - | 30+ | 31 |
 | Complex Scenarios | - | 30+ | - |
 
@@ -312,6 +313,56 @@ Advanced real-world PLC applications:
 ## End-to-End Tests
 
 E2E tests are located in `__tests__/e2e/` and use Playwright to test the complete application.
+
+### Instructions E2E Tests (`instructions.spec.ts`)
+
+Comprehensive browser-based tests for all PLC instructions (23 tests):
+
+#### Basic Load and Store Instructions (4 tests)
+- **LD** - Load input to accumulator
+- **LDN** - Load negated input to accumulator
+- **ST** - Store accumulator to output
+- **STN** - Store negated accumulator to output
+
+#### Logical AND Instructions (3 tests)
+- **AND** - Logical AND operation (2 inputs)
+- **ANDN** - AND with negated input
+- **AND Chain** - Multiple AND operations (3 inputs)
+
+#### Logical OR Instructions (2 tests)
+- **OR** - Logical OR operation
+- **ORN** - OR with negated input
+
+#### Timer Instructions (3 tests)
+- **TON** - Timer On-Delay with 2 second preset
+- **TOFF** - Timer Off-Delay with 2 second preset
+- **TON Reset** - Timer reset during delay period
+
+#### Counter Instructions (4 tests)
+- **CTU** - Counter Up with preset of 3
+- **CTD** - Counter Down from preset of 3
+- **CTR** - Counter Reset functionality
+- **CTL** - Counter Load with preset value
+
+#### Combined Logic (2 tests)
+- Complex AND/OR combinations
+- Mix of LD, AND, OR operations
+
+#### Edge Cases and Error Handling (3 tests)
+- Multiple timers in same program
+- Multiple counters in same program
+- Timer with counter combination
+
+#### Performance and Stress Tests (2 tests)
+- Rapid input toggling (10 toggles)
+- Complex program responsiveness
+
+Each test:
+1. Loads a specific IL program
+2. Executes the program in RUN mode
+3. Toggles inputs as needed
+4. Verifies correct output states
+5. Tests both positive and negative cases
 
 ### Traffic Lights E2E Tests (`traffic-lights.spec.ts`)
 
@@ -609,7 +660,16 @@ Tests are run automatically on:
 
 ## Changelog
 
-### 2025-11-13
+### 2025-11-13 (Update 2)
+- Added comprehensive E2E tests for ALL PLC instructions (23 tests)
+- Tests cover: LD, LDN, ST, STN, AND, ANDN, OR, ORN, TON, TOFF, CTU, CTD, CTR, CTL
+- Added combined logic tests (AND/OR combinations)
+- Added edge case tests (multiple timers/counters, timer+counter combos)
+- Added performance stress tests
+- Updated test documentation with new instruction tests section
+- Total E2E tests increased from 31 to 54
+
+### 2025-11-13 (Update 1)
 - Added comprehensive E2E tests for traffic lights
 - Added integration tests for all traffic light scenarios
 - Added complex scenario tests
