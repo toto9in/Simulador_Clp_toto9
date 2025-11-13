@@ -6,6 +6,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { usePLCState } from '../../context/PLCStateContext';
+import { ExecutionMode } from '../../types/plc';
 import './TrafficSimulation.css';
 
 interface TrafficSimulationProps {
@@ -26,8 +27,9 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
   const [nsTrafficEnabled, setNsTrafficEnabled] = useState(true);
   const [ewTrafficEnabled, setEwTrafficEnabled] = useState(true);
 
-  // Collision warning state
+  // Collision state
   const [showCollisionWarning, setShowCollisionWarning] = useState(false);
+  const [collisionOccurred, setCollisionOccurred] = useState(false);
   const collisionTimeoutRef = useRef<number>();
 
   // Refs to track latest state values without causing re-renders
@@ -68,13 +70,30 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
   const INTERSECTION_END = 67.5;
   const DESPAWN_POINT = 100;
 
+  // Reset function to restart simulation after collision
+  const resetSimulation = () => {
+    setCollisionOccurred(false);
+    setShowCollisionWarning(false);
+    setNsCarPosition(0);
+    setEwCarPosition(0);
+  };
+
   // Animation loop - runs once and uses refs to avoid re-creation
   useEffect(() => {
     let nsPos = 0;
     let ewPos = 0;
     let animationFrameId: number;
+    let hasCollision = false;
 
     const animate = () => {
+      // Only animate if PLC is running and no collision occurred
+      const isRunning = stateRef.current.mode === ExecutionMode.RUNNING;
+
+      if (!isRunning || hasCollision) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
       // Get current traffic light states from ref
       const currentNsRed = stateRef.current.outputs['Q0.0'] || false;
       const currentNsYellow = stateRef.current.outputs['Q0.1'] || false;
@@ -131,16 +150,11 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
 
       if (nsInIntersection && ewInIntersection && nsCanGo && ewCanGo &&
           nsTrafficRef.current && ewTrafficRef.current) {
+        // COLLISION DETECTED! Stop everything
+        hasCollision = true;
+        setCollisionOccurred(true);
         setShowCollisionWarning(true);
         onCollision?.();
-
-        if (collisionTimeoutRef.current) {
-          clearTimeout(collisionTimeoutRef.current);
-        }
-
-        collisionTimeoutRef.current = setTimeout(() => {
-          setShowCollisionWarning(false);
-        }, 3000);
       }
 
       animationFrameId = requestAnimationFrame(animate);
@@ -164,7 +178,21 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
       {/* Collision Warning */}
       {showCollisionWarning && (
         <div className="collision-warning">
-          ⚠️ COLLISION DETECTED! Both lights are allowing traffic at the same time!
+          💥 COLISÃO DETECTADA! Ambos os semáforos estavam permitindo tráfego ao mesmo tempo!
+          <button
+            className="collision-reset-button"
+            onClick={resetSimulation}
+            type="button"
+          >
+            🔄 Resetar Simulação
+          </button>
+        </div>
+      )}
+
+      {/* PLC Status Indicator */}
+      {state.mode !== ExecutionMode.RUNNING && !collisionOccurred && (
+        <div className="plc-status-warning">
+          ⏸️ Simulação pausada - Clique em Play no código para iniciar os carros
         </div>
       )}
 
@@ -246,7 +274,14 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
         <div className="road road-horizontal" />
 
         {/* Intersection */}
-        <div className="intersection" />
+        <div className="intersection">
+          {/* Collision Marker in the center of intersection */}
+          {collisionOccurred && (
+            <div className="collision-marker">
+              💥
+            </div>
+          )}
+        </div>
 
         {/* Traffic Lights */}
         <div className="traffic-light traffic-light-ns">

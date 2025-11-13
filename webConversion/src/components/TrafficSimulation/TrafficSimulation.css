@@ -20,12 +20,57 @@
   transform: translateX(-50%);
   background-color: #ff5252;
   color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  animation: slideDown 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  max-width: 90%;
+}
+
+.collision-reset-button {
+  padding: 8px 16px;
+  border: 2px solid white;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer !important;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  pointer-events: auto !important;
+}
+
+.collision-reset-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.collision-reset-button:active {
+  transform: scale(0.95);
+}
+
+/* PLC Status Warning */
+.plc-status-warning {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2196f3;
+  color: white;
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: bold;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 100;
   animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  text-align: center;
 }
 
 @keyframes slideDown {
@@ -146,6 +191,29 @@
   top: 32.5%;
   background-color: #777;
   box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Collision Marker */
+.collision-marker {
+  font-size: 80px;
+  animation: collisionPulse 1s ease-in-out infinite;
+  z-index: 50;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.8));
+}
+
+@keyframes collisionPulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 0.8;
+  }
 }
 
 /* Traffic Lights */
