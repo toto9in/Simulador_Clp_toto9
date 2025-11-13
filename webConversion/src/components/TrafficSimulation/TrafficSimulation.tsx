@@ -27,7 +27,18 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
   const [showCollisionWarning, setShowCollisionWarning] = useState(false);
   const collisionTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const animationFrameRef = useRef<number>();
+  // Refs to track latest state values without causing re-renders
+  const nsTrafficRef = useRef(nsTrafficEnabled);
+  const ewTrafficRef = useRef(ewTrafficEnabled);
+
+  // Update refs when state changes
+  useEffect(() => {
+    nsTrafficRef.current = nsTrafficEnabled;
+  }, [nsTrafficEnabled]);
+
+  useEffect(() => {
+    ewTrafficRef.current = ewTrafficEnabled;
+  }, [ewTrafficEnabled]);
 
   // Get traffic light states from PLC outputs
   const nsRed = state.outputs['Q0.0'] || false;
@@ -40,86 +51,75 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
   // Car speed (percentage per frame)
   const CAR_SPEED = 0.5;
 
-  // Animation loop
+  // Animation loop - runs once and uses refs to avoid re-creation
   useEffect(() => {
+    let nsPos = 0;
+    let ewPos = 0;
+    let animationFrameId: number;
+
     const animate = () => {
       // Update NS car position
-      if (nsTrafficEnabled) {
-        setNsCarPosition(prevPos => {
-          let newPos = prevPos;
-          const isAtIntersection = prevPos >= 40 && prevPos <= 60;
+      if (nsTrafficRef.current) {
+        const isAtIntersection = nsPos >= 40 && nsPos <= 60;
+        const shouldStop = isAtIntersection && (nsRed || (!nsGreen && !nsYellow));
 
-          // Check if car should stop at red light
-          const shouldStop = isAtIntersection && (nsRed || (!nsGreen && !nsYellow));
-
-          if (!shouldStop) {
-            newPos = prevPos + CAR_SPEED;
-            // Loop back to start when reaching end
-            if (newPos >= 100) {
-              newPos = 0;
-            }
+        if (!shouldStop) {
+          nsPos += CAR_SPEED;
+          if (nsPos >= 100) {
+            nsPos = 0;
           }
-
-          return newPos;
-        });
+        }
+        setNsCarPosition(nsPos);
       }
 
       // Update EW car position
-      if (ewTrafficEnabled) {
-        setEwCarPosition(prevPos => {
-          let newPos = prevPos;
-          const isAtIntersection = prevPos >= 40 && prevPos <= 60;
+      if (ewTrafficRef.current) {
+        const isAtIntersection = ewPos >= 40 && ewPos <= 60;
+        const shouldStop = isAtIntersection && (ewRed || (!ewGreen && !ewYellow));
 
-          // Check if car should stop at red light
-          const shouldStop = isAtIntersection && (ewRed || (!ewGreen && !ewYellow));
-
-          if (!shouldStop) {
-            newPos = prevPos + CAR_SPEED;
-            // Loop back to start when reaching end
-            if (newPos >= 100) {
-              newPos = 0;
-            }
+        if (!shouldStop) {
+          ewPos += CAR_SPEED;
+          if (ewPos >= 100) {
+            ewPos = 0;
           }
-
-          return newPos;
-        });
+        }
+        setEwCarPosition(ewPos);
       }
 
-      // Check for collision (both cars at intersection with both lights allowing passage)
-      const nsAtIntersection = nsCarPosition >= 45 && nsCarPosition <= 55;
-      const ewAtIntersection = ewCarPosition >= 45 && ewCarPosition <= 55;
+      // Check for collision
+      const nsAtIntersection = nsPos >= 45 && nsPos <= 55;
+      const ewAtIntersection = ewPos >= 45 && ewPos <= 55;
       const nsCanGo = nsGreen || nsYellow;
       const ewCanGo = ewGreen || ewYellow;
 
-      if (nsAtIntersection && ewAtIntersection && nsCanGo && ewCanGo && nsTrafficEnabled && ewTrafficEnabled) {
+      if (nsAtIntersection && ewAtIntersection && nsCanGo && ewCanGo &&
+          nsTrafficRef.current && ewTrafficRef.current) {
         setShowCollisionWarning(true);
         onCollision?.();
 
-        // Clear existing timeout
         if (collisionTimeoutRef.current) {
           clearTimeout(collisionTimeoutRef.current);
         }
 
-        // Hide warning after 3 seconds
         collisionTimeoutRef.current = setTimeout(() => {
           setShowCollisionWarning(false);
         }, 3000);
       }
 
-      animationFrameRef.current = requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
 
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
       if (collisionTimeoutRef.current) {
         clearTimeout(collisionTimeoutRef.current);
       }
     };
-  }, [nsCarPosition, ewCarPosition, nsTrafficEnabled, ewTrafficEnabled, nsRed, nsGreen, nsYellow, ewRed, ewGreen, ewYellow, onCollision]);
+  }, [nsRed, nsGreen, nsYellow, ewRed, ewGreen, ewYellow, onCollision]);
 
   return (
     <div className="traffic-simulation">
@@ -134,14 +134,20 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
       <div className="traffic-controls">
         <button
           className={`traffic-toggle ${nsTrafficEnabled ? 'enabled' : 'disabled'}`}
-          onClick={() => setNsTrafficEnabled(prev => !prev)}
+          onClick={() => {
+            console.log('NS Toggle clicked, current:', nsTrafficEnabled);
+            setNsTrafficEnabled(prev => !prev);
+          }}
           type="button"
         >
           {nsTrafficEnabled ? '🚗 Enabled' : '🚫 Disabled'} North-South Traffic
         </button>
         <button
           className={`traffic-toggle ${ewTrafficEnabled ? 'enabled' : 'disabled'}`}
-          onClick={() => setEwTrafficEnabled(prev => !prev)}
+          onClick={() => {
+            console.log('EW Toggle clicked, current:', ewTrafficEnabled);
+            setEwTrafficEnabled(prev => !prev);
+          }}
           type="button"
         >
           {ewTrafficEnabled ? '🚗 Enabled' : '🚫 Disabled'} East-West Traffic
