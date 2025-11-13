@@ -33,6 +33,102 @@
       "file": "04_or_logic.txt"
     },
     {
+      "id": "15_instruction_ld",
+      "title": "LD - Load",
+      "description": "Loads the value into the accumulator",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "15_instruction_ld.txt"
+    },
+    {
+      "id": "16_instruction_ldn",
+      "title": "LDN - Load Negated",
+      "description": "Loads the negated value into the accumulator",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "16_instruction_ldn.txt"
+    },
+    {
+      "id": "17_instruction_st",
+      "title": "ST - Store",
+      "description": "Stores the accumulator value to output",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "17_instruction_st.txt"
+    },
+    {
+      "id": "18_instruction_stn",
+      "title": "STN - Store Negated",
+      "description": "Stores the negated accumulator value to output",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "18_instruction_stn.txt"
+    },
+    {
+      "id": "19_instruction_and",
+      "title": "AND - AND Logic",
+      "description": "Performs AND operation with accumulator",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "19_instruction_and.txt"
+    },
+    {
+      "id": "20_instruction_andn",
+      "title": "ANDN - AND Negated",
+      "description": "Performs AND operation with negated input",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "20_instruction_andn.txt"
+    },
+    {
+      "id": "21_instruction_or",
+      "title": "OR - OR Logic",
+      "description": "Performs OR operation with accumulator",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "21_instruction_or.txt"
+    },
+    {
+      "id": "22_instruction_orn",
+      "title": "ORN - OR Negated",
+      "description": "Performs OR operation with negated input",
+      "category": "instructions",
+      "difficulty": "beginner",
+      "file": "22_instruction_orn.txt"
+    },
+    {
+      "id": "23_instruction_ton",
+      "title": "TON - Timer On-Delay",
+      "description": "Output activates after a delay when input is ON",
+      "category": "instructions",
+      "difficulty": "intermediate",
+      "file": "23_instruction_ton.txt"
+    },
+    {
+      "id": "24_instruction_toff",
+      "title": "TOFF - Timer Off-Delay",
+      "description": "Output stays ON for a delay after input turns OFF",
+      "category": "instructions",
+      "difficulty": "intermediate",
+      "file": "24_instruction_toff.txt"
+    },
+    {
+      "id": "25_instruction_ctu",
+      "title": "CTU - Counter Up",
+      "description": "Counts up each time input transitions from OFF to ON",
+      "category": "instructions",
+      "difficulty": "intermediate",
+      "file": "25_instruction_ctu.txt"
+    },
+    {
+      "id": "26_instruction_ctd",
+      "title": "CTD - Counter Down",
+      "description": "Counts down from preset value to 0",
+      "category": "instructions",
+      "difficulty": "intermediate",
+      "file": "26_instruction_ctd.txt"
+    },
+    {
       "id": "05_start_stop_seal",
       "title": "Start/Stop with Seal",
       "description": "Motor control with latching (seal-in)",

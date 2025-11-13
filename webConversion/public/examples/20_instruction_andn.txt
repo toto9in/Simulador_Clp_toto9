@@ -1,0 +1,14 @@
+( ANDN - AND Negated Instruction )
+( Performs AND operation with negated input )
+( Q0.0 ON when I0.0 is ON AND I0.1 is OFF )
+
+LD I0.0
+ANDN I0.1
+ST Q0.0
+
+( Safety circuit: Q0.1 ON when both I0.2 and I0.3 are ON )
+( but only if emergency stop I0.4 is NOT pressed )
+LD I0.2
+AND I0.3
+ANDN I0.4
+ST Q0.1

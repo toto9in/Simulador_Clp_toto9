@@ -34,7 +34,20 @@ export function ExamplesMenu({
   const [isOpen, setIsOpen] = useState(false);
   const [examples, setExamples] = useState<Example[]>([]);
   const [loading, setLoading] = useState(false);
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const toggleCategory = (category: string) => {
+    setCollapsedCategories((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(category)) {
+        newSet.delete(category);
+      } else {
+        newSet.add(category);
+      }
+      return newSet;
+    });
+  };
 
   // Load examples index on mount
   useEffect(() => {
@@ -132,36 +145,50 @@ export function ExamplesMenu({
             {categories.length === 0 ? (
               <div className="examples-menu__empty">No examples available</div>
             ) : (
-              categories.map((category) => (
-                <div key={category} className="examples-menu__category">
-                  <div className="examples-menu__category-title">
-                    {getCategoryName(category as any)}
-                  </div>
-                  <div className="examples-menu__items">
-                    {groupedExamples[category].map((example) => (
-                      <button
-                        key={example.id}
-                        className="examples-menu__item"
-                        onClick={() => handleLoadExample(example)}
-                        disabled={loading}
-                      >
-                        <div className="examples-menu__item-header">
-                          <span className="examples-menu__item-title">{example.title}</span>
-                          <span
-                            className="examples-menu__item-badge"
-                            data-difficulty={example.difficulty}
+              categories.map((category) => {
+                const isCollapsed = collapsedCategories.has(category);
+                return (
+                  <div key={category} className="examples-menu__category">
+                    <button
+                      className="examples-menu__category-title"
+                      onClick={() => toggleCategory(category)}
+                    >
+                      <span className="examples-menu__category-icon">
+                        {isCollapsed ? '▶' : '▼'}
+                      </span>
+                      <span>{getCategoryName(category as any)}</span>
+                      <span className="examples-menu__category-count">
+                        ({groupedExamples[category].length})
+                      </span>
+                    </button>
+                    {!isCollapsed && (
+                      <div className="examples-menu__items">
+                        {groupedExamples[category].map((example) => (
+                          <button
+                            key={example.id}
+                            className="examples-menu__item"
+                            onClick={() => handleLoadExample(example)}
+                            disabled={loading}
                           >
-                            {example.difficulty}
-                          </span>
-                        </div>
-                        <div className="examples-menu__item-description">
-                          {example.description}
-                        </div>
-                      </button>
-                    ))}
+                            <div className="examples-menu__item-header">
+                              <span className="examples-menu__item-title">{example.title}</span>
+                              <span
+                                className="examples-menu__item-badge"
+                                data-difficulty={example.difficulty}
+                              >
+                                {example.difficulty}
+                              </span>
+                            </div>
+                            <div className="examples-menu__item-description">
+                              {example.description}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>

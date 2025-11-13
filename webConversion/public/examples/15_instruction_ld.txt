@@ -1,0 +1,6 @@
+( LD - Load Instruction )
+( Loads the value into the accumulator )
+( Press I0.0 to turn ON Q0.0 )
+
+LD I0.0
+ST Q0.0

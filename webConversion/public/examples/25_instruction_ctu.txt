@@ -1,0 +1,24 @@
+( CTU - Counter Up Instruction )
+( Counts up each time input transitions from OFF to ON )
+( C0: Counts to 5, then activates output )
+( C1: Counts to 3, then activates output )
+
+( Press I0.0 five times to activate Q0.0 )
+LD I0.0
+CTU C0, 5
+LD C0
+ST Q0.0
+
+( Press I0.1 three times to activate Q0.1 )
+LD I0.1
+CTU C1, 3
+LD C1
+ST Q0.1
+
+( Press I0.2 to reset both counters )
+LD I0.2
+ST M0
+LD M0
+RST C0
+LD M0
+RST C1

@@ -1,0 +1,13 @@
+( AND - AND Logic Instruction )
+( Performs AND operation with accumulator )
+( Q0.0 turns ON only when BOTH I0.0 AND I0.1 are ON )
+
+LD I0.0
+AND I0.1
+ST Q0.0
+
+( Three-way AND: Q0.1 ON when I0.2, I0.3, I0.4 are all ON )
+LD I0.2
+AND I0.3
+AND I0.4
+ST Q0.1

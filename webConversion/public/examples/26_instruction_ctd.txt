@@ -1,0 +1,25 @@
+( CTD - Counter Down Instruction )
+( Counts down from preset value )
+( When count reaches 0, output activates )
+
+( C0: Starts at 5, counts down to 0 )
+( Press I0.0 five times to activate Q0.0 )
+LD I0.0
+CTD C0, 5
+LD C0
+ST Q0.0
+
+( C1: Starts at 10, counts down to 0 )
+( Press I0.1 ten times to activate Q0.1 )
+LD I0.1
+CTD C1, 10
+LD C1
+ST Q0.1
+
+( Press I0.2 to reset both counters )
+LD I0.2
+ST M0
+LD M0
+RST C0
+LD M0
+RST C1

@@ -1,0 +1,18 @@
+( TON - Timer On-Delay Instruction )
+( Output activates after a delay when input is ON )
+( T0: 5 seconds delay = 50 * 0.1s )
+( T1: 3 seconds delay = 30 * 0.1s )
+
+( Press and HOLD I0.0 for 5 seconds )
+( Q0.0 turns ON after 5s delay )
+LD I0.0
+TON T0, 50
+LD T0
+ST Q0.0
+
+( Press and HOLD I0.1 for 3 seconds )
+( Q0.1 turns ON after 3s delay )
+LD I0.1
+TON T1, 30
+LD T1
+ST Q0.1

@@ -1,0 +1,11 @@
+( STN - Store Negated Instruction )
+( Stores the negated accumulator value to output )
+( Q0.0 is ON when I0.0 is OFF )
+( Q0.0 is OFF when I0.0 is ON )
+
+LD I0.0
+STN Q0.0
+
+( Compare with normal ST on Q0.1 )
+LD I0.0
+ST Q0.1

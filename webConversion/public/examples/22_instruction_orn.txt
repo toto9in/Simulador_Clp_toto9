@@ -1,0 +1,13 @@
+( ORN - OR Negated Instruction )
+( Performs OR operation with negated input )
+( Q0.0 ON when I0.0 is ON OR I0.1 is OFF )
+
+LD I0.0
+ORN I0.1
+ST Q0.0
+
+( Q0.1 ON when I0.2 is ON, or I0.3 is ON, or I0.4 is OFF )
+LD I0.2
+OR I0.3
+ORN I0.4
+ST Q0.1

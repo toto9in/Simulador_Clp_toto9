@@ -1,0 +1,13 @@
+( OR - OR Logic Instruction )
+( Performs OR operation with accumulator )
+( Q0.0 turns ON when EITHER I0.0 OR I0.1 is ON )
+
+LD I0.0
+OR I0.1
+ST Q0.0
+
+( Three-way OR: Q0.1 ON when any of I0.2, I0.3, I0.4 is ON )
+LD I0.2
+OR I0.3
+OR I0.4
+ST Q0.1
