@@ -50,28 +50,37 @@ export class ScanCycleService {
       // Step 2: Execute user program
       const newState = Interpreter.executeProgram(state);
 
+      // DEBUG: Log timers BEFORE update
+      if (state.scanCount % 10 === 0) {
+        const timers = Object.values(newState.memoryVariables).filter(v => v.type === 'TIMER');
+        if (timers.length > 0) {
+          console.log('TIMERS BEFORE UPDATE:');
+          timers.forEach(t => {
+            console.log(`  ${t.id}: currentValue=${t.currentValue}, enabled=${t.enabled}, acc=${t.accumulated}, preset=${t.preset}, done=${t.done}, startTime=${t.startTime}`);
+          });
+        }
+      }
+
       // Step 3: Update timers based on their enable conditions
       MemoryService.updateAllTimers(newState.memoryVariables);
 
-      // DEBUG: Log outputs after execution
+      // DEBUG: Log outputs and timers AFTER execution
       if (state.scanCount % 10 === 0) {
         console.log('OUTPUTS:', {
+          'Q0.0': newState.outputs['Q0.0'],
           'Q0.1': newState.outputs['Q0.1'],
           'Q0.2': newState.outputs['Q0.2'],
           'Q0.3': newState.outputs['Q0.3'],
           'Q1.0': newState.outputs['Q1.0'],
         });
 
-        // Log timers
+        // Log timers with detailed info AFTER update
         const timers = Object.values(newState.memoryVariables).filter(v => v.type === 'TIMER');
         if (timers.length > 0) {
-          console.log('TIMERS:', timers.map(t => ({
-            id: t.id,
-            EN: t.currentValue,
-            ACC: t.accumulated,
-            PRE: t.preset,
-            DN: t.done
-          })));
+          console.log('TIMERS AFTER UPDATE:');
+          timers.forEach(t => {
+            console.log(`  ${t.id}: currentValue=${t.currentValue}, enabled=${t.enabled}, acc=${t.accumulated}, preset=${t.preset}, done=${t.done}, startTime=${t.startTime}`);
+          });
         }
       }
 
