@@ -15,6 +15,7 @@
     "default": "Painel (padrão)",
     "batch": "Simulação Batch",
     "trafficLight": "Semáforo",
+    "trafficSimulation": "Semáforo (Tráfego)",
     "defaultInfo": "Clique nos botões para alternar as entradas. As saídas são controladas pelo programa IL.",
     "trafficLightInfo": "Sequência de semáforo: Vermelho (5s) → Verde (5s) → Amarelo (2s). Carregue o exemplo 11_traffic_light.txt"
   },

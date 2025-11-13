@@ -54,6 +54,7 @@ export enum SceneType {
   DEFAULT = 'DEFAULT',                   // Default I/O scene (8 inputs + 8 outputs)
   BATCH_SIMULATION = 'BATCH_SIMULATION', // Tank filling simulation
   TRAFFIC_LIGHT = 'TRAFFIC_LIGHT',       // Traffic light crossroad simulation
+  TRAFFIC_SIMULATION = 'TRAFFIC_SIMULATION', // Traffic light with car simulation
 }
 
 /**

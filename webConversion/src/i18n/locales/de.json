@@ -13,6 +13,8 @@
   "scenes": {
     "default": "Panel",
     "batch": "Simulation 1",
+    "trafficLight": "Ampel",
+    "trafficSimulation": "Ampel (Verkehr)",
     "defaultInfo": "Klicken Sie auf die Schaltflächen, um Eingänge umzuschalten. Ausgänge werden durch das IL-Programm gesteuert."
   },
   "inputTypes": {

@@ -145,6 +145,7 @@ export function MenuBar({
           <option value={SceneType.DEFAULT}>{t('scenes.default')}</option>
           <option value={SceneType.BATCH_SIMULATION}>{t('scenes.batch')}</option>
           <option value={SceneType.TRAFFIC_LIGHT}>{t('scenes.trafficLight')}</option>
+          <option value={SceneType.TRAFFIC_SIMULATION}>{t('scenes.trafficSimulation')}</option>
         </select>
       </div>
 

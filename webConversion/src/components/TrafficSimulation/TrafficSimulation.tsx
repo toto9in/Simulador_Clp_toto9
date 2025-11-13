@@ -29,12 +29,12 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
   const animationFrameRef = useRef<number>();
 
   // Get traffic light states from PLC outputs
-  const nsRed = state.outputs.Q0?.[0] || false;
-  const nsYellow = state.outputs.Q0?.[1] || false;
-  const nsGreen = state.outputs.Q0?.[2] || false;
-  const ewRed = state.outputs.Q1?.[0] || false;
-  const ewYellow = state.outputs.Q1?.[1] || false;
-  const ewGreen = state.outputs.Q1?.[2] || false;
+  const nsRed = state.outputs['Q0.0'] || false;
+  const nsYellow = state.outputs['Q0.1'] || false;
+  const nsGreen = state.outputs['Q0.2'] || false;
+  const ewRed = state.outputs['Q1.0'] || false;
+  const ewYellow = state.outputs['Q1.1'] || false;
+  const ewGreen = state.outputs['Q1.2'] || false;
 
   // Check for collision conditions
   const checkCollisionCondition = useCallback(() => {

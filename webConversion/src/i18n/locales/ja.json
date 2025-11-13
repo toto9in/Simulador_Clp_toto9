@@ -13,6 +13,8 @@
   "scenes": {
     "default": "パネル",
     "batch": "シミュレーション 1",
+    "trafficLight": "信号機",
+    "trafficSimulation": "信号機 (交通)",
     "defaultInfo": "ボタンをクリックして入力を切り替えます。出力はILプログラムによって制御されます。"
   },
   "inputTypes": {

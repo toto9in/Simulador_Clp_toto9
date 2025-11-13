@@ -15,6 +15,7 @@
     "default": "Panel (default)",
     "batch": "Batch Simulation",
     "trafficLight": "Traffic Light",
+    "trafficSimulation": "Traffic Light (Traffic)",
     "defaultInfo": "Click buttons to toggle inputs. Outputs are controlled by the IL program.",
     "trafficLightInfo": "Traffic light sequence: Red (5s) → Green (5s) → Yellow (2s). Load example 11_traffic_light.txt"
   },
