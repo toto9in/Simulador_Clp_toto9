@@ -1,44 +1,48 @@
 // =============================================
-// Safe Traffic Light Crossroad (2 Lights)
+// Traffic Light Crossroad (2 Lights)
 // =============================================
-// Two synchronized traffic lights with safety logic
-// to prevent collisions at the intersection
+// Two synchronized traffic lights for a crossroad intersection
+// When one direction is green, the other is red
 //
-// SAFETY RULES:
-// 1. Only one direction can have green light at a time
-// 2. Both lights show red during transition (safety period)
-// 3. Yellow light signals direction change
-//
-// North-South traffic light (I0.0):
+// North-South traffic light:
 //   Q0.0 = Red light
 //   Q0.1 = Yellow light
 //   Q0.2 = Green light
 //
-// East-West traffic light (automatic):
+// East-West traffic light:
 //   Q1.0 = Red light
 //   Q1.1 = Yellow light
 //   Q1.2 = Green light
 //
-// Press I0.0 to start the synchronized sequence
+// Sequence:
+// 1. NS Green (5s) + EW Red
+// 2. NS Yellow (2s) + EW Red
+// 3. NS Red + EW Green (5s)
+// 4. NS Red + EW Yellow (2s)
+// 5. Repeat
+//
+// Press I0.0 to start the cycle
 
 // ========================================
-// STATE 1: North-South GREEN
+// STATE 1: North-South GREEN, East-West RED
 // ========================================
 // North-South: GREEN (5s)
-// East-West: RED (always red when NS is green)
+// East-West: RED
 
 LD I0.0
 ANDN T0
 ANDN T1
+ANDN T2
+ANDN T3
 OUT Q0.2    // NS Green
 OUT Q1.0    // EW Red
 TON T0 50
 
 // ========================================
-// STATE 2: North-South YELLOW (transition)
+// STATE 2: North-South YELLOW, East-West RED
 // ========================================
 // North-South: YELLOW (2s)
-// East-West: RED (safety)
+// East-West: RED
 
 LD T0
 ANDN T1
@@ -47,65 +51,37 @@ OUT Q1.0    // EW Red
 TON T1 20
 
 // ========================================
-// STATE 3: Both RED (safety period)
+// STATE 3: North-South RED, East-West GREEN
 // ========================================
 // North-South: RED
-// East-West: RED
-// Duration: 1 second (10 cycles)
+// East-West: GREEN (5s)
 
 LD T1
 ANDN T2
 OUT Q0.0    // NS Red
-OUT Q1.0    // EW Red
-TON T2 10
+OUT Q1.2    // EW Green
+TON T2 50
 
 // ========================================
-// STATE 4: East-West GREEN
+// STATE 4: North-South RED, East-West YELLOW
 // ========================================
-// North-South: RED (always red when EW is green)
-// East-West: GREEN (5s)
+// North-South: RED
+// East-West: YELLOW (2s)
 
 LD T2
 ANDN T3
 OUT Q0.0    // NS Red
-OUT Q1.2    // EW Green
-TON T3 50
-
-// ========================================
-// STATE 5: East-West YELLOW (transition)
-// ========================================
-// North-South: RED (safety)
-// East-West: YELLOW (2s)
-
-LD T3
-ANDN T4
-OUT Q0.0    // NS Red
 OUT Q1.1    // EW Yellow
-TON T4 20
-
-// ========================================
-// STATE 6: Both RED (safety period)
-// ========================================
-// North-South: RED
-// East-West: RED
-// Duration: 1 second (10 cycles)
-
-LD T4
-ANDN T5
-OUT Q0.0    // NS Red
-OUT Q1.0    // EW Red
-TON T5 10
+TON T3 20
 
 // ========================================
 // RESET CYCLE
 // ========================================
-// When T5 completes, reset all timers
+// When T3 completes, reset all timers
 // and restart the sequence
 
-LD T5
+LD T3
 RST T0
 RST T1
 RST T2
 RST T3
-RST T4
-RST T5
