@@ -6,6 +6,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { PLCStateProvider, usePLCState } from '../../context/PLCStateContext';
 import { useExecutionCycle } from '../../hooks/useExecutionCycle';
 import { useTheme } from '../../hooks/useTheme';
@@ -130,15 +131,23 @@ function MainWindowContent() {
 
         {/* Editor and Status Panel - Right in batch mode, Left otherwise */}
         <div className={`main-window__editor-panel ${isBatchMode ? 'main-window__editor-panel--batch' : ''}`}>
-          {/* Code Editor */}
-          <CollapsiblePanel title="IL Code Editor" className="main-window__editor">
-            <CodeEditor />
-          </CollapsiblePanel>
+          <PanelGroup direction="vertical">
+            {/* Code Editor */}
+            <Panel defaultSize={60} minSize={30}>
+              <CollapsiblePanel title="IL Code Editor" className="main-window__editor">
+                <CodeEditor />
+              </CollapsiblePanel>
+            </Panel>
 
-          {/* Status Panel - Timers/Counters */}
-          <CollapsiblePanel title="Timers & Counters" className="main-window__status">
-            <TimerCounterStatus />
-          </CollapsiblePanel>
+            <PanelResizeHandle className="resize-handle" />
+
+            {/* Status Panel - Timers/Counters */}
+            <Panel defaultSize={40} minSize={20}>
+              <CollapsiblePanel title="Timers & Counters" className="main-window__status">
+                <TimerCounterStatus />
+              </CollapsiblePanel>
+            </Panel>
+          </PanelGroup>
         </div>
       </div>
 

@@ -172,3 +172,33 @@
     height: 150px;
   }
 }
+
+/* Resizable Panels */
+.resize-handle {
+  position: relative;
+  height: 8px;
+  background-color: var(--color-border);
+  cursor: row-resize;
+  transition: background-color 0.2s ease;
+  margin: 4px 0;
+}
+
+.resize-handle:hover {
+  background-color: var(--color-primary);
+}
+
+.resize-handle:active {
+  background-color: var(--color-primary-dark);
+}
+
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-gray);
+  border-radius: 2px;
+}
