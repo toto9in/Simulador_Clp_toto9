@@ -28,7 +28,7 @@ export function TrafficSimulation({ onCollision }: TrafficSimulationProps) {
 
   // Collision warning state
   const [showCollisionWarning, setShowCollisionWarning] = useState(false);
-  const collisionTimeoutRef = useRef<NodeJS.Timeout>();
+  const collisionTimeoutRef = useRef<number>();
 
   // Refs to track latest state values without causing re-renders
   const nsTrafficRef = useRef(nsTrafficEnabled);
