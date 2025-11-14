@@ -63,8 +63,8 @@ npm run test:watch
 ### Total Test Count
 - **Unit Tests**: 150+ tests
 - **Integration Tests**: 80+ tests
-- **E2E Tests**: 87 tests (23 instructions + 16 batch manual + 17 batch auto + 31 traffic lights)
-- **Total**: 317+ tests
+- **E2E Tests**: 98 tests (23 instructions + 16 batch manual + 17 batch auto + 11 batch overflow + 31 traffic lights)
+- **Total**: 328+ tests
 
 ### Coverage by Component
 
@@ -79,6 +79,7 @@ npm run test:watch
 | Instructions (All) | - | - | 23 |
 | Batch Manual | - | - | 16 |
 | Batch Fully Auto | - | - | 17 |
+| Batch Overflow | - | - | 11 |
 | Traffic Lights | - | 30+ | 31 |
 | Complex Scenarios | - | 30+ | - |
 
@@ -459,6 +460,81 @@ Sequence flow:
 6. PUMP3 drains until LO-LEVEL (I1.1) off
 7. Cycle complete → Returns to IDLE
 
+### Batch Overflow Detection E2E Tests (`batch-overflow-detection.spec.ts`)
+
+Advanced error handling tests for batch process with overflow/spill detection (11 tests):
+
+#### Setup and Loading (1 test)
+- Load "Batch Process - Overflow Detection" example
+- Verify overflow detection logic and timers
+
+#### Normal Operation Without Overflow (1 test)
+- Execute normal cycle with brief START press
+- Verify no alarm triggers during normal operation
+- Complete full cycle successfully
+
+#### Overflow Detection (1 test)
+- Hold START button for extended period (>12 seconds)
+- Verify ERROR LED and ALARM activate
+- Confirm alarm remains latched after START release
+
+#### Emergency Drain System (1 test)
+- Activate emergency drain when overflow detected
+- Verify PUMP3 operates until tank empty
+- Confirm emergency drain stops when LO-LEVEL deactivates
+
+#### Alarm Reset (1 test)
+- Clear overflow alarm using RESET (STOP) button
+- Verify ERROR and ALARM LEDs turn off
+- Confirm system ready for new cycle
+
+#### Safety Interlocks (1 test)
+- Block normal operations during overflow alarm
+- Verify PUMP1 and MIXER disabled
+- Confirm RUN LED remains OFF
+
+#### Timer Management (1 test)
+- Separate timers for fill timeout (T1) and mix duration (T0)
+- Verify T1 monitors 12-second fill limit
+- Confirm T0 controls 5-second mix phase
+
+#### Timer Reset Behavior (1 test)
+- Reset fill timeout timer when not filling
+- Verify timer clears on STOP
+- Confirm full timeout available on restart
+
+#### Full Recovery Cycle (1 test)
+- Complete overflow → emergency drain → reset → restart sequence
+- Verify system returns to fully operational state
+- Confirm new normal cycle executes successfully
+
+#### LED Status Indicators (1 test)
+- Verify RUN LED OFF during alarm
+- Confirm ERROR LED ON during overflow
+- Check ALARM output activates
+
+#### Robustness Testing (1 test)
+- Handle rapid START/STOP cycles without false alarms
+- Verify no spurious overflow detection
+- Confirm stable operation under stress
+
+This overflow detection system demonstrates:
+- **Error detection** using timeout timers (T1 = 12 second limit)
+- **Latched alarm** (M3) that persists until manually reset
+- **Emergency response** with automatic drain activation (M4)
+- **Safety interlocks** preventing normal operation during fault
+- **Fault recovery** with proper reset and restart sequence
+- **Multi-timer coordination** (T0 for mixing, T1 for overflow)
+- **Real-world PLC safety patterns** for industrial applications
+
+Error handling flow:
+1. Normal fill starts, T1 timer begins counting
+2. If T1 expires (12s) → Overflow alarm (M3) latches
+3. M3 activates ERROR LED, ALARM output, and blocks normal ops
+4. Emergency drain (M4) activates to safely empty tank
+5. User presses RESET to clear alarm
+6. System ready for new cycle
+
 ### Traffic Lights E2E Tests (`traffic-lights.spec.ts`)
 
 Comprehensive browser-based tests covering all traffic light functionality:
@@ -754,6 +830,44 @@ Tests are run automatically on:
 ---
 
 ## Changelog
+
+### 2025-11-14 (Update 5)
+- **Added Batch Overflow Detection Example** with comprehensive error handling
+- Implements overflow/spill detection using timeout timer (T1 = 12 seconds)
+- Features latched alarm (M3), emergency drain (M4), and safety interlocks
+- **Added 11 E2E tests for Batch Overflow Detection**:
+  - Setup and loading (1 test)
+  - Normal operation without overflow (1 test)
+  - Overflow detection (1 test)
+  - Emergency drain system (1 test)
+  - Alarm reset (1 test)
+  - Safety interlocks (1 test)
+  - Timer management (1 test)
+  - Timer reset behavior (1 test)
+  - Full recovery cycle (1 test)
+  - LED status indicators (1 test)
+  - Robustness testing (1 test)
+- Demonstrates real-world PLC safety patterns for industrial applications
+- Total E2E tests increased from 87 to 98
+- Total project tests: 328+ (150 unit + 80 integration + 98 E2E)
+
+### 2025-11-14 (Update 4)
+- **Fixed Batch Fully Automatic state transition bug** (M0→M1)
+- Reordered IL logic to evaluate M1 BEFORE M0
+- Removed unnecessary ANDN I1.0 from M0 state logic
+- M0 now automatically stops when M1 activates via ANDN M1
+- **Added 17 E2E tests for Batch Fully Automatic**:
+  - Setup and loading (2 tests)
+  - Automatic fill cycle (3 tests)
+  - Automatic mix cycle (2 tests)
+  - Automatic drain cycle (2 tests)
+  - Complete automatic cycle (2 tests)
+  - State machine behavior (2 tests)
+  - Timer behavior (1 test)
+  - Edge cases and timing (3 tests)
+- Batch fully automatic now completes entire cycle with single START press
+- Total E2E tests increased from 70 to 87
+- Total project tests: 317+ (150 unit + 80 integration + 87 E2E)
 
 ### 2025-11-13 (Update 3)
 - **Fixed Batch Simulation IL code** to use correct sensor mapping

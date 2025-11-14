@@ -201,6 +201,14 @@
       "file": "12b_batch_fully_automatic.txt"
     },
     {
+      "id": "12c_batch_overflow_detection",
+      "title": "Batch Process - Overflow Detection",
+      "description": "Error handling: detects overflow/spill if filling takes >12s, triggers alarm and emergency drain",
+      "category": "sequences",
+      "difficulty": "advanced",
+      "file": "12c_batch_overflow_detection.txt"
+    },
+    {
       "id": "13_traffic_light_crossroad",
       "title": "Traffic Light - Crossroad (2 Lights)",
       "description": "Two independent traffic lights for a crossroad intersection",
