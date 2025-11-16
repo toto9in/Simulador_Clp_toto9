@@ -5,6 +5,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import { getAssetPath, ASSETS } from '../../utils/assets';
 import './HelpDialog.css';
 
 interface HelpDialogProps {
@@ -118,9 +119,9 @@ export function HelpDialog({ onClose }: HelpDialogProps) {
               <div className="help-button-type">
                 <div className="help-button-type__header">
                   <div className="help-button-type__images">
-                    <img src="/assets/chave_aberta.png" alt="SWITCH OFF" className="help-button-type__image" />
+                    <img src={ASSETS.CHAVE_ABERTA} alt="SWITCH OFF" className="help-button-type__image" />
                     <span className="help-button-type__arrow">↔</span>
-                    <img src="/assets/chave_fechada.png" alt="SWITCH ON" className="help-button-type__image" />
+                    <img src={ASSETS.CHAVE_FECHADA} alt="SWITCH ON" className="help-button-type__image" />
                   </div>
                   <h4 className="help-button-type__name">SWITCH (Toggle)</h4>
                 </div>
@@ -138,9 +139,9 @@ export function HelpDialog({ onClose }: HelpDialogProps) {
               <div className="help-button-type">
                 <div className="help-button-type__header">
                   <div className="help-button-type__images">
-                    <img src="/assets/buttom.png" alt="NO Released" className="help-button-type__image" />
+                    <img src={ASSETS.BUTTON} alt="NO Released" className="help-button-type__image" />
                     <span className="help-button-type__arrow">→</span>
-                    <img src="/assets/botao_fechado.png" alt="NO Pressed" className="help-button-type__image" />
+                    <img src={ASSETS.BUTTON_CLOSED} alt="NO Pressed" className="help-button-type__image" />
                   </div>
                   <h4 className="help-button-type__name">NO (Normally Open)</h4>
                 </div>
@@ -159,9 +160,9 @@ export function HelpDialog({ onClose }: HelpDialogProps) {
               <div className="help-button-type">
                 <div className="help-button-type__header">
                   <div className="help-button-type__images">
-                    <img src="/assets/buttom_pi.png" alt="NC Released" className="help-button-type__image" />
+                    <img src={ASSETS.BUTTON_PI} alt="NC Released" className="help-button-type__image" />
                     <span className="help-button-type__arrow">→</span>
-                    <img src="/assets/button_pi_aberto.png" alt="NC Pressed" className="help-button-type__image" />
+                    <img src={ASSETS.BUTTON_PI_OPEN} alt="NC Pressed" className="help-button-type__image" />
                   </div>
                   <h4 className="help-button-type__name">NC (Normally Closed)</h4>
                 </div>
