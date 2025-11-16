@@ -1,49 +1,49 @@
 // ==================================
 // Batch Process - Manual Control
 // ==================================
-// Manual tank filling, mixing, and draining
-// Simple direct control - hold buttons to control each phase
+// Manual tank filling and mixing control
+// START button activates operations, STOP button stops everything
 //
 // INPUTS:
-// I0.0 = START button (Normally Open - hold to fill)
-// I0.1 = STOP button (Normally Closed - press to drain)
+// I0.0 = START button (Normally Open - hold to operate)
+// I0.1 = STOP button (Normally Closed - press to stop all operations)
 // I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
 // I1.1 = LO-LEVEL sensor (ON when tank > 1%)
 //
 // OUTPUTS:
 // Q0.1 = PUMP1 (Fill valve - opens to fill tank)
 // Q0.2 = MIXER (Mixing motor - runs when tank is full and START pressed)
-// Q0.3 = PUMP3 (Drain valve - opens to drain tank)
+// Q0.3 = PUMP3 (Not used in manual control)
 // Q1.0 = RUN LED (System running indicator)
 // Q1.1 = IDLE LED (System idle indicator)
 // Q1.2 = FULL LED (Tank full indicator)
 
 // ==================================
-// FILL CYCLE - Fill while START pressed
+// FILL CYCLE - Fill while START pressed and STOP not pressed
 // - START button held down (I0.0 = ON)
+// - STOP button not pressed (I0.1 = ON, because NC)
 // - Tank not full yet (I1.0 = OFF)
 // ==================================
 LD I0.0
+AND I0.1
 ANDN I1.0
 ST Q0.1
 
 // ==================================
-// MIXER - Mix when tank is full and START held
+// MIXER - Mix when tank is full, START held, and STOP not pressed
 // - START button held (I0.0 = ON)
+// - STOP button not pressed (I0.1 = ON, because NC)
 // - Tank is full (I1.0 = ON)
 // ==================================
 LD I0.0
+AND I0.1
 AND I1.0
 ST Q0.2
 
 // ==================================
-// DRAIN CYCLE - Drain when STOP pressed
-// - STOP button pressed (I0.1 = OFF, because NC button)
-// - Tank has liquid (I1.1 = ON)
+// DRAIN - Not used in manual control
+// Use the fully automatic example for drain functionality
 // ==================================
-LDN I0.1
-AND I1.1
-ST Q0.3
 
 // ==================================
 // RUN LED - ON when any pump or mixer is active
