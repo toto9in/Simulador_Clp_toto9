@@ -46,13 +46,13 @@
 // ==================================
 // STATE 1: FILL STATE
 // Only if no overflow alarm
+// NOTE: Does NOT stop at 100% - allows overflow for testing!
 // ==================================
 LD I0.0
 OR M0
 ANDN M1
 ANDN M2
 ANDN M3
-ANDN I1.0
 ST M0
 
 // ==================================
@@ -63,18 +63,11 @@ LD M0
 TON T1,120
 
 // Latch overflow alarm if fill timer expires
+// NOTE: Timer continues running even at 100% to trigger overflow!
 LD T1
 OR M3
 ANDN I0.1
 ST M3
-
-// Reset fill timer when tank is full or not filling
-LD M0
-ANDN I1.0
-STN M7
-
-LD M7
-RST T1
 
 // ==================================
 // STATE 2: MIX STATE

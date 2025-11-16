@@ -10,6 +10,37 @@
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow: hidden;
+  position: relative;
+}
+
+/* Overflow Warning */
+.overflow-warning {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff5252;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out, pulse 1s ease-in-out infinite;
+  text-align: center;
+  max-width: 500px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .batch-scene__header {
@@ -54,11 +85,13 @@
   left: 28.5%;        /* Tank X position: 178/624 = 28.5% */
   bottom: 16.2%;      /* Tank base position */
   width: 51.4%;       /* Tank width: 321/624 = 51.4% */
-  max-height: 67.5%;  /* Tank height proportion */
+  max-height: 67.5%;  /* Tank height proportion - can overflow beyond this */
   background-color: rgba(255, 255, 0, 0.78); /* Yellow liquid - matches Java Color(255,255,0,200) */
   transition: height 0.05s linear;
   pointer-events: none;
   z-index: 1;
+  /* Allow overflow to be visible */
+  overflow: visible;
 }
 
 .batch-scene__controls {
@@ -238,6 +271,20 @@
   background-color: #00aa00;
   box-shadow: 0 0 15px #00aa00;
   animation: pulse 1s ease-in-out infinite;
+}
+
+/* Error LED - Red pulsing */
+.batch-indicator.error.active .batch-indicator__led {
+  background-color: #ff5252;
+  box-shadow: 0 0 15px #ff5252;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+/* Alarm LED - Bright red fast pulsing */
+.batch-indicator.alarm.active .batch-indicator__led {
+  background-color: #cc0000;
+  box-shadow: 0 0 15px #cc0000;
+  animation: pulse 0.3s ease-in-out infinite;
 }
 
 .batch-indicator--alarm.active .batch-indicator__led {
