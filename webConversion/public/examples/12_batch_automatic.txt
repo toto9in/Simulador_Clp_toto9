@@ -2,48 +2,55 @@
 // Batch Process - Manual Control
 // ==================================
 // Manual tank filling and mixing control
-// START button activates operations, STOP button stops everything
+// Click START once to begin operations, click STOP to stop
 //
 // INPUTS:
-// I0.0 = START button (Normally Open - hold to operate)
-// I0.1 = STOP button (Normally Closed - press to stop all operations)
+// I0.0 = START button (Normally Open - click to start)
+// I0.1 = STOP button (Normally Closed - click to stop)
 // I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
 // I1.1 = LO-LEVEL sensor (ON when tank > 1%)
 //
 // OUTPUTS:
 // Q0.1 = PUMP1 (Fill valve - opens to fill tank)
-// Q0.2 = MIXER (Mixing motor - runs when tank is full and START pressed)
+// Q0.2 = MIXER (Mixing motor - runs when tank is full)
 // Q0.3 = PUMP3 (Not used in manual control)
 // Q1.0 = RUN LED (System running indicator)
 // Q1.1 = IDLE LED (System idle indicator)
 // Q1.2 = FULL LED (Tank full indicator)
+//
+// MEMORY:
+// M0 = System running state (SET by START, RESET by STOP)
 
 // ==================================
-// FILL CYCLE - Fill while START pressed and STOP not pressed
-// - START button held down (I0.0 = ON)
-// - STOP button not pressed (I0.1 = ON, because NC)
-// - Tank not full yet (I1.0 = OFF)
+// SET M0 when START button is pressed
 // ==================================
 LD I0.0
-AND I0.1
+SET M0
+
+// ==================================
+// RESET M0 when STOP button is pressed
+// I0.1 = NC button, so LDN I0.1 is true when button is pressed
+// ==================================
+LDN I0.1
+RST M0
+
+// ==================================
+// FILL CYCLE - Fill while system running and tank not full
+// - M0 is ON (system started)
+// - Tank not full yet (I1.0 = OFF)
+// ==================================
+LD M0
 ANDN I1.0
 ST Q0.1
 
 // ==================================
-// MIXER - Mix when tank is full, START held, and STOP not pressed
-// - START button held (I0.0 = ON)
-// - STOP button not pressed (I0.1 = ON, because NC)
+// MIXER - Mix when system running and tank is full
+// - M0 is ON (system started)
 // - Tank is full (I1.0 = ON)
 // ==================================
-LD I0.0
-AND I0.1
+LD M0
 AND I1.0
 ST Q0.2
-
-// ==================================
-// DRAIN - Not used in manual control
-// Use the fully automatic example for drain functionality
-// ==================================
 
 // ==================================
 // RUN LED - ON when any pump or mixer is active
