@@ -21,6 +21,7 @@ export function BatchScene() {
   const { state, dispatch } = usePLCState();
   const [tankLevel, setTankLevel] = useState(0); // 0-100% (can overflow past 100)
   const [overflowWarning, setOverflowWarning] = useState(false);
+  const [fillRate, setFillRate] = useState(FILL_RATE); // Adjustable fill rate
   const animationRef = useRef<number>();
   const prevMemoryKeysCount = useRef<number>(0);
 
@@ -64,7 +65,7 @@ export function BatchScene() {
         // Fill valve open (Q0.1 = pump1)
         // NOTE: No Math.min here - allows overflow for testing!
         if (state.outputs['Q0.1']) {
-          newLevel = newLevel + FILL_RATE;
+          newLevel = newLevel + fillRate;
         }
 
         // Drain valve open (Q0.3 = pump3)
@@ -85,7 +86,7 @@ export function BatchScene() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [state.outputs]);
+  }, [state.outputs, fillRate]);
 
   /**
    * Handle button press (NO activates, NC deactivates)
@@ -215,6 +216,31 @@ export function BatchScene() {
                 <span className="batch-scene__button-status">
                   I0.1: {state.inputs['I0.1'] ? '1' : '0'}
                 </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Fill Rate Control */}
+          <div className="batch-scene__control-group">
+            <h3 className="batch-scene__control-title">Fill Speed Control</h3>
+            <div className="fill-rate-control">
+              <label htmlFor="fill-rate-slider" className="fill-rate-label">
+                Fill Speed: {fillRate.toFixed(2)}x
+              </label>
+              <input
+                id="fill-rate-slider"
+                type="range"
+                min="0.1"
+                max="3.0"
+                step="0.1"
+                value={fillRate}
+                onChange={(e) => setFillRate(parseFloat(e.target.value))}
+                className="fill-rate-slider"
+              />
+              <div className="fill-rate-markers">
+                <span>Slow (0.1x)</span>
+                <span>Normal (0.8x)</span>
+                <span>Fast (3.0x)</span>
               </div>
             </div>
           </div>
