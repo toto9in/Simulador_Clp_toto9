@@ -1,186 +1,93 @@
 // ==================================
-// Batch Process - Overflow Detection
+// Batch Process - Overflow Detection Test
 // ==================================
-// Demonstrates error handling and spill detection
-// Detects if tank overflows due to malfunction or user error
+// SIMPLE OVERFLOW TEST - Tank fills automatically past 100%
 //
-// SCENARIO:
-// If user holds START too long or HI-LEVEL sensor fails,
-// the system detects overflow condition and triggers alarm
+// HOW IT WORKS:
+// 1. Click START once
+// 2. Tank fills automatically (pump stays ON)
+// 3. Tank continues filling PAST 100% (no automatic stop!)
+// 4. After ~15 seconds, OVERFLOW alarm triggers
+// 5. Emergency drain activates automatically
+// 6. Click STOP to reset everything
 //
-// NORMAL SEQUENCE:
-// 1. Press START briefly to begin cycle
-// 2. PUMP1 fills until HI-LEVEL
-// 3. MIXER runs for 5 seconds
-// 4. PUMP3 drains until empty
-// 5. Ready for next cycle
-//
-// ERROR DETECTION:
-// - If filling takes > 3 seconds = OVERFLOW ALARM
-// - Tank will fill past 100% before alarm triggers
-// - Emergency drain automatically activates
-// - Press STOP to reset alarm and clear all states
+// PURPOSE: Test the overflow warning system
 //
 // INPUTS:
-// I0.0 = START button (click once to start - latches on)
-// I0.1 = STOP/RESET button (click to stop and clear alarm)
+// I0.0 = START button (click once)
+// I0.1 = STOP/RESET button (click to reset)
 // I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
 // I1.1 = LO-LEVEL sensor (ON when tank > 1%)
 //
 // OUTPUTS:
 // Q0.1 = PUMP1 (Fill valve)
-// Q0.2 = MIXER (Mixing motor)
+// Q0.2 = MIXER (not used)
 // Q0.3 = PUMP3 (Drain valve)
-// Q1.0 = RUN LED (Normal operation)
-// Q1.1 = ERROR LED (Spill/overflow detected)
+// Q1.0 = RUN LED (System running)
+// Q1.1 = ERROR LED (Overflow alarm)
 // Q1.2 = ALARM (Audio/visual alarm)
 //
 // MEMORY:
-// M0 = Fill state (latched with START/STOP)
-// M1 = Mix state
-// M2 = Drain state
-// M3 = Overflow detected (latched alarm)
-// M4 = Emergency drain state
-// T0 = Mix timer (5 seconds)
-// T1 = Fill timeout timer (3 seconds - detects overflow)
+// M0 = Filling (latched with START)
+// M1 = Overflow alarm (latched)
+// M2 = Emergency drain active
+// T0 = Fill timer (150 cycles = ~15 seconds)
 
 // ==================================
-// STATE 1: FILL STATE (with SR latch)
-// M0 = (START OR M0) AND STOP_not_pressed AND not_in_other_states
-// Click START once to begin, click STOP to stop
-// NOTE: Does NOT stop at 100% - allows overflow for testing!
+// FILL STATE - Latch with START button
+// Stays ON until overflow or STOP pressed
 // ==================================
 LD I0.0
 OR M0
 ANDN M1
-ANDN M2
-ANDN M3
 AND I0.1
 ST M0
 
 // ==================================
 // OVERFLOW DETECTION
-// Monitor fill time - if > 3 seconds, trigger alarm
-// This detects overflow condition (filling continues past HI-LEVEL)
+// If filling for > 15 seconds = OVERFLOW!
 // ==================================
 LD M0
-TON T1,30
+TON T0,150
 
-// Latch overflow alarm if fill timer expires
-// NOTE: Timer continues running even at 100% to trigger overflow!
-// Press STOP (I0.1) to reset alarm and clear all states
-LD T1
-OR M3
-ANDN I0.1
-ST M3
-
-// ==================================
-// STATE 2: MIX STATE
-// Start mixing when tank reaches 100%
-// Only if no overflow alarm
-// ==================================
-LD M0
-AND I1.0
-ANDN M3
+// Latch overflow alarm when timer expires
+LD T0
 OR M1
-ANDN M2
+ANDN I0.1
 ST M1
-
-// Start mix timer when in mix state
-LD M1
-TON T0,50
-
-// ==================================
-// STATE 3: DRAIN STATE (normal operation)
-// Only runs if no overflow alarm
-// ==================================
-LD M1
-AND T0
-ANDN M3
-OR M2
-AND I1.1
-ST M2
 
 // ==================================
 // EMERGENCY DRAIN
-// If overflow detected, activate emergency drain
-// Continue until tank is empty (LO-LEVEL off)
+// Activates when overflow detected
+// Continues until tank is empty
 // ==================================
-LD M3
-OR M4
+LD M1
+OR M2
 AND I1.1
-ST M4
+ST M2
 
 // ==================================
 // OUTPUTS
 // ==================================
 
-// PUMP1 follows fill state (but not if alarm)
+// PUMP1 - ON while filling (before overflow)
 LD M0
-ANDN M3
+ANDN M1
 ST Q0.1
 
-// MIXER follows mix state (but only while timer not done)
-LD M1
-ANDN T0
-ANDN M3
-ST Q0.2
-
-// PUMP3 - Normal drain OR emergency drain
+// PUMP3 - Emergency drain when overflow
 LD M2
-OR M4
 ST Q0.3
 
-// ==================================
-// RESET CYCLE
-// Clear all states when cycle completes or STOP pressed
-// ==================================
-LD M2
-ANDN I1.1
-OR I0.1
-ST M5
-
-// Clear normal states
-LDN M5
-AND M0
-ST M0
-
-LDN M5
-AND M1
-ST M1
-
-LDN M5
-AND M2
-ST M2
-
-// Clear emergency drain when tank empty
-LD M4
-ANDN I1.1
-ST M6
-
-LDN M6
-AND M4
-ST M4
-
-// Reset mix timer when not in use
-LDN M1
-RST T0
-
-// ==================================
-// STATUS INDICATORS
-// ==================================
-
-// RUN LED - ON during normal operation (not in alarm)
+// RUN LED - ON while filling normally
 LD M0
-OR M1
-OR M2
-ANDN M3
+ANDN M1
 ST Q1.0
 
 // ERROR LED - ON when overflow detected
-LD M3
+LD M1
 ST Q1.1
 
-// ALARM output - ON when overflow detected
-LD M3
+// ALARM - ON when overflow detected
+LD M1
 ST Q1.2
