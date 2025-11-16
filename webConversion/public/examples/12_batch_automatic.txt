@@ -19,20 +19,18 @@
 // Q1.2 = FULL LED (Tank full indicator)
 //
 // MEMORY:
-// M0 = System running state (SET by START, RESET by STOP)
+// M0 = System running state (SR latch: SET by START, RESET by STOP)
 
 // ==================================
-// SET M0 when START button is pressed
+// SR LATCH for system running state
+// M0 = (START OR M0) AND STOP_not_pressed
+// When START pressed: M0 turns ON and stays ON
+// When STOP pressed: M0 turns OFF
 // ==================================
 LD I0.0
-SET M0
-
-// ==================================
-// RESET M0 when STOP button is pressed
-// I0.1 = NC button, so LDN I0.1 is true when button is pressed
-// ==================================
-LDN I0.1
-RST M0
+OR M0
+AND I0.1
+ST M0
 
 // ==================================
 // FILL CYCLE - Fill while system running and tank not full
