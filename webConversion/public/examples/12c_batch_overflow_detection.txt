@@ -44,6 +44,18 @@
 // T1 = Fill timeout timer (12 seconds max)
 
 // ==================================
+// STATE 1: FILL STATE
+// Only if no overflow alarm
+// ==================================
+LD I0.0
+OR M0
+ANDN M1
+ANDN M2
+ANDN M3
+ANDN I1.0
+ST M0
+
+// ==================================
 // OVERFLOW DETECTION
 // Monitor fill time - if > 12 seconds, trigger alarm
 // ==================================
@@ -56,22 +68,17 @@ OR M3
 ANDN I0.1
 ST M3
 
-// ==================================
-// EMERGENCY DRAIN
-// If overflow detected, activate emergency drain
-// Continue until tank is empty (LO-LEVEL off)
-// ==================================
-LD M3
-OR M4
-AND I1.1
-ST M4
+// Reset fill timer when tank is full or not filling
+LD M0
+ANDN I1.0
+STN M7
 
-// Emergency drain pump
-LD M4
-ST Q0.3
+LD M7
+RST T1
 
 // ==================================
-// STATE 2: MIX STATE (evaluated FIRST)
+// STATE 2: MIX STATE
+// Start mixing when tank reaches 100%
 // Only if no overflow alarm
 // ==================================
 LD M0
@@ -81,31 +88,9 @@ OR M1
 ANDN M2
 ST M1
 
-// ==================================
-// STATE 1: FILL STATE
-// Only if no overflow alarm
-// ==================================
-LD I0.0
-OR M0
-ANDN M1
-ANDN M2
-ANDN M3
-ST M0
-
-// PUMP1 follows fill state (but not if alarm)
-LD M0
-ANDN M3
-ST Q0.1
-
-// Start timer when in mix state
+// Start mix timer when in mix state
 LD M1
 TON T0,50
-
-// MIXER follows mix state (but only while timer not done)
-LD M1
-ANDN T0
-ANDN M3
-ST Q0.2
 
 // ==================================
 // STATE 3: DRAIN STATE (normal operation)
@@ -118,9 +103,34 @@ OR M2
 AND I1.1
 ST M2
 
-// Normal drain pump (only if not in emergency mode)
+// ==================================
+// EMERGENCY DRAIN
+// If overflow detected, activate emergency drain
+// Continue until tank is empty (LO-LEVEL off)
+// ==================================
+LD M3
+OR M4
+AND I1.1
+ST M4
+
+// ==================================
+// OUTPUTS
+// ==================================
+
+// PUMP1 follows fill state (but not if alarm)
+LD M0
+ANDN M3
+ST Q0.1
+
+// MIXER follows mix state (but only while timer not done)
+LD M1
+ANDN T0
+ANDN M3
+ST Q0.2
+
+// PUMP3 - Normal drain OR emergency drain
 LD M2
-ANDN M4
+OR M4
 ST Q0.3
 
 // ==================================
@@ -154,10 +164,7 @@ LDN M6
 AND M4
 ST M4
 
-// Reset timers when not in use
-LDN M0
-RST T1
-
+// Reset mix timer when not in use
 LDN M1
 RST T0
 

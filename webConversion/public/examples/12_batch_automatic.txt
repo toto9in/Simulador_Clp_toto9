@@ -1,48 +1,47 @@
 // ==================================
-// Batch Process - Automatic Cycle
+// Batch Process - Manual Control
 // ==================================
-// Automatic tank filling, mixing, and draining
+// Manual tank filling, mixing, and draining
+// Simple direct control - hold buttons to control each phase
 //
 // INPUTS:
-// I0.0 = Start button (Normally Open)
-// I0.1 = Stop button (Normally Closed)
+// I0.0 = START button (Normally Open - hold to fill)
+// I0.1 = STOP button (Normally Closed - press to drain)
 // I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
 // I1.1 = LO-LEVEL sensor (ON when tank > 1%)
 //
 // OUTPUTS:
 // Q0.1 = PUMP1 (Fill valve - opens to fill tank)
-// Q0.2 = MIXER (Mixing motor)
+// Q0.2 = MIXER (Mixing motor - runs when tank is full and START pressed)
 // Q0.3 = PUMP3 (Drain valve - opens to drain tank)
 // Q1.0 = RUN LED (System running indicator)
 // Q1.1 = IDLE LED (System idle indicator)
 // Q1.2 = FULL LED (Tank full indicator)
 
 // ==================================
-// FILL CYCLE - Start filling when:
-// - Start button pressed (I0.0 = ON)
-// - Stop button not pressed (I0.1 = OFF)
-// - Tank not full (I1.0 = OFF)
+// FILL CYCLE - Fill while START pressed
+// - START button held down (I0.0 = ON)
+// - Tank not full yet (I1.0 = OFF)
 // ==================================
 LD I0.0
-OR Q0.1
-ANDN I0.1
 ANDN I1.0
 ST Q0.1
 
 // ==================================
-// MIXER - Start mixer when tank is full
+// MIXER - Mix when tank is full and START held
+// - START button held (I0.0 = ON)
+// - Tank is full (I1.0 = ON)
 // ==================================
 LD I0.0
 AND I1.0
 ST Q0.2
 
 // ==================================
-// DRAIN CYCLE - Start draining when:
-// - Stop button pressed (I0.1 = ON)
+// DRAIN CYCLE - Drain when STOP pressed
+// - STOP button pressed (I0.1 = OFF, because NC button)
 // - Tank has liquid (I1.1 = ON)
 // ==================================
-LD I0.1
-OR Q0.3
+LDN I0.1
 AND I1.1
 ST Q0.3
 

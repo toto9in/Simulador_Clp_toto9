@@ -116,6 +116,16 @@ export function BatchScene() {
     dispatch({ type: 'SET_INPUT', key: 'I0.1', value: true });
   }, [dispatch]);
 
+  // Reset tank level when PLC variables are reset
+  // This detects when memory is cleared (empty memoryVariables object)
+  useEffect(() => {
+    const memoryKeys = Object.keys(state.memoryVariables);
+    // If no memory variables exist, assume a reset occurred
+    if (memoryKeys.length === 0 && tankLevel > 0) {
+      setTankLevel(0);
+    }
+  }, [state.memoryVariables, tankLevel]);
+
   return (
     <div className="batch-scene">
       <div className="batch-scene__header">
