@@ -1,0 +1,12 @@
+// SWITCH - Exemplo Básico
+// =========================
+// Um botão SWITCH mantém seu estado quando clicado.
+//
+// Como testar:
+// 1. I0.0 deve estar em modo SWITCH (padrão)
+// 2. Clique em I0.0 - ele liga (1) e permanece ligado
+// 3. Clique novamente - ele desliga (0) e permanece desligado
+// 4. Q0.0 sempre reflete o estado de I0.0
+
+LD I0.0
+OUT Q0.0

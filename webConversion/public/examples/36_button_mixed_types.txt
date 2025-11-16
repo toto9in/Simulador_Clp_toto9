@@ -1,0 +1,22 @@
+// Botões Mistos - Exemplo Completo
+// ==================================
+// Demonstra os três tipos trabalhando juntos.
+//
+// Como testar:
+// 1. Configure I0.0 como SWITCH (modo manual/auto)
+// 2. Configure I0.1 como NO (trigger/pulso)
+// 3. Configure I0.2 como NC (enable/habilitação)
+// 4. Ligue I0.0 (modo ativo)
+// 5. I0.2 deve estar solto (NC=1, habilitado)
+// 6. Pressione I0.1 - Q0.0 acende apenas se tudo OK
+// 7. Pressione I0.2 - Q0.0 apaga (desabilitado)
+
+// I0.0 = Modo selecionado (SWITCH)
+// I0.1 = Trigger (NO)
+// I0.2 = Enable (NC)
+// Q0.0 = Saída
+
+LD I0.0      // Modo ativo?
+AND I0.1     // E trigger pressionado?
+AND I0.2     // E habilitado? (NC não pressionado)
+OUT Q0.0     // Ativa saída

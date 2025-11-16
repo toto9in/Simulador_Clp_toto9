@@ -1,0 +1,21 @@
+// NC - Botão de PARADA (Motor Control)
+// ======================================
+// Usa NC para STOP (fail-safe: fio partido = motor para).
+// Usa NO para START.
+//
+// Como testar:
+// 1. Configure I0.0 como NO (START)
+// 2. Configure I0.1 como NC (STOP) - começa em 1
+// 3. Pressione I0.0 (START) - motor liga
+// 4. Solte I0.0 - motor continua ligado (selo)
+// 5. Pressione I0.1 (STOP) - motor desliga imediatamente
+// 6. Solte I0.1 - motor continua desligado
+
+// I0.0 = START (NO)
+// I0.1 = STOP (NC) - fail-safe
+// Q0.0 = Motor
+
+LD I0.0      // START pressionado?
+OR Q0.0      // OU motor já ligado? (selo)
+AND I0.1     // E STOP não pressionado? (NC=TRUE quando não pressionado)
+OUT Q0.0     // Controla motor

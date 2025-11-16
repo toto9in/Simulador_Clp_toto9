@@ -225,28 +225,84 @@
       "file": "14_traffic_light_safe_crossroad.txt"
     },
     {
-      "id": "27_button_type_switch",
-      "title": "Button Type: SWITCH",
-      "description": "Toggle switch that maintains state - Click to toggle ON/OFF",
+      "id": "27_button_switch_basic",
+      "title": "SWITCH - Básico",
+      "description": "Botão toggle simples: clique para ligar/desligar",
       "category": "button-types",
       "difficulty": "beginner",
-      "file": "27_button_type_switch.txt"
+      "file": "27_button_switch_basic.txt"
     },
     {
-      "id": "28_button_type_no",
-      "title": "Button Type: NO (Normally Open)",
-      "description": "Momentary push button - TRUE only while held down",
+      "id": "28_button_switch_and",
+      "title": "SWITCH - Lógica AND",
+      "description": "Dois switches em série: ambos ligados para acionar saída",
       "category": "button-types",
       "difficulty": "beginner",
-      "file": "28_button_type_no.txt"
+      "file": "28_button_switch_and.txt"
     },
     {
-      "id": "29_button_type_nc",
-      "title": "Button Type: NC (Normally Closed)",
-      "description": "Inverted push button - FALSE when pressed, TRUE when released",
+      "id": "29_button_switch_or",
+      "title": "SWITCH - Lógica OR",
+      "description": "Dois switches em paralelo: qualquer um aciona saída",
       "category": "button-types",
       "difficulty": "beginner",
-      "file": "29_button_type_nc.txt"
+      "file": "29_button_switch_or.txt"
+    },
+    {
+      "id": "30_button_no_basic",
+      "title": "NO - Básico",
+      "description": "Botão momentâneo: ativo apenas enquanto segurar",
+      "category": "button-types",
+      "difficulty": "beginner",
+      "file": "30_button_no_basic.txt"
+    },
+    {
+      "id": "31_button_no_start_stop",
+      "title": "NO - START/STOP",
+      "description": "Circuito com selo: START liga, STOP desliga",
+      "category": "button-types",
+      "difficulty": "intermediate",
+      "file": "31_button_no_start_stop.txt"
+    },
+    {
+      "id": "32_button_no_counter",
+      "title": "NO - Contador",
+      "description": "Conta pressionamentos do botão até 5",
+      "category": "button-types",
+      "difficulty": "intermediate",
+      "file": "32_button_no_counter.txt"
+    },
+    {
+      "id": "33_button_nc_basic",
+      "title": "NC - Básico",
+      "description": "Botão invertido: TRUE quando não pressionado",
+      "category": "button-types",
+      "difficulty": "beginner",
+      "file": "33_button_nc_basic.txt"
+    },
+    {
+      "id": "34_button_nc_stop",
+      "title": "NC - STOP Fail-Safe",
+      "description": "STOP seguro: fio partido = motor para",
+      "category": "button-types",
+      "difficulty": "intermediate",
+      "file": "34_button_nc_stop.txt"
+    },
+    {
+      "id": "35_button_nc_safety",
+      "title": "NC - Circuito Segurança",
+      "description": "Dois NC em série para proteção dupla",
+      "category": "button-types",
+      "difficulty": "intermediate",
+      "file": "35_button_nc_safety.txt"
+    },
+    {
+      "id": "36_button_mixed_types",
+      "title": "Botões Mistos",
+      "description": "SWITCH + NO + NC trabalhando juntos",
+      "category": "button-types",
+      "difficulty": "intermediate",
+      "file": "36_button_mixed_types.txt"
     }
   ]
 }

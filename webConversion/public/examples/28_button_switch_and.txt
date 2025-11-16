@@ -1,0 +1,13 @@
+// SWITCH - Lógica AND (Dois Switches em Série)
+// ==============================================
+// Dois switches devem estar ligados para acionar a saída.
+//
+// Como testar:
+// 1. I0.0 e I0.1 devem estar em modo SWITCH
+// 2. Ligue I0.0 - Q0.0 permanece desligado
+// 3. Ligue I0.1 - Q0.0 acende (ambos ligados)
+// 4. Desligue qualquer um - Q0.0 apaga
+
+LD I0.0
+AND I0.1
+OUT Q0.0

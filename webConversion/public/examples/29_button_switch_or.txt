@@ -1,0 +1,13 @@
+// SWITCH - Lógica OR (Dois Switches em Paralelo)
+// ===============================================
+// Qualquer um dos switches pode acionar a saída.
+//
+// Como testar:
+// 1. I0.0 e I0.1 devem estar em modo SWITCH
+// 2. Ligue I0.0 - Q0.0 acende
+// 3. Desligue I0.0 e ligue I0.1 - Q0.0 continua aceso
+// 4. Ambos desligados - Q0.0 apaga
+
+LD I0.0
+OR I0.1
+OUT Q0.0

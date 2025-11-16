@@ -1,0 +1,20 @@
+// NO - Circuito START/STOP (Seal-in)
+// ====================================
+// Botão START liga, botão STOP desliga.
+// Motor mantém estado após soltar START (selo).
+//
+// Como testar:
+// 1. Configure I0.0 como NO (botão START)
+// 2. Configure I0.1 como NO (botão STOP)
+// 3. Pressione I0.0 - Q0.0 liga e MANTÉM ligado
+// 4. Solte I0.0 - Q0.0 continua ligado (selo)
+// 5. Pressione I0.1 - Q0.0 desliga
+
+// I0.0 = START (NO)
+// I0.1 = STOP (NO)
+// Q0.0 = Motor
+
+LD I0.0      // START pressionado?
+OR Q0.0      // OU motor já ligado? (selo)
+ANDN I0.1    // E STOP não pressionado?
+OUT Q0.0     // Controla motor

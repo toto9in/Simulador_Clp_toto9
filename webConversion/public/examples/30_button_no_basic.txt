@@ -1,0 +1,12 @@
+// NO (Normally Open) - Exemplo Básico
+// =====================================
+// Botão NO é momentâneo: ativo apenas enquanto pressionado.
+//
+// Como testar:
+// 1. Clique direito em I0.0 até aparecer "NO"
+// 2. Pressione e SEGURE I0.0 - Q0.0 acende
+// 3. Solte I0.0 - Q0.0 apaga imediatamente
+// 4. Ideal para botões de teste e acionamento momentâneo
+
+LD I0.0
+OUT Q0.0

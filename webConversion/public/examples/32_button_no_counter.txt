@@ -1,0 +1,27 @@
+// NO - Contador de Pressionamentos
+// ==================================
+// Conta quantas vezes o botão foi pressionado.
+//
+// Como testar:
+// 1. Configure I0.0 como NO
+// 2. Configure I0.1 como NO (reset)
+// 3. Pressione I0.0 cinco vezes (solte entre cada pressionamento)
+// 4. Após 5 pressionamentos, Q0.0 acende
+// 5. Pressione I0.1 para resetar o contador
+
+// I0.0 = Botão contador (NO)
+// I0.1 = Botão reset (NO)
+// C0 = Contador
+// Q0.0 = LED de 5 pressionamentos
+
+// Conta até 5
+LD I0.0
+CTU C0, 5
+
+// Acende LED quando atingir 5
+LD C0
+OUT Q0.0
+
+// Reset do contador
+LD I0.1
+CTR C0

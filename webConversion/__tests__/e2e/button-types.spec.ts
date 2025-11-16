@@ -244,11 +244,11 @@ test.describe('Button Type Examples', () => {
     await page.getByRole('button', { name: /program/i }).click();
   });
 
-  test('should load SWITCH button type example', async ({ page }) => {
+  test('should load SWITCH basic example', async ({ page }) => {
     await page.getByRole('button', { name: /examples/i }).click();
     await page.waitForTimeout(500);
 
-    const switchExample = page.locator('text=/Button Type.*SWITCH/i').first();
+    const switchExample = page.locator('text=/SWITCH.*Básico/i').first();
     if (await switchExample.isVisible()) {
       await switchExample.click();
       await page.waitForTimeout(500);
@@ -256,15 +256,16 @@ test.describe('Button Type Examples', () => {
       // Verify program was loaded
       const codeEditor = page.locator('[role="textbox"]').first();
       const content = await codeEditor.inputValue();
-      expect(content).toContain('SWITCH');
+      expect(content).toContain('LD I0.0');
+      expect(content).toContain('OUT Q0.0');
     }
   });
 
-  test('should load NO button type example', async ({ page }) => {
+  test('should load NO basic example', async ({ page }) => {
     await page.getByRole('button', { name: /examples/i }).click();
     await page.waitForTimeout(500);
 
-    const noExample = page.locator('text=/Button Type.*NO/i').first();
+    const noExample = page.locator('text=/NO.*Básico/i').first();
     if (await noExample.isVisible()) {
       await noExample.click();
       await page.waitForTimeout(500);
@@ -272,14 +273,15 @@ test.describe('Button Type Examples', () => {
       const codeEditor = page.locator('[role="textbox"]').first();
       const content = await codeEditor.inputValue();
       expect(content).toContain('Normally Open');
+      expect(content).toContain('LD I0.0');
     }
   });
 
-  test('should load NC button type example', async ({ page }) => {
+  test('should load NC basic example', async ({ page }) => {
     await page.getByRole('button', { name: /examples/i }).click();
     await page.waitForTimeout(500);
 
-    const ncExample = page.locator('text=/Button Type.*NC/i').first();
+    const ncExample = page.locator('text=/NC.*Básico/i').first();
     if (await ncExample.isVisible()) {
       await ncExample.click();
       await page.waitForTimeout(500);
@@ -287,6 +289,40 @@ test.describe('Button Type Examples', () => {
       const codeEditor = page.locator('[role="textbox"]').first();
       const content = await codeEditor.inputValue();
       expect(content).toContain('Normally Closed');
+      expect(content).toContain('LD I0.0');
+    }
+  });
+
+  test('should load NO START/STOP example', async ({ page }) => {
+    await page.getByRole('button', { name: /examples/i }).click();
+    await page.waitForTimeout(500);
+
+    const startStopExample = page.locator('text=/NO.*START/i').first();
+    if (await startStopExample.isVisible()) {
+      await startStopExample.click();
+      await page.waitForTimeout(500);
+
+      const codeEditor = page.locator('[role="textbox"]').first();
+      const content = await codeEditor.inputValue();
+      expect(content).toContain('Seal-in');
+      expect(content).toContain('OR Q0.0');
+    }
+  });
+
+  test('should load NC safety circuit example', async ({ page }) => {
+    await page.getByRole('button', { name: /examples/i }).click();
+    await page.waitForTimeout(500);
+
+    const safetyExample = page.locator('text=/NC.*Segurança/i').first();
+    if (await safetyExample.isVisible()) {
+      await safetyExample.click();
+      await page.waitForTimeout(500);
+
+      const codeEditor = page.locator('[role="textbox"]').first();
+      const content = await codeEditor.inputValue();
+      expect(content).toContain('Circuito de Segurança');
+      expect(content).toContain('AND I0.0');
+      expect(content).toContain('AND I0.1');
     }
   });
 });
