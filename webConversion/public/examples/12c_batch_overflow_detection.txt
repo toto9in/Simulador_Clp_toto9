@@ -1,41 +1,40 @@
 // ==================================
-// Batch Process - Overflow Detection Test
+// Batch Process - Overflow Test
 // ==================================
-// SIMPLE OVERFLOW TEST - Tank fills automatically past 100%
+// SIMPLE TEST: Tank fills past 100% and triggers alarm
 //
 // HOW IT WORKS:
 // 1. Click START once
-// 2. Tank fills automatically (pump stays ON)
-// 3. Tank continues filling PAST 100% (no automatic stop!)
-// 4. After ~15 seconds, OVERFLOW alarm triggers
+// 2. Pump turns ON and fills tank automatically
+// 3. Tank fills past 100% (HI-LEVEL sensor = I1.0 activates)
+// 4. OVERFLOW ALARM triggers immediately when level > 100%
 // 5. Emergency drain activates automatically
-// 6. Click STOP to reset everything
+// 6. Click STOP to reset and try again
 //
-// PURPOSE: Test the overflow warning system
+// PURPOSE: Test overflow warning system
 //
 // INPUTS:
 // I0.0 = START button (click once)
-// I0.1 = STOP/RESET button (click to reset)
+// I0.1 = STOP/RESET button (click to reset everything)
 // I1.0 = HI-LEVEL sensor (ON when tank >= 100%)
 // I1.1 = LO-LEVEL sensor (ON when tank > 1%)
 //
 // OUTPUTS:
 // Q0.1 = PUMP1 (Fill valve)
-// Q0.2 = MIXER (not used)
-// Q0.3 = PUMP3 (Drain valve)
-// Q1.0 = RUN LED (System running)
-// Q1.1 = ERROR LED (Overflow alarm)
+// Q0.3 = PUMP3 (Emergency drain)
+// Q1.0 = RUN LED (System running normally)
+// Q1.1 = ERROR LED (Overflow detected!)
 // Q1.2 = ALARM (Audio/visual alarm)
 //
 // MEMORY:
-// M0 = Filling (latched with START)
-// M1 = Overflow alarm (latched)
+// M0 = Filling state (latched ON by START)
+// M1 = Overflow alarm (latched when overflow detected)
 // M2 = Emergency drain active
-// T0 = Fill timer (150 cycles = ~15 seconds)
 
 // ==================================
-// FILL STATE - Latch with START button
-// Stays ON until overflow or STOP pressed
+// FILLING STATE
+// Click START to begin filling
+// Pump stays ON until overflow or STOP
 // ==================================
 LD I0.0
 OR M0
@@ -44,14 +43,12 @@ AND I0.1
 ST M0
 
 // ==================================
-// OVERFLOW DETECTION
-// If filling for > 15 seconds = OVERFLOW!
+// OVERFLOW ALARM
+// Triggers when HI-LEVEL sensor activates
+// This means tank is >= 100%
 // ==================================
-LD M0
-TON T0,150
-
-// Latch overflow alarm when timer expires
-LD T0
+LD I1.0
+AND M0
 OR M1
 ANDN I0.1
 ST M1
@@ -59,7 +56,7 @@ ST M1
 // ==================================
 // EMERGENCY DRAIN
 // Activates when overflow detected
-// Continues until tank is empty
+// Drains until tank is empty
 // ==================================
 LD M1
 OR M2
@@ -70,24 +67,24 @@ ST M2
 // OUTPUTS
 // ==================================
 
-// PUMP1 - ON while filling (before overflow)
+// PUMP1 - Fills tank (ON while filling, OFF when overflow)
 LD M0
 ANDN M1
 ST Q0.1
 
-// PUMP3 - Emergency drain when overflow
+// PUMP3 - Emergency drain
 LD M2
 ST Q0.3
 
-// RUN LED - ON while filling normally
+// RUN LED - Normal operation indicator
 LD M0
 ANDN M1
 ST Q1.0
 
-// ERROR LED - ON when overflow detected
+// ERROR LED - Overflow detected
 LD M1
 ST Q1.1
 
-// ALARM - ON when overflow detected
+// ALARM - Overflow alarm
 LD M1
 ST Q1.2
