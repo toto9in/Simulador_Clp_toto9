@@ -5,7 +5,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { getAssetPath, ASSETS } from '../../utils/assets';
+import { ASSETS } from '../../utils/assets';
 import './HelpDialog.css';
 
 interface HelpDialogProps {
