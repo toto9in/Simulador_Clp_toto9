@@ -13,7 +13,7 @@ import './BatchScene.css';
 
 // Tank configuration (matching Java implementation)
 const TANK_MAX_LEVEL = 100; // Maximum level (100%)
-const FILL_RATE = 2; // Fill rate per cycle when valve is open
+const FILL_RATE = 0.8; // Fill rate per cycle when valve is open (slower for reflex game)
 const DRAIN_RATE = 1.5; // Drain rate per cycle when valve is open
 
 export function BatchScene() {
@@ -156,7 +156,7 @@ export function BatchScene() {
       {/* Overflow Warning */}
       {overflowWarning && (
         <div className="overflow-warning">
-          💧 OVERFLOW! Tank is spilling! Press STOP to activate emergency drain.
+          💧 YOU OVERFILLED! Emergency drain activated. Press STOP to reset and try again!
         </div>
       )}
 
