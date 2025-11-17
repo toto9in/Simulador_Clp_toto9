@@ -57,11 +57,16 @@ test-results/
 playwright-report/
 playwright/.cache/
 
+# Vitest / Testing
+coverage/
+.vitest/
+*.lcov
+.nyc_output/
+
 # Build outputs
 dist/
 dist-ssr/
 *.local
-coverage/
 *.tsbuildinfo
 
 # Environment variables

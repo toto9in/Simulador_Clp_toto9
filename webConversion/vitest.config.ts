@@ -8,15 +8,25 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './__tests__/setup.ts',
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/__tests__/e2e/**', // Exclude Playwright E2E tests
+    ],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/',
         '__tests__/',
         'src/main.tsx',
+        'src/vite-env.d.ts',
         '*.config.ts',
+        '*.config.js',
         'dist/',
+        'electron/',
+        'coverage/',
       ],
     },
   },

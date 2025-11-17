@@ -28,14 +28,19 @@ export class Interpreter {
     'ANDN',  // AND NOT
     'OR',    // OR
     'ORN',   // OR NOT
+    'NOT',   // Negate accumulator
     'OUT',   // Output (alias for ST)
+    'SET',   // Set/Latch output ON
+    'S',     // Set (alias)
+    'RESET', // Reset output OFF
+    'R',     // Reset (alias)
     'TON',   // Timer On-Delay
     'TOFF',  // Timer Off-Delay
     'CTU',   // Counter Up
     'CTD',   // Counter Down
     'CTR',   // Counter Reset
     'CTL',   // Counter Load
-    'RST',   // Reset
+    'RST',   // Reset (for timers/counters/memory)
   ];
 
   /**
@@ -182,8 +187,9 @@ export class Interpreter {
   private static executeInstruction(instruction: InstructionLine, state: PLCState): void {
     const { operator, operands } = instruction;
 
-    // Validate operands
-    if (operands.length === 0) {
+    // Some instructions don't require operands (e.g., NOT)
+    const noOperandInstructions = ['NOT'];
+    if (!noOperandInstructions.includes(operator) && operands.length === 0) {
       throw new Error(`Instruction ${operator} requires at least one operand`);
     }
 
@@ -239,6 +245,20 @@ export class Interpreter {
 
       case ILInstruction.ORN:
         this.executeORN(variable, state);
+        break;
+
+      case 'NOT':
+        this.executeNOT();
+        break;
+
+      case 'SET':
+      case 'S':
+        this.executeSET(variable, state);
+        break;
+
+      case 'RESET':
+      case 'R':
+        this.executeRESET(variable, state);
         break;
 
       case ILInstruction.TON:
@@ -470,6 +490,72 @@ export class Interpreter {
   }
 
   /**
+   * NOT - Negate accumulator
+   */
+  private static executeNOT(): void {
+    if (this.accumulator === null) {
+      throw new Error('Accumulator is empty. Use LD or LDN first.');
+    }
+
+    this.accumulator = !this.accumulator;
+  }
+
+  /**
+   * SET - Set/Latch output ON
+   * When accumulator is TRUE, sets the output to TRUE
+   * Output stays TRUE even after accumulator becomes FALSE (latching behavior)
+   */
+  private static executeSET(variable: string, state: PLCState): void {
+    if (this.accumulator === null) {
+      throw new Error('Accumulator is empty. Use LD or LDN first.');
+    }
+
+    // Only set the output if accumulator is TRUE
+    if (this.accumulator) {
+      const varType = getVariableType(variable);
+
+      if (varType === 'OUTPUT') {
+        state.outputs[variable] = true;
+      } else if (varType === 'MEMORY') {
+        // Create memory variable if it doesn't exist
+        if (!state.memoryVariables[variable]) {
+          state.memoryVariables[variable] = MemoryService.createMemoryVariable(variable);
+        }
+        state.memoryVariables[variable].currentValue = true;
+      } else {
+        throw new Error(`SET can only be used with outputs or memory bits, got: ${variable}`);
+      }
+    }
+  }
+
+  /**
+   * RESET - Reset output OFF
+   * When accumulator is TRUE, resets the output to FALSE
+   */
+  private static executeRESET(variable: string, state: PLCState): void {
+    if (this.accumulator === null) {
+      throw new Error('Accumulator is empty. Use LD or LDN first.');
+    }
+
+    // Only reset the output if accumulator is TRUE
+    if (this.accumulator) {
+      const varType = getVariableType(variable);
+
+      if (varType === 'OUTPUT') {
+        state.outputs[variable] = false;
+      } else if (varType === 'MEMORY') {
+        // Create memory variable if it doesn't exist
+        if (!state.memoryVariables[variable]) {
+          state.memoryVariables[variable] = MemoryService.createMemoryVariable(variable);
+        }
+        state.memoryVariables[variable].currentValue = false;
+      } else {
+        throw new Error(`RESET can only be used with outputs or memory bits, got: ${variable}`);
+      }
+    }
+  }
+
+  /**
    * TON - Timer On Delay
    * Format: TON T0, 50 (Timer T0, preset 5.0 seconds)
    * Uses accumulator to enable/disable the timer (matches Java behavior)
@@ -485,19 +571,22 @@ export class Interpreter {
       throw new Error(`TON requires a timer variable (T0-Tn), got: ${variable}`);
     }
 
-    const preset = parseInt(presetStr, 10);
-    if (isNaN(preset) || preset <= 0) {
+    const presetUnits = parseInt(presetStr, 10);
+    if (isNaN(presetUnits) || presetUnits <= 0) {
       throw new Error(`Invalid preset value: ${presetStr}`);
     }
 
+    // Convert preset from units (TIMER_BASE_MS) to milliseconds
+    const presetMs = presetUnits * 100; // TIMER_BASE_MS = 100ms
+
     // Create timer if it doesn't exist
     if (!state.memoryVariables[variable]) {
-      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TON', preset);
+      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TON', presetMs);
     } else {
       // Update existing timer
       const timer = state.memoryVariables[variable];
       timer.timerType = 'TON';
-      timer.preset = preset;
+      timer.preset = presetMs;
     }
 
     // Set timer enable from accumulator (Java does this in HomePageController)
@@ -525,19 +614,22 @@ export class Interpreter {
       throw new Error(`TOFF requires a timer variable (T0-Tn), got: ${variable}`);
     }
 
-    const preset = parseInt(presetStr, 10);
-    if (isNaN(preset) || preset <= 0) {
+    const presetUnits = parseInt(presetStr, 10);
+    if (isNaN(presetUnits) || presetUnits <= 0) {
       throw new Error(`Invalid preset value: ${presetStr}`);
     }
 
+    // Convert preset from units (TIMER_BASE_MS) to milliseconds
+    const presetMs = presetUnits * 100; // TIMER_BASE_MS = 100ms
+
     // Create timer if it doesn't exist
     if (!state.memoryVariables[variable]) {
-      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TOFF', preset);
+      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TOFF', presetMs);
     } else {
       // Update existing timer
       const timer = state.memoryVariables[variable];
       timer.timerType = 'TOFF';
-      timer.preset = preset;
+      timer.preset = presetMs;
     }
 
     // Set timer enable from accumulator (Java does this in HomePageController)

@@ -492,7 +492,7 @@ describe('Traffic Lights Integration Tests', () => {
 
         // Extended green time when heavy traffic
         LD C0
-        TON T0 100
+        TON T0 1
 
         // Normal green time when light traffic
         LDN C0

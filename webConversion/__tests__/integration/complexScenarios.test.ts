@@ -58,7 +58,7 @@ describe('Complex PLC Scenarios', () => {
 
         // Time window: 100 cycles
         LDN T0
-        TON T0 100
+        TON T0 1
 
         // Reset counter when time expires
         LD T0

@@ -13,7 +13,7 @@ describe('Interpreter - Timers', () => {
   describe('TON (Timer On-Delay)', () => {
     it('should create timer on first execution', () => {
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 1000';
+      const program = 'LD I0.0\nTON T0 10';
       
       const result = executeProgram(program, state);
       
@@ -25,7 +25,7 @@ describe('Interpreter - Timers', () => {
 
     it('should not be done immediately after enable', () => {
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 1000\nLD T0\nOUT Q0.0';
+      const program = 'LD I0.0\nTON T0 10\nLD T0\nOUT Q0.0';
       
       const result = executeProgram(program, state);
       
@@ -38,7 +38,7 @@ describe('Interpreter - Timers', () => {
       vi.setSystemTime(now);
       
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 1000\nLD T0\nOUT Q0.0';
+      const program = 'LD I0.0\nTON T0 10\nLD T0\nOUT Q0.0';
       
       // First scan - timer starts
       let result = executeProgram(program, state);
@@ -58,7 +58,7 @@ describe('Interpreter - Timers', () => {
       vi.setSystemTime(now);
       
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 1000';
+      const program = 'LD I0.0\nTON T0 10';
       
       // Start timer
       let result = executeProgram(program, state);
@@ -77,7 +77,7 @@ describe('Interpreter - Timers', () => {
       vi.setSystemTime(now);
       
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 1000';
+      const program = 'LD I0.0\nTON T0 10';
       
       // Start and complete timer
       let result = executeProgram(program, state);
@@ -95,7 +95,7 @@ describe('Interpreter - Timers', () => {
   describe('TOFF (Timer Off-Delay)', () => {
     it('should create timer on first execution', () => {
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTOFF T1 1000';
+      const program = 'LD I0.0\nTOFF T1 10';
       
       const result = executeProgram(program, state);
       
@@ -106,7 +106,7 @@ describe('Interpreter - Timers', () => {
 
     it('should be done immediately when enabled', () => {
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTOFF T1 1000\nLD T1\nOUT Q0.0';
+      const program = 'LD I0.0\nTOFF T1 10\nLD T1\nOUT Q0.0';
       
       const result = executeProgram(program, state);
       
@@ -118,7 +118,7 @@ describe('Interpreter - Timers', () => {
       const now = Date.now();
       vi.setSystemTime(now);
       
-      const program = 'LD I0.0\nTOFF T1 1000\nLD T1\nOUT Q0.0';
+      const program = 'LD I0.0\nTOFF T1 10\nLD T1\nOUT Q0.0';
       
       // Enable timer
       state.inputs['I0.0'] = true;
@@ -141,7 +141,7 @@ describe('Interpreter - Timers', () => {
       const now = Date.now();
       vi.setSystemTime(now);
       
-      const program = 'LD I0.0\nTOFF T1 1000\nLD T1\nOUT Q0.0';
+      const program = 'LD I0.0\nTOFF T1 10\nLD T1\nOUT Q0.0';
       
       // Enable timer
       state.inputs['I0.0'] = true;
@@ -172,7 +172,7 @@ describe('Interpreter - Timers', () => {
       state.inputs['I0.1'] = false;
       const program = `
         LD I0.0
-        TON T0 1000
+        TON T0 10
         
         LD I0.1
         RST T0
@@ -198,7 +198,7 @@ describe('Interpreter - Timers', () => {
       state.inputs['I0.1'] = false;
       const program = `
         LD I0.0
-        TON T0 1000
+        TON T0 10
         
         LD I0.1
         RST T0
@@ -217,7 +217,7 @@ describe('Interpreter - Timers', () => {
       vi.setSystemTime(now);
       
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 1000';
+      const program = 'LD I0.0\nTON T0 10';
       
       let result = executeProgram(program, state);
       expect(result.memoryVariables['T0'].accumulated).toBe(0);
