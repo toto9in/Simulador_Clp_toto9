@@ -151,10 +151,12 @@ export function AboutDialog({ onClose }: AboutDialogProps) {
                 <span className="about-ux-icon">✓</span>
                 Loading indicators
               </div>
-              <div className="about-ux-item">
-                <span className="about-ux-icon">✓</span>
-                Native file dialogs (Electron)
-              </div>
+              {isElectron && (
+                <div className="about-ux-item">
+                  <span className="about-ux-icon">✓</span>
+                  Native file dialogs (Electron)
+                </div>
+              )}
             </div>
           </section>
 

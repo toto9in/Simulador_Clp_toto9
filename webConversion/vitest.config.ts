@@ -17,6 +17,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
+      all: true,
+      reportsDirectory: './coverage',
       exclude: [
         'node_modules/',
         '__tests__/',
@@ -29,6 +31,7 @@ export default defineConfig({
         'coverage/',
       ],
     },
+    passWithNoTests: true,
   },
   resolve: {
     alias: {
