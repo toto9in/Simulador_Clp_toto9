@@ -96,10 +96,9 @@ export class MemoryService {
           const elapsed = now - timer.startTime;
           timer.accumulated = Math.floor(elapsed / PLC_CONFIG.TIMER_BASE_MS);
 
-          // Check if timer done (preset is in ms, accumulated is in units)
-          const presetUnits = Math.floor(timer.preset / PLC_CONFIG.TIMER_BASE_MS);
-          if (timer.accumulated >= presetUnits) {
-            timer.accumulated = presetUnits;
+          // Check if timer done (both preset and accumulated are in units of TIMER_BASE_MS)
+          if (timer.accumulated >= timer.preset) {
+            timer.accumulated = timer.preset;
             timer.done = true;
           }
         }
@@ -129,10 +128,9 @@ export class MemoryService {
           const elapsed = now - timer.startTime;
           timer.accumulated = Math.floor(elapsed / PLC_CONFIG.TIMER_BASE_MS);
 
-          // Check if delay expired (preset is in ms, accumulated is in units)
-          const presetUnits = Math.floor(timer.preset / PLC_CONFIG.TIMER_BASE_MS);
-          if (timer.accumulated >= presetUnits) {
-            timer.accumulated = presetUnits;
+          // Check if delay expired (both preset and accumulated are in units of TIMER_BASE_MS)
+          if (timer.accumulated >= timer.preset) {
+            timer.accumulated = timer.preset;
             timer.done = false; // TOFF turns OFF after delay
           }
         }

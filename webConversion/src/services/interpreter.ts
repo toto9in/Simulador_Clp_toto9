@@ -571,22 +571,20 @@ export class Interpreter {
       throw new Error(`TON requires a timer variable (T0-Tn), got: ${variable}`);
     }
 
-    const presetUnits = parseInt(presetStr, 10);
-    if (isNaN(presetUnits) || presetUnits <= 0) {
+    const preset = parseInt(presetStr, 10);
+    if (isNaN(preset) || preset <= 0) {
       throw new Error(`Invalid preset value: ${presetStr}`);
     }
 
-    // Convert preset from units (TIMER_BASE_MS) to milliseconds
-    const presetMs = presetUnits * 100; // TIMER_BASE_MS = 100ms
-
+    // Preset is stored in units of TIMER_BASE_MS (100ms)
     // Create timer if it doesn't exist
     if (!state.memoryVariables[variable]) {
-      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TON', presetMs);
+      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TON', preset);
     } else {
       // Update existing timer
       const timer = state.memoryVariables[variable];
       timer.timerType = 'TON';
-      timer.preset = presetMs;
+      timer.preset = preset;
     }
 
     // Set timer enable from accumulator (Java does this in HomePageController)
@@ -594,7 +592,7 @@ export class Interpreter {
 
     // DEBUG: Log timer enable
     if (this.DEBUG_MODE && this.instructionCount < 50) {
-      console.log(`  → Timer ${variable} (TON) enabled: ${this.accumulator}, preset: ${preset}`);
+      console.log(`  → Timer ${variable} (TON) enabled: ${this.accumulator}, preset: ${preset} (${preset * 100}ms)`);
     }
   }
 
@@ -614,22 +612,20 @@ export class Interpreter {
       throw new Error(`TOFF requires a timer variable (T0-Tn), got: ${variable}`);
     }
 
-    const presetUnits = parseInt(presetStr, 10);
-    if (isNaN(presetUnits) || presetUnits <= 0) {
+    const preset = parseInt(presetStr, 10);
+    if (isNaN(preset) || preset <= 0) {
       throw new Error(`Invalid preset value: ${presetStr}`);
     }
 
-    // Convert preset from units (TIMER_BASE_MS) to milliseconds
-    const presetMs = presetUnits * 100; // TIMER_BASE_MS = 100ms
-
+    // Preset is stored in units of TIMER_BASE_MS (100ms)
     // Create timer if it doesn't exist
     if (!state.memoryVariables[variable]) {
-      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TOFF', presetMs);
+      state.memoryVariables[variable] = MemoryService.createTimer(variable, 'TOFF', preset);
     } else {
       // Update existing timer
       const timer = state.memoryVariables[variable];
       timer.timerType = 'TOFF';
-      timer.preset = presetMs;
+      timer.preset = preset;
     }
 
     // Set timer enable from accumulator (Java does this in HomePageController)
@@ -637,7 +633,7 @@ export class Interpreter {
 
     // DEBUG: Log timer enable
     if (this.DEBUG_MODE && this.instructionCount < 50) {
-      console.log(`  → Timer ${variable} (TOFF) enabled: ${this.accumulator}, preset: ${preset}`);
+      console.log(`  → Timer ${variable} (TOFF) enabled: ${this.accumulator}, preset: ${preset} (${preset * 100}ms)`);
     }
   }
 

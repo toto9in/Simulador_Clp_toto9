@@ -14,13 +14,13 @@ describe('Interpreter - Timers', () => {
     it('should create timer on first execution', () => {
       state.inputs['I0.0'] = true;
       const program = 'LD I0.0\nTON T0 10';
-      
+
       const result = executeProgram(program, state);
-      
+
       expect(result.memoryVariables['T0']).toBeDefined();
       expect(result.memoryVariables['T0'].type).toBe('TIMER');
       expect(result.memoryVariables['T0'].timerType).toBe('TON');
-      expect(result.memoryVariables['T0'].preset).toBe(1000);
+      expect(result.memoryVariables['T0'].preset).toBe(10); // 10 units of 100ms = 1000ms
     });
 
     it('should not be done immediately after enable', () => {
@@ -215,22 +215,22 @@ describe('Interpreter - Timers', () => {
     it('should calculate accumulated time for TON', () => {
       const now = Date.now();
       vi.setSystemTime(now);
-      
+
       state.inputs['I0.0'] = true;
-      const program = 'LD I0.0\nTON T0 10';
-      
+      const program = 'LD I0.0\nTON T0 10'; // 10 units = 1000ms
+
       let result = executeProgram(program, state);
       expect(result.memoryVariables['T0'].accumulated).toBe(0);
-      
-      // Advance 500ms
+
+      // Advance 500ms = 5 units
       vi.setSystemTime(now + 500);
       result = executeProgram(program, result);
-      expect(result.memoryVariables['T0'].accumulated).toBe(500);
-      
-      // Advance to completion
+      expect(result.memoryVariables['T0'].accumulated).toBe(5);
+
+      // Advance to completion (1000ms = 10 units)
       vi.setSystemTime(now + 1000);
       result = executeProgram(program, result);
-      expect(result.memoryVariables['T0'].accumulated).toBe(1000);
+      expect(result.memoryVariables['T0'].accumulated).toBe(10);
       expect(result.memoryVariables['T0'].done).toBe(true);
     });
   });
