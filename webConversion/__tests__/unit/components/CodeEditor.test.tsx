@@ -158,7 +158,9 @@ describe('CodeEditor', () => {
     it('should have spellCheck disabled', () => {
       renderCodeEditor();
       const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
-      expect(textarea.spellcheck).toBe(false);
+      // Check the attribute value (can be 'false' string or boolean false)
+      const spellCheckValue = textarea.getAttribute('spellcheck');
+      expect(spellCheckValue === 'false' || textarea.spellcheck === false).toBe(true);
     });
 
     it('should have autoCapitalize off', () => {

@@ -16,6 +16,10 @@ vi.mock('react-i18next', () => ({
       changeLanguage: vi.fn(),
     },
   }),
+  initReactI18next: {
+    type: '3rdParty',
+    init: () => {},
+  },
 }));
 
 // Mock all child components
