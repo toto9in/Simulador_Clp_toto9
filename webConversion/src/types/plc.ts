@@ -37,6 +37,11 @@ export enum ILInstruction {
   ANDN = 'ANDN',   // AND Negated
   OR = 'OR',       // OR operation
   ORN = 'ORN',     // OR Negated
+  NOT = 'NOT',     // Negate accumulator
+  SET = 'SET',     // Set/Latch output ON
+  S = 'S',         // Set (alias)
+  RESET = 'RESET', // Reset output OFF
+  R = 'R',         // Reset (alias)
   TON = 'TON',     // Timer On Delay
   TOFF = 'TOFF',   // Timer Off Delay
   CTU = 'CTU',     // Count Up
