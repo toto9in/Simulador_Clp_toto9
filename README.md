@@ -158,7 +158,7 @@ cd java-original
 ### Versão Web Moderna
 
 <!-- Adicione aqui uma screenshot da interface web atual -->
-![Interface Web do Simulador](./docs/web_interface_preview.png)
+![Interface Web do Simulador](./docs/pics/web_interface_preview.png)
 
 ### Versão Java Original
 
