@@ -103,10 +103,11 @@ export class MemoryService {
           }
         }
       } else if (!enabled) {
-        // TON behavior: When disabled, reset timing
+        // TON behavior: When disabled, reset timing but keep done flag
+        // The done flag should only be reset on rising edge or explicit RST
         timer.startTime = undefined;
         timer.accumulated = 0;
-        timer.done = false;
+        // Note: done is NOT reset here - it persists until next rising edge or RST
       }
     }
 
