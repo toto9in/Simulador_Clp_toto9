@@ -14,7 +14,10 @@
 
 ## 👥 Alunos
 
-PQP
+- Carlos Alexandre
+- Matheus Calegari
+- Luiz Antonio
+- Eder Queiroz
 
 ---
 
@@ -41,9 +44,10 @@ Este repositório contém **duas versões** do simulador:
 
 ### 2️⃣ **Versão Web Moderna (React + TypeScript + Electron)** → [`webConversion/`](./webConversion/)
 - Interface web moderna com React e TypeScript
-- Pode rodar no navegador ou como app desktop (Electron)
-- Conversão completa do projeto Java
+- Conversão completa do projeto Java original
 - UI/UX aprimorada com componentes modernos
+- **Disponível online:** [https://kiwiabacaxi.github.io/Simulador_Clp/](https://kiwiabacaxi.github.io/Simulador_Clp/)
+- **Aplicação Desktop:** Build para Windows via Electron (testado em Windows)
 - **Versão recomendada para uso**
 
 📖 **Documentação completa:** Veja a pasta [`docs/`](./docs/) para guias de desenvolvimento, conversão e deployment.
@@ -52,7 +56,11 @@ Este repositório contém **duas versões** do simulador:
 
 ## 🚀 Quick Start
 
-### Versão Web (Recomendado)
+### 🌐 Versão Web Online (Mais Rápido)
+
+Acesse diretamente pelo navegador: **[https://kiwiabacaxi.github.io/Simulador_Clp/](https://kiwiabacaxi.github.io/Simulador_Clp/)**
+
+### 💻 Versão Web Local (Desenvolvimento)
 
 ```bash
 cd webConversion
@@ -62,7 +70,18 @@ npm run dev
 
 Acesse em http://localhost:5173
 
-### Versão Java Original
+### 🖥️ Versão Desktop (Electron - Windows)
+
+```bash
+cd webConversion
+npm install
+npm run build        # Build da aplicação web
+npm run electron:build  # Build do executável Windows
+```
+
+O executável será gerado na pasta `dist/`
+
+### ☕ Versão Java Original
 
 ```bash
 cd java-original
@@ -136,7 +155,14 @@ cd java-original
 
 ## 🎨 Interface Interativa - Preview
 
-![Interface do Simulador](./java-original/docs/simulation_interface.png)
+### Versão Web Moderna
+
+<!-- Adicione aqui uma screenshot da interface web atual -->
+![Interface Web do Simulador](./docs/pics/web_interface_preview.png)
+
+### Versão Java Original
+
+![Interface Java do Simulador](./java-original/docs/simulation_interface.png)
 
 ---
 
@@ -148,7 +174,34 @@ cd java-original
 
 ---
 
-## 📚 Referências
+## 📚 Tecnologias Utilizadas
+
+### Versão Web
+- **Frontend:** React 18 + TypeScript
+- **Build Tool:** Vite
+- **Styling:** CSS Modules
+- **Desktop:** Electron
+- **Deploy:** GitHub Pages
+- **Gerenciamento de Estado:** React Hooks
+
+### Versão Java Original
+- **Linguagem:** Java
+- **Interface:** Swing
+- **Build:** Gradle
+
+---
+
+## 📖 Referências
 
 - Projeto base: [https://github.com/IasminPieraco/Trabalho-Final-CLP](https://github.com/IasminPieraco/Trabalho-Final-CLP)
-- LogixPro Simulator: Referência visual
+- LogixPro Simulator: Referência visual e funcional
+
+---
+
+## 📄 Licença
+
+Este é um projeto acadêmico desenvolvido para fins educacionais no IFTM - Instituto Federal do Triângulo Mineiro.
+
+**Licença MIT** - Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+Copyright (c) 2025 - Carlos Alexandre, Matheus Calegari, Luiz Antonio, Eder Queiroz
