@@ -1,12 +1,16 @@
 {
   "name": "plc-simulator-web",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "electron/main.cjs",
   "author": "PLC Simulator Team",
   "description": "Educational PLC Simulator with IL (Instruction List) programming",
   "homepage": "https://github.com/Kiwiabacaxi/Simulador_Clp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kiwiabacaxi/Simulador_Clp.git"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
@@ -72,8 +76,14 @@
   "build": {
     "appId": "com.plcsimulator.app",
     "productName": "PLC Simulator",
+    "npmRebuild": false,
     "directories": {
       "output": "release"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Kiwiabacaxi",
+      "repo": "Simulador_Clp"
     },
     "files": [
       "dist/**/*",
