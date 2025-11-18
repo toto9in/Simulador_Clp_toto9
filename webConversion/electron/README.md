@@ -2,6 +2,8 @@
 
 Este diretório contém os arquivos do Electron para transformar o PLC Simulator web em uma aplicação desktop nativa.
 
+> **📖 Para documentação completa e detalhada, veja:** `/ELECTRON_GUIDE.md` na raiz do projeto
+
 ## 📁 Estrutura
 
 ```
@@ -11,7 +13,14 @@ electron/
 └── README.md    # Este arquivo
 ```
 
-## 🚀 Como Usar
+## 🚀 Guia Rápido
+
+### Instalação
+
+```bash
+cd webConversion
+npm install
+```
 
 ### Desenvolvimento
 
@@ -20,11 +29,12 @@ electron/
 npm run electron:dev
 ```
 
-Isso vai:
-1. Iniciar o servidor de desenvolvimento Vite em `http://localhost:5173`
-2. Aguardar o servidor estar pronto
-3. Abrir a janela do Electron apontando para o servidor local
-4. Habilitar DevTools automaticamente
+**O que acontece:**
+1. Inicia servidor Vite em `http://localhost:5173`
+2. Aguarda servidor estar pronto
+3. Abre janela Electron
+4. DevTools aberto automaticamente
+5. Hot reload funciona normalmente
 
 ### Testar Build de Produção
 
@@ -33,9 +43,10 @@ Isso vai:
 npm run electron:build
 ```
 
-Isso vai:
-1. Executar `npm run build` (TypeScript + Vite)
-2. Abrir o Electron carregando de `dist/index.html`
+**O que acontece:**
+1. Executa `npm run build` (TypeScript + Vite)
+2. Abre Electron carregando de `dist/index.html`
+3. Testa se build está funcionando corretamente
 
 ### Criar Instalador Windows
 
@@ -44,14 +55,18 @@ Isso vai:
 npm run electron:dist
 ```
 
-Isso vai:
-1. Compilar a aplicação React
-2. Empacotar com Electron
-3. Criar instalador NSIS em `release/`
+**O que acontece:**
+1. Compila aplicação React
+2. Empacota com Electron
+3. Cria instalador NSIS em `release/`
 
 **Saída:**
 - `release/PLC Simulator Setup 0.1.0.exe` - Instalador Windows (x64 e ia32)
 - `release/win-unpacked/` - Aplicação descompactada (para testes)
+
+**Tamanho esperado:**
+- Instalador: ~70-100 MB (compactado)
+- App instalada: ~150-200 MB (inclui Chromium + Node.js)
 
 ## 🔧 Configuração
 
@@ -217,12 +232,63 @@ npm install --save-dev electron
 - Verificar se `contextBridge.exposeInMainWorld` está em `preload.js`
 - Verificar se `contextIsolation: true` em `main.js`
 
-## 📚 Referências
+## 🔄 Sincronização Web ↔ Desktop
 
+**Princípio fundamental:**
+> Uma única base de código em `src/` → Duas formas de distribuição
+
+O código React é 100% compartilhado entre web e desktop. Qualquer alteração em `src/` automaticamente afeta ambas as versões.
+
+### Como Funciona
+
+**Detecção automática de ambiente:**
+
+```typescript
+// src/services/fileIO.ts
+if (window.electronAPI) {
+  // Electron: usa diálogos nativos do sistema
+  await window.electronAPI.saveFile(content);
+} else {
+  // Web: usa File API do navegador (download)
+  this.saveProgramToFileWeb(content);
+}
+```
+
+### Workflow de Atualização
+
+1. **Desenvolva normalmente** em `src/`
+2. **Teste em ambos os ambientes:**
+   - Web: `npm run dev`
+   - Electron: `npm run electron:dev`
+3. **Build:**
+   - Web: `npm run build` → Deploy no GitHub Pages
+   - Desktop: `npm run electron:dist` → Novo instalador
+
+**✅ Mesma funcionalidade, experiência diferente!**
+
+## 📚 Documentação
+
+- **Guia Completo (PT-BR):** `/ELECTRON_GUIDE.md` (na raiz do projeto)
 - [Electron Docs](https://www.electronjs.org/docs)
 - [electron-builder](https://www.electron.build/)
 - [Context Isolation](https://www.electronjs.org/docs/tutorial/context-isolation)
 - [IPC Communication](https://www.electronjs.org/docs/api/ipc-main)
+
+## 🐛 Problemas Comuns
+
+### `window.electronAPI is undefined`
+
+**Solução:** Verificar `contextIsolation: true` em `main.js` e `contextBridge.exposeInMainWorld` em `preload.js`
+
+### Página em branco após build
+
+**Solução:** Verificar `base: './'` em `vite.config.ts`
+
+### Alterações não aparecem
+
+**Solução:**
+- Alterações em `src/`: Hot reload automático ✅
+- Alterações em `electron/`: Reiniciar Electron (Ctrl+C e rodar novamente)
 
 ---
 

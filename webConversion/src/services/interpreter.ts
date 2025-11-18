@@ -247,17 +247,17 @@ export class Interpreter {
         this.executeORN(variable, state);
         break;
 
-      case 'NOT':
+      case ILInstruction.NOT:
         this.executeNOT();
         break;
 
-      case 'SET':
-      case 'S':
+      case ILInstruction.SET:
+      case ILInstruction.S:
         this.executeSET(variable, state);
         break;
 
-      case 'RESET':
-      case 'R':
+      case ILInstruction.RESET:
+      case ILInstruction.R:
         this.executeRESET(variable, state);
         break;
 

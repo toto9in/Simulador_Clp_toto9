@@ -8,10 +8,18 @@ export default defineConfig({
   // For repo: https://github.com/username/Simulador_Clp
   // Use: base: '/Simulador_Clp/'
   // For custom domain or root deployment, use: base: '/'
-  base: process.env.GITHUB_PAGES === 'true' ? '/Simulador_Clp/' : '/',
+  // For Electron, use relative paths
+  base: process.env.GITHUB_PAGES === 'true' ? '/Simulador_Clp/' : './',
 
   // Explicitly set public directory
   publicDir: 'public',
+
+  // Server configuration for development
+  server: {
+    port: 5173,
+    strictPort: true,
+    cors: true,
+  },
 
   build: {
     // Output directory
@@ -20,8 +28,8 @@ export default defineConfig({
     assetsDir: 'assets',
     // Copy public directory to dist
     copyPublicDir: true,
-    // Source map for debugging
-    sourcemap: false,
+    // Source map for debugging (useful for Electron)
+    sourcemap: process.env.NODE_ENV === 'development',
     // Minify for production
     minify: 'esbuild',
     // Asset file names pattern

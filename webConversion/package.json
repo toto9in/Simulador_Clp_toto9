@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "main": "electron/main.js",
+  "main": "electron/main.cjs",
   "author": "PLC Simulator Team",
   "description": "Educational PLC Simulator with IL (Instruction List) programming",
   "homepage": "https://github.com/Kiwiabacaxi/Simulador_Clp",
