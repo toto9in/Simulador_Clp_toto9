@@ -6,10 +6,12 @@ Este guia explica como criar e publicar releases automáticas do Simulador de CL
 
 O projeto está configurado para criar releases automaticamente quando você cria uma tag de versão. O GitHub Actions vai:
 
-1. ✅ Buildar automaticamente para **Windows, Linux e macOS**
+1. ✅ Buildar automaticamente para **Windows** (x64 e x86)
 2. ✅ Criar uma **GitHub Release** com os arquivos
 3. ✅ Gerar **changelog automático**
 4. ✅ Disponibilizar os instaladores para download
+
+> 💡 **Nota:** Atualmente apenas Windows está ativo. Builds para Linux e macOS podem ser ativados no futuro editando `.github/workflows/release.yml`.
 
 ## 🎯 Como Fazer uma Release
 
@@ -61,15 +63,9 @@ Você pode acompanhar o progresso em: **Actions** → **Release Electron App**
 Após o build, a release terá os seguintes arquivos:
 
 ### Windows
-- `PLC-Simulator-Setup-{version}.exe` - Instalador NSIS (recomendado)
+- `PLC-Simulator-Setup-{version}.exe` - Instalador NSIS para x64 e x86 (testado e funcional)
 
-### Linux
-- `PLC-Simulator-{version}.AppImage` - AppImage universal
-- `plc-simulator-web_{version}_amd64.deb` - Pacote Debian/Ubuntu
-
-### macOS
-- `PLC-Simulator-{version}.dmg` - Imagem de disco
-- `PLC-Simulator-{version}-mac.zip` - Arquivo compactado
+> 💡 **Builds para outras plataformas:** Linux e macOS podem ser adicionados futuramente caso necessário.
 
 ## 🔢 Versionamento Semântico
 

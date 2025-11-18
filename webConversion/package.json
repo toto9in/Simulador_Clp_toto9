@@ -76,6 +76,7 @@
   "build": {
     "appId": "com.plcsimulator.app",
     "productName": "PLC Simulator",
+    "npmRebuild": false,
     "directories": {
       "output": "release"
     },

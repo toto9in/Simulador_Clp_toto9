@@ -203,9 +203,11 @@ git push origin v1.0.0
 ```
 
 O GitHub Actions automaticamente:
-- ✅ Builda para Windows, Linux e macOS
+- ✅ Builda para Windows (x64 e x86)
 - ✅ Cria uma GitHub Release com os instaladores
 - ✅ Gera changelog automático
+
+> 💡 Linux e macOS podem ser ativados futuramente se necessário
 
 📖 **Guia completo:** Veja [`docs/RELEASES.md`](./docs/RELEASES.md) para instruções detalhadas
 
