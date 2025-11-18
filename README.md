@@ -29,6 +29,48 @@ O projeto se baseia na versão desenvolvida pelos alunos do semestre 2024/02, di
 
 ---
 
+## 🗂️ Estrutura do Projeto
+
+Este repositório contém **duas versões** do simulador:
+
+### 1️⃣ **Versão Original (Java Swing)** → [`java-original/`](./java-original/)
+- Interface desktop em Java Swing
+- Implementação completa do simulador PLC
+- Suporta todas as instruções IL
+- Versão legacy mantida para referência
+
+### 2️⃣ **Versão Web Moderna (React + TypeScript + Electron)** → [`webConversion/`](./webConversion/)
+- Interface web moderna com React e TypeScript
+- Pode rodar no navegador ou como app desktop (Electron)
+- Conversão completa do projeto Java
+- UI/UX aprimorada com componentes modernos
+- **Versão recomendada para uso**
+
+📖 **Documentação completa:** Veja a pasta [`docs/`](./docs/) para guias de desenvolvimento, conversão e deployment.
+
+---
+
+## 🚀 Quick Start
+
+### Versão Web (Recomendado)
+
+```bash
+cd webConversion
+npm install
+npm run dev
+```
+
+Acesse em http://localhost:5173
+
+### Versão Java Original
+
+```bash
+cd java-original
+./gradlew run
+```
+
+---
+
 ## 🛠️ Funcionalidades Obrigatórias
 
 ## 📝 Lista de Instruções Suportadas (Instruction List - IL)
@@ -88,13 +130,13 @@ O projeto se baseia na versão desenvolvida pelos alunos do semestre 2024/02, di
 
 ### ✅ Instalador para Windows
 
-- O simulador deve dispor de um **instalador executável (.exe) para ambiente Windows**
+- O simulador dispõe de um **instalador executável (.exe) para ambiente Windows** (via Electron)
 
 ---
 
 ## 🎨 Interface Interativa - Preview
 
-![Interface do Simulador](./docs/simulation_interface.png)
+![Interface do Simulador](./java-original/docs/simulation_interface.png)
 
 ---
 

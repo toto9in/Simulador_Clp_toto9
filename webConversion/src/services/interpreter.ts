@@ -880,6 +880,7 @@ export class Interpreter {
         memVar.accumulated = 0;
         memVar.done = false;
         memVar.enabled = false;
+        memVar.currentValue = false; // Reset currentValue to prevent re-enabling
         if (memVar.type === 'TIMER') {
           memVar.startTime = undefined;
         }

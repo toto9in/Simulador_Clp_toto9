@@ -69,6 +69,18 @@ dist-ssr/
 *.local
 *.tsbuildinfo
 
+# Electron build outputs
+releases/
+release/
+out/
+*.exe
+*.dmg
+*.AppImage
+*.snap
+*.deb
+*.rpm
+*.pkg
+
 # Environment variables
 .env
 .env.local
