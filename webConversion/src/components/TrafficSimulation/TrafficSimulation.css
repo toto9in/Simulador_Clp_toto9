@@ -71,6 +71,7 @@
   animation: slideDown 0.3s ease-out;
   max-width: 90%;
   text-align: center;
+  pointer-events: none;
 }
 
 @keyframes slideDown {
@@ -294,7 +295,6 @@
   position: absolute;
   font-size: 28px;
   z-index: 5;
-  transition: all 0.1s linear;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
