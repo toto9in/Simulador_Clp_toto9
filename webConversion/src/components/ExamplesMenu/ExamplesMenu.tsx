@@ -180,7 +180,7 @@ export function ExamplesMenu({
                               </span>
                             </div>
                             <div className="examples-menu__item-description">
-                              {example.description}
+                              {t(`examples.${example.id}.description`, example.description)}
                             </div>
                           </button>
                         ))}
