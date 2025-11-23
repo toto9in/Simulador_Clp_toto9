@@ -105,6 +105,7 @@
       }
     ],
     "win": {
+      "icon": "public/gear.svg",
       "target": [
         {
           "target": "nsis",
@@ -123,6 +124,7 @@
       "shortcutName": "PLC Simulator"
     },
     "mac": {
+      "icon": "public/gear.svg",
       "target": [
         "dmg",
         "zip"
@@ -130,6 +132,7 @@
       "category": "public.app-category.education"
     },
     "linux": {
+      "icon": "public/gear.svg",
       "target": [
         "AppImage",
         "deb"
