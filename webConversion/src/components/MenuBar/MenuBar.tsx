@@ -10,7 +10,7 @@ import { useTheme } from '../../hooks/useTheme';
 import { useLoading } from '../../hooks/useLoading';
 import { FileIOService } from '../../services/fileIO';
 import { SceneType, ExecutionMode } from '../../types/plc';
-import { ASSETS } from '../../utils/assets';
+
 import { UnsavedIndicator } from '../UnsavedIndicator/UnsavedIndicator';
 import { ExamplesMenu } from '../ExamplesMenu/ExamplesMenu';
 import './MenuBar.css';
@@ -114,11 +114,10 @@ export function MenuBar({
       {/* File Menu */}
       <div className="menu-group">
         <button className="menu-button" onClick={handleSave}>
-          <img src={ASSETS.BLOCO_NOTAS} alt="Save" className="menu-icon" />
-          {t('menu.save')}
+          💾 {t('menu.save')}
         </button>
         <button className="menu-button" onClick={handleLoad}>
-          {t('menu.load')}
+          📂 {t('menu.load')}
         </button>
         <ExamplesMenu
           hasUnsavedChanges={hasUnsavedChanges}

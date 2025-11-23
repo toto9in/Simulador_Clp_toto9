@@ -9,7 +9,8 @@
     "help": "Help",
     "about": "About",
     "simulation": "Simulation",
-    "scene": "Scene"
+    "scene": "Scene",
+    "examples": "Examples"
   },
   "scenes": {
     "default": "Panel (default)",
@@ -121,5 +122,45 @@
   "batch": {
     "sensors": "Level Sensors",
     "info": "Control the tank using START/STOP. The IL program controls the valves based on level sensors."
+  },
+  "examples": {
+    "01_hello_world": { "description": "Basic input/output - Press I0.0 to control Q0.0" },
+    "02_multiple_outputs": { "description": "Control multiple outputs with different inputs" },
+    "03_and_logic": { "description": "Two-hand safety control using AND logic" },
+    "04_or_logic": { "description": "Multiple start buttons using OR logic" },
+    "15_instruction_ld": { "description": "Loads the value into the accumulator" },
+    "16_instruction_ldn": { "description": "Loads the negated value into the accumulator" },
+    "17_instruction_st": { "description": "Stores the accumulator value to output" },
+    "18_instruction_stn": { "description": "Stores the negated accumulator value to output" },
+    "19_instruction_and": { "description": "Performs AND operation with accumulator" },
+    "20_instruction_andn": { "description": "Performs AND operation with negated input" },
+    "21_instruction_or": { "description": "Performs OR operation with accumulator" },
+    "22_instruction_orn": { "description": "Performs OR operation with negated input" },
+    "23_instruction_ton": { "description": "Output activates after a delay when input is ON" },
+    "24_instruction_toff": { "description": "Output stays ON for a delay after input turns OFF" },
+    "25_instruction_ctu": { "description": "Counts up each time input transitions from OFF to ON" },
+    "26_instruction_ctd": { "description": "Counts down from preset value to 0" },
+    "05_start_stop_seal": { "description": "Motor control with latching (seal-in)" },
+    "06_timer_on_delay": { "description": "5-second delay before output activation" },
+    "07_timer_off_delay": { "description": "Output stays on for 3 seconds after input release" },
+    "08_blinker": { "description": "Creates a blinking output (1Hz)" },
+    "09_counter_up": { "description": "Count up to 5, then activate output" },
+    "10_counter_down": { "description": "Count down from 10 to 0" },
+    "11_traffic_light": { "description": "Single traffic light cycle (Red→Green→Yellow)" },
+    "12_batch_automatic": { "description": "Manual tank filling, mixing, and draining with START/STOP buttons" },
+    "12b_batch_fully_automatic": { "description": "Complete automatic cycle: Fill → Mix (5s) → Drain with single START button" },
+    "12c_batch_overflow_detection": { "description": "Error handling: detects overflow/spill if filling takes >12s, triggers alarm and emergency drain" },
+    "13_traffic_light_crossroad": { "description": "Two independent traffic lights for a crossroad intersection" },
+    "14_traffic_light_safe_crossroad": { "description": "Synchronized traffic lights with collision prevention logic" },
+    "27_button_switch_basic": { "description": "Simple toggle button: click to turn ON/OFF" },
+    "28_button_switch_and": { "description": "Two switches in series: both ON to activate output" },
+    "29_button_switch_or": { "description": "Two switches in parallel: either one activates output" },
+    "30_button_no_basic": { "description": "Momentary button: active only while held" },
+    "31_button_no_start_stop": { "description": "Seal-in circuit: START turns ON, STOP turns OFF" },
+    "32_button_no_counter": { "description": "Counts button presses up to 5" },
+    "33_button_nc_basic": { "description": "Inverted button: TRUE when not pressed" },
+    "34_button_nc_stop": { "description": "Safe STOP: broken wire = motor stops" },
+    "35_button_nc_safety": { "description": "Two NC in series for dual protection" },
+    "36_button_mixed_types": { "description": "SWITCH + NO + NC working together" }
   }
 }

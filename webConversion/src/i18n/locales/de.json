@@ -8,7 +8,8 @@
     "language": "Sprache",
     "help": "Helfen",
     "about": "Um",
-    "simulation": "Simulation"
+    "simulation": "Simulation",
+    "examples": "Beispiele"
   },
   "scenes": {
     "default": "Panel",

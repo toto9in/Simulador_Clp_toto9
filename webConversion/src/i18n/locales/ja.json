@@ -8,7 +8,8 @@
     "language": "言語",
     "help": "ヘルプ",
     "about": "について",
-    "simulation": "シミュレーション"
+    "simulation": "シミュレーション",
+    "examples": "例"
   },
   "scenes": {
     "default": "パネル",
