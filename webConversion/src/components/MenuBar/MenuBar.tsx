@@ -10,7 +10,7 @@ import { useTheme } from '../../hooks/useTheme';
 import { useLoading } from '../../hooks/useLoading';
 import { FileIOService } from '../../services/fileIO';
 import { SceneType, ExecutionMode } from '../../types/plc';
-import { ASSETS } from '../../utils/assets';
+
 import { UnsavedIndicator } from '../UnsavedIndicator/UnsavedIndicator';
 import { ExamplesMenu } from '../ExamplesMenu/ExamplesMenu';
 import './MenuBar.css';
