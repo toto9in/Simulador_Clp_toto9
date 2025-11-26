@@ -121,7 +121,8 @@
   },
   "batch": {
     "sensors": "Level Sensors",
-    "info": "Control the tank using START/STOP. The IL program controls the valves based on level sensors."
+    "info": "Control the tank using START/STOP. The IL program controls the valves based on level sensors.",
+    "fillSpeedControl": "Fill Speed Control"
   },
   "examples": {
     "01_hello_world": { "description": "Basic input/output - Press I0.0 to control Q0.0" },

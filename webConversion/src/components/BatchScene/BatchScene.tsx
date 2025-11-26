@@ -13,13 +13,16 @@ import './BatchScene.css';
 
 // Tank configuration (matching Java implementation)
 const TANK_MAX_LEVEL = 100; // Maximum level (100%)
-const FILL_RATE = 0.8; // Fill rate per cycle when valve is open (slower for reflex game)
-const DRAIN_RATE = 1.5; // Drain rate per cycle when valve is open
+const FILL_RATE = 1.0; // Fill rate per cycle when valve is open (slower for reflex game)
+// const DRAIN_RATE = 1.5; // Drain rate per cycle when valve is open (Now using fillRate)
+const PHYSICS_SPEED_SCALE = 0.05; // Global scaling factor to normalize speed (20x slower)
 
 export function BatchScene() {
   const { t } = useTranslation();
   const { state, dispatch } = usePLCState();
-  const [tankLevel, setTankLevel] = useState(0); // 0-100% (can overflow past 100)
+  const [tankLevel, setTankLevel] = useState(0); // 0-100% (for display only)
+  const levelRef = useRef(0); // High precision level for physics
+  const liquidRef = useRef<HTMLDivElement>(null); // Ref for direct DOM manipulation
   const [overflowWarning, setOverflowWarning] = useState(false);
   const [fillRate, setFillRate] = useState(FILL_RATE); // Adjustable fill rate
   const animationRef = useRef<number>();
@@ -40,41 +43,61 @@ export function BatchScene() {
   // Q1.1 = IDLE LED (system idle indicator)
   // Q1.2 = FULL LED (tank full indicator)
 
-  // Update level sensors based on tank level
+  // Update level sensors based on tank level (using ref for latest value)
   useEffect(() => {
-    // HIGH sensor: active at 100% (matching Java isAtHighLevel: value >= MAX_VALUE)
-    const hiLevelSensor = tankLevel >= 100;
-    // LOW sensor: active above ~1% (matching Java isAtLowLevel: value >= 3)
-    const loLevelSensor = tankLevel > 1;
-
-    // Update input sensors I1.0 and I1.1
-    if (state.inputs['I1.0'] !== hiLevelSensor) {
-      dispatch({ type: 'SET_INPUT', key: 'I1.0', value: hiLevelSensor });
-    }
-    if (state.inputs['I1.1'] !== loLevelSensor) {
-      dispatch({ type: 'SET_INPUT', key: 'I1.1', value: loLevelSensor });
-    }
-  }, [tankLevel, state.inputs, dispatch]);
+    // We need to check sensors on every frame or when outputs change
+    // But since we moved physics to animation loop, we should check sensors there too
+    // However, dispatch causes re-renders, so we should be careful.
+    // Let's keep sensor logic in the animation loop or a separate effect that depends on the integer level.
+  }, []); // Removed dependencies as we'll handle this in the animation loop or via tankLevel updates
 
   // Animate tank level based on outputs
   useEffect(() => {
     const animate = () => {
-      setTankLevel(prevLevel => {
-        let newLevel = prevLevel;
+      let newLevel = levelRef.current;
+      let changed = false;
 
-        // Fill valve open (Q0.1 = pump1)
-        // NOTE: No Math.min here - allows overflow for testing!
-        if (state.outputs['Q0.1']) {
-          newLevel = newLevel + fillRate;
+      // Fill valve open (Q0.1 = pump1)
+      if (state.outputs['Q0.1']) {
+        newLevel = newLevel + (fillRate * PHYSICS_SPEED_SCALE);
+        changed = true;
+      }
+
+      // Drain valve open (Q0.3 = pump3)
+      if (state.outputs['Q0.3']) {
+        newLevel = Math.max(0, newLevel - (fillRate * PHYSICS_SPEED_SCALE));
+        changed = true;
+      }
+
+      if (changed) {
+        levelRef.current = newLevel;
+        
+        // Direct DOM update for smooth animation
+        if (liquidRef.current) {
+          liquidRef.current.style.height = `${newLevel * 0.675}%`;
+          liquidRef.current.style.opacity = newLevel > 0 ? '1' : '0';
         }
 
-        // Drain valve open (Q0.3 = pump3)
-        if (state.outputs['Q0.3']) {
-          newLevel = Math.max(0, newLevel - DRAIN_RATE);
+        // Update React state only when integer percentage changes (for text display and sensors)
+        // Or if we hit 0 or 100 exactly
+        const prevInt = Math.floor(tankLevel);
+        const newInt = Math.floor(newLevel);
+        
+        if (prevInt !== newInt || (newLevel === 0 && tankLevel !== 0)) {
+           setTankLevel(newLevel);
         }
+      }
+      
+      // Update sensors based on precise level
+      const hiLevelSensor = newLevel >= 100;
+      const loLevelSensor = newLevel > 1;
 
-        return newLevel;
-      });
+      if (state.inputs['I1.0'] !== hiLevelSensor) {
+        dispatch({ type: 'SET_INPUT', key: 'I1.0', value: hiLevelSensor });
+      }
+      if (state.inputs['I1.1'] !== loLevelSensor) {
+        dispatch({ type: 'SET_INPUT', key: 'I1.1', value: loLevelSensor });
+      }
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -86,7 +109,7 @@ export function BatchScene() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [state.outputs, fillRate]);
+  }, [state.outputs, fillRate, state.inputs, dispatch, tankLevel]); // Added tankLevel to dep array for comparison
 
   /**
    * Handle button press (NO activates, NC deactivates)
@@ -163,20 +186,25 @@ export function BatchScene() {
 
       <div className="batch-scene__container">
         {/* Tank Visualization - Background image shows the tank */}
+        {/* Tank Visualization - Background image shows the tank */}
         <div className="batch-scene__tank-area">
-          {/* Tank liquid fill - positioned to match Java coordinates */}
-          <div
-            className="tank__liquid"
-            style={{
-              height: `${tankLevel}%`,
-              opacity: tankLevel > 0 ? 1 : 0
-            }}
-          />
+          <div className="tank-wrapper">
+            {/* Tank liquid fill - positioned to match Java coordinates */}
+            <div
+              ref={liquidRef}
+              className="tank__liquid"
+              style={{
+                // Scale 0-100% to the visual tank height (approx 67.5% of the image height)
+                height: `${tankLevel * 0.675}%`,
+                opacity: tankLevel > 0 ? 1 : 0
+              }}
+            />
 
-          {/* Level percentage display */}
-          <div className="tank__level-display">
-            <span className="tank__level-value">{Math.round(tankLevel)}%</span>
-            <span className="tank__level-label">Nível</span>
+            {/* Level percentage display */}
+            <div className="tank__level-display">
+              <span className="tank__level-value">{Math.round(tankLevel)}%</span>
+              <span className="tank__level-label">Nível</span>
+            </div>
           </div>
         </div>
 
@@ -222,7 +250,7 @@ export function BatchScene() {
 
           {/* Fill Rate Control */}
           <div className="batch-scene__control-group">
-            <h3 className="batch-scene__control-title">Fill Speed Control</h3>
+            <h3 className="batch-scene__control-title">{t('batch.fillSpeedControl')}</h3>
             <div className="fill-rate-control">
               <label htmlFor="fill-rate-slider" className="fill-rate-label">
                 Fill Speed: {fillRate.toFixed(2)}x
@@ -230,16 +258,31 @@ export function BatchScene() {
               <input
                 id="fill-rate-slider"
                 type="range"
-                min="0.1"
-                max="3.0"
-                step="0.1"
-                value={fillRate}
-                onChange={(e) => setFillRate(parseFloat(e.target.value))}
+                min="0"
+                max="100"
+                step="1"
+                value={fillRate <= 1.0 
+                  ? ((fillRate - 0.1) / 0.9) * 50 
+                  : 50 + ((fillRate - 1.0) / 2.0) * 50}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  let newRate;
+                  if (val <= 50) {
+                    // 0-50 maps to 0.1-1.0
+                    newRate = 0.1 + (val / 50) * 0.9;
+                  } else {
+                    // 50-100 maps to 1.0-3.0
+                    newRate = 1.0 + ((val - 50) / 50) * 2.0;
+                  }
+                  // Snap to 1.0 if close
+                  if (Math.abs(newRate - 1.0) < 0.05) newRate = 1.0;
+                  setFillRate(newRate);
+                }}
                 className="fill-rate-slider"
               />
               <div className="fill-rate-markers">
                 <span>Slow (0.1x)</span>
-                <span>Normal (0.8x)</span>
+                <span>Normal (1.0x)</span>
                 <span>Fast (3.0x)</span>
               </div>
             </div>

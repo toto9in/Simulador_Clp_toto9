@@ -71,12 +71,20 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-md);
+  min-height: 400px;
+  position: relative;
+}
+
+/* Wrapper to maintain aspect ratio of the background image (624x394) */
+.tank-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 624px;
+  aspect-ratio: 624 / 394;
   background-image: url('/assets/batch_bg.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 400px;
-  position: relative;
 }
 
 /* Tank liquid fill - matches Java drawing coordinates */
@@ -87,13 +95,12 @@
   width: 51.4%;       /* Tank width: 321/624 = 51.4% */
   max-height: 67.5%;  /* Tank height proportion - can overflow beyond this */
   background-color: rgba(255, 255, 0, 0.78); /* Yellow liquid - matches Java Color(255,255,0,200) */
-  transition: height 0.05s linear;
+  /* transition: height 0.05s linear; REMOVED for JS animation control */
   pointer-events: none;
   z-index: 1;
   /* Allow overflow to be visible */
   overflow: visible;
 }
-
 .batch-scene__controls {
   flex: 1;
   display: flex;
