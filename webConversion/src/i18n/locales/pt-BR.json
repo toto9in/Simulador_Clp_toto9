@@ -121,7 +121,8 @@
   },
   "batch": {
     "sensors": "Sensores de Nível",
-    "info": "Controle o tanque usando START/STOP. O programa IL controla as válvulas baseado nos sensores de nível."
+    "info": "Controle o tanque usando START/STOP. O programa IL controla as válvulas baseado nos sensores de nível.",
+    "fillSpeedControl": "Controle de Velocidade de Enchimento"
   },
   "examples": {
     "01_hello_world": { "description": "Entrada/saída básica - Pressione I0.0 para controlar Q0.0" },
