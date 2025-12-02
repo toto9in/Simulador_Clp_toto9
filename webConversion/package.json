@@ -1,7 +1,7 @@
 {
   "name": "plc-simulator-web",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "main": "electron/main.cjs",
   "author": "PLC Simulator Team",
