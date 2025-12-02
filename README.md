@@ -164,13 +164,6 @@ cd java-original
 
 ![Interface Java do Simulador](./java-original/docs/simulation_interface.png)
 
----
-
-## ▶️ Vídeo de Demonstração
-
-📺 Veja o simulador funcionando:
-👉 [Assista no YouTube](https://www.youtube.com/watch?v=Qdy83gkzqz0) - Simulador Inicial.
-👉 [Assista no YouTube](https://youtu.be/e-C53fbtbfo?si=Z7wWaaKLmnXStUDl) - Simulador Final.
 
 ---
 
