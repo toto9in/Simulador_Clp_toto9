@@ -17,6 +17,7 @@
     "batch": "Batch Simulation",
     "trafficLight": "Traffic Light",
     "trafficSimulation": "Traffic Light (Traffic)",
+    "compressor": "Compressor System",
     "defaultInfo": "Click buttons to toggle inputs. Outputs are controlled by the IL program.",
     "trafficLightInfo": "Traffic light sequence: Red (5s) → Green (5s) → Yellow (2s). Load example 11_traffic_light.txt"
   },
@@ -121,8 +122,10 @@
   },
   "batch": {
     "sensors": "Level Sensors",
-    "info": "Control the tank using START/STOP. The IL program controls the valves based on level sensors.",
-    "fillSpeedControl": "Fill Speed Control"
+    "info": "Control the tank using START/STOP. The IL program controls the valves based on level sensors."
+  },
+  "compressor": {
+    "info": "2-compressor system with pressure sensors. Use the selector switch to choose Motor 1 (A), Motor 2 (B), or Blocked (C). Adjust consumption to test automatic switching."
   },
   "examples": {
     "01_hello_world": { "description": "Basic input/output - Press I0.0 to control Q0.0" },
@@ -148,20 +151,41 @@
     "09_counter_up": { "description": "Count up to 5, then activate output" },
     "10_counter_down": { "description": "Count down from 10 to 0" },
     "11_traffic_light": { "description": "Single traffic light cycle (Red→Green→Yellow)" },
-    "12_batch_automatic": { "description": "Manual tank filling, mixing, and draining with START/STOP buttons" },
-    "12b_batch_fully_automatic": { "description": "Complete automatic cycle: Fill → Mix (5s) → Drain with single START button" },
-    "12c_batch_overflow_detection": { "description": "Error handling: detects overflow/spill if filling takes >12s, triggers alarm and emergency drain" },
-    "13_traffic_light_crossroad": { "description": "Two independent traffic lights for a crossroad intersection" },
-    "14_traffic_light_safe_crossroad": { "description": "Synchronized traffic lights with collision prevention logic" },
+    "12_batch_automatic": {
+      "description": "Manual tank filling, mixing, and draining with START/STOP buttons"
+    },
+    "12b_batch_fully_automatic": {
+      "description": "Complete automatic cycle: Fill → Mix (5s) → Drain with single START button"
+    },
+    "12c_batch_overflow_detection": {
+      "description": "Error handling: detects overflow/spill if filling takes >12s, triggers alarm and emergency drain"
+    },
+    "13_traffic_light_crossroad": {
+      "description": "Two independent traffic lights for a crossroad intersection"
+    },
+    "14_traffic_light_safe_crossroad": {
+      "description": "Synchronized traffic lights with collision prevention logic"
+    },
     "27_button_switch_basic": { "description": "Simple toggle button: click to turn ON/OFF" },
     "28_button_switch_and": { "description": "Two switches in series: both ON to activate output" },
-    "29_button_switch_or": { "description": "Two switches in parallel: either one activates output" },
+    "29_button_switch_or": {
+      "description": "Two switches in parallel: either one activates output"
+    },
     "30_button_no_basic": { "description": "Momentary button: active only while held" },
     "31_button_no_start_stop": { "description": "Seal-in circuit: START turns ON, STOP turns OFF" },
     "32_button_no_counter": { "description": "Counts button presses up to 5" },
     "33_button_nc_basic": { "description": "Inverted button: TRUE when not pressed" },
     "34_button_nc_stop": { "description": "Safe STOP: broken wire = motor stops" },
     "35_button_nc_safety": { "description": "Two NC in series for dual protection" },
-    "36_button_mixed_types": { "description": "SWITCH + NO + NC working together" }
+    "36_button_mixed_types": { "description": "SWITCH + NO + NC working together" },
+    "27_compressor_basic": {
+      "description": "Simple single compressor with pressure switch and hysteresis control"
+    },
+    "28_compressor_selector": {
+      "description": "Complete dual compressor system with selector switch (A/B/C positions)"
+    },
+    "29_compressor_advanced": {
+      "description": "Full demonstration: automatic motor alternation, maintenance counter, timers, and all PLC features"
+    }
   }
 }

@@ -1,6 +1,6 @@
 /**
  * Scene Container Component
- * Switches between Default, Batch, Traffic Light, and Traffic Simulation scenes
+ * Switches between Default, Batch, Traffic Light, Traffic Simulation, and Compressor scenes
  */
 
 import { usePLCState } from '../../context/PLCStateContext';
@@ -9,6 +9,7 @@ import { DefaultScene } from '../DefaultScene/DefaultScene';
 import { BatchScene } from '../BatchScene/BatchScene';
 import { TrafficLightScene } from '../TrafficLightScene/TrafficLightScene';
 import { TrafficSimulationScene } from '../TrafficSimulationScene/TrafficSimulationScene';
+import { CompressorScene } from '../CompressorScene/CompressorScene';
 import './SceneContainer.css';
 
 export function SceneContainer() {
@@ -24,14 +25,12 @@ export function SceneContainer() {
         return <TrafficLightScene />;
       case SceneType.TRAFFIC_SIMULATION:
         return <TrafficSimulationScene />;
+      case SceneType.COMPRESSOR:
+        return <CompressorScene />;
       default:
         return <DefaultScene />;
     }
   };
 
-  return (
-    <div className="scene-container">
-      {renderScene()}
-    </div>
-  );
+  return <div className="scene-container">{renderScene()}</div>;
 }

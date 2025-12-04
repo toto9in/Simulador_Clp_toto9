@@ -1,0 +1,84 @@
+// ==================================
+// Program 2 — Alternância com Contador (CTU)
+// ==================================
+// Objetivo: alternar entre motores A e B a cada ciclo de pressão
+// IMPORTANTE: Sistema com PRESSÃO COMPARTILHADA - ambos sensores PE leem o mesmo tanque
+// 
+// Comportamento:
+// - Configure PE1 e PE2 com thresholds IGUAIS (ex: ambos 70-110 PSI)
+// - Cada ciclo, um motor trabalha até atingir o threshold HIGH
+// - Quando HIGH é atingido, alterna para o próximo motor
+// - Motor selecionado liga quando pressão está BAIXA (abaixo do threshold)
+// 
+// Alternância:
+// - Contador CTU incrementa a cada vez que qualquer PE atinge HIGH
+// - M10 alterna (0=Motor A, 1=Motor B) a cada pulso
+// - Equaliza uso entre os dois motores ao longo do tempo
+//
+// Dica: Flow entre 50% e 80% favorece ciclos regulares
+// I/O:
+// I1.0 START (NO) | I1.1 STOP (NC)
+// I1.2 PE1 (pressão compartilhada - threshold 1)
+// I1.3 PE2 (pressão compartilhada - threshold 2)
+// Q0.0 Motor 1 | Q0.1 Motor 2 | Q0.2 RUN | Q0.3 C1 | Q0.4 C2
+
+// SR LATCH — Sistema em execução (M0)
+LD I1.0
+OR M0
+AND I1.1
+ST M0
+
+// Detecta qualquer sensor atingindo HIGH para alternar
+LD I1.2
+OR I1.3
+ST M12      // M12 = qualquer PE está HIGH
+LD M12
+ANDN M14
+ST M13      // M13 = pulso de alternância (borda de subida)
+LD M12
+ST M14      // M14 = memória do estado anterior
+
+// Pulso incrementa contador de ciclos
+LD M13
+CTU C0, 999
+
+// Alternância: cada pulso inverte M10 (0=A, 1=B)
+LD M13
+ANDN M10
+ST M21      // M21 = SET quando M10=0
+LD M13
+AND M10
+ST M22      // M22 = RESET quando M10=1
+LD M0
+AND M21
+ST M10
+LD M22
+RST M10
+
+// Motor A ativo: sistema ON, seleção A (M10=0), NOT Selector C, PE1 baixo
+LD M0
+ANDN M10
+ANDN I1.6
+ANDN I1.2
+ST M1
+
+// Motor B ativo: sistema ON, seleção B (M10=1), NOT Selector C, PE2 baixo
+LD M0
+AND M10
+ANDN I1.6
+ANDN I1.3
+ST M2
+
+// Saídas
+LD M1
+ST Q0.0
+LD M2
+ST Q0.1
+
+// Lâmpadas
+LD M0
+ST Q0.2     // RUN
+LD Q0.0
+ST Q0.3     // C1
+LD Q0.1
+ST Q0.4     // C2

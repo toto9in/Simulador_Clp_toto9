@@ -39,7 +39,7 @@ export function AboutDialog({ onClose }: AboutDialogProps) {
             <h1 className="about-logo__title">PLC Simulator</h1>
             <p className="about-logo__subtitle">{t('about.description')}</p>
             <div className="about-logo__badges">
-              <span className="about-badge">v1.0.3</span>
+              <span className="about-badge">v1.0.2</span>
               {isElectron && <span className="about-badge about-badge--electron">🖥️ Desktop</span>}
               {!isElectron && <span className="about-badge about-badge--web">🌐 Web</span>}
             </div>

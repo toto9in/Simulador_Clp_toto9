@@ -1,0 +1,52 @@
+// ==================================
+// Program 3 — Alternância temporizada (TON e TOFF)
+// ==================================
+// Objetivo: A liga primeiro; após 5s B também liga; ao STOP, B mantém 3s
+// Dica: Use Flow 100% para visualizar claramente a sequência A→B e o TOFF
+// I/O:
+// I1.0 START (NO) | I1.1 STOP (NC)
+// I1.2 PE1 (alto PSI - pressão compartilhada)
+// Q0.0 Motor 1 | Q0.1 Motor 2 | Q0.2 RUN | Q0.3 C1 | Q0.4 C2
+
+// SR LATCH — Sistema em execução (M0)
+LD I1.0
+OR M0
+AND I1.1
+ST M0
+
+// Timer conta 5s desde START
+LD M0
+TON T0 50
+
+// Compressor A sempre ativo quando: sistema ON E NOT Selector C E PSI baixo
+LD M0
+ANDN I1.6
+ANDN I1.2
+ST M1
+
+// Compressor B ativo quando: sistema ON E NOT Selector C E timer completou (T0) E PSI baixo
+LD M0
+ANDN I1.6
+AND T0
+ANDN I1.2
+ST M2
+
+// TOFF: quando M2 desliga, mantém saída B por 3s
+LD M2
+TOFF T1 30
+
+// Saídas
+LD M1
+ST Q0.0
+
+LD M2
+OR T1
+ST Q0.1
+
+// Lâmpadas
+LD M0
+ST Q0.2
+LD Q0.0
+ST Q0.3
+LD Q0.1
+ST Q0.4

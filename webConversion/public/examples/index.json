@@ -303,6 +303,31 @@
       "category": "button-types",
       "difficulty": "intermediate",
       "file": "36_button_mixed_types.txt"
+    },
+    
+    {
+      "id": "31_compressor_single_basic",
+      "title": "Compressor — Operação Básica (1 Máquina)",
+      "description": "Apenas compressor A: START/STOP, controle por PE com AND/OR/ANDN. Dica: Flow 100% tende a estabilizar; <100% acelera subida de PSI.",
+      "category": "compressor",
+      "difficulty": "intermediate",
+      "file": "31_compressor_single_basic.txt"
+    },
+    {
+      "id": "32_compressor_counter_alternation",
+      "title": "Compressor — Alternância por Contador (CTU)",
+      "description": "Alterna A/B a cada ciclo de baixa pressão com CTU; exclusividade garantida. Dica: Flow entre 50% e 80% favorece ciclos naturais.",
+      "category": "compressor",
+      "difficulty": "advanced",
+      "file": "32_compressor_counter_alternation.txt"
+    },
+    {
+      "id": "33_compressor_timer_alternation",
+      "title": "Compressor — Alternância Temporizada (TON/TOFF)",
+      "description": "A liga; após 5s B habilita (TON). Ao desligar, B mantém 3s (TOFF). Dica: Use Flow 100% para observar claramente a sequência A→B e a cauda do TOFF.",
+      "category": "compressor",
+      "difficulty": "advanced",
+      "file": "33_compressor_timer_alternation.txt"
     }
   ]
 }

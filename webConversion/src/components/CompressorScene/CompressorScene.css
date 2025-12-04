@@ -1,0 +1,688 @@
+/**
+ * Compressor System Scene Styles
+ */
+
+.compressor-scene {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.compressor-scene__header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.compressor-scene__title {
+  margin: 0;
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.compressor-scene__container {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.compressor-scene__visual-area {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  gap: var(--spacing-lg);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  min-height: 400px;
+}
+
+/* Pressure Gauge */
+.pressure-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.pressure-gauge__face {
+  position: relative;
+  width: 250px;
+  height: 125px;
+  background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
+  border: 4px solid var(--color-border);
+  border-radius: 125px 125px 0 0;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.pressure-gauge__markers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.pressure-gauge__marker {
+  position: absolute;
+  width: 2px;
+  height: 90px;
+  background-color: #333;
+  left: 50%;
+  bottom: 0;
+  transform-origin: center bottom;
+}
+
+.pressure-gauge__marker-label {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+  font-size: 10px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.pressure-gauge__needle {
+  position: absolute;
+  width: 3px;
+  height: 100px;
+  background: linear-gradient(to bottom, #ff0000 0%, #cc0000 100%);
+  left: 50%;
+  bottom: 0;
+  transform-origin: center bottom;
+  transform: rotate(-90deg);
+  transition: transform 0.3s ease;
+  z-index: 10;
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pressure-gauge__center {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #333;
+  border: 3px solid #666;
+  border-radius: 50%;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  z-index: 20;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pressure-gauge__label {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: var(--spacing-xs);
+}
+
+.pressure-gauge__digital {
+  background-color: #000;
+  color: #0f0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  min-width: 120px;
+  text-align: center;
+  border: 2px solid #333;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Compressor Motors */
+.compressor-motors {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+.compressor-motor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-md);
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+
+.compressor-motor.running {
+  border-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.1);
+  animation: motorVibrate 0.1s infinite;
+}
+
+@keyframes motorVibrate {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1px);
+  }
+  75% {
+    transform: translateX(1px);
+  }
+}
+
+.compressor-motor__icon {
+  width: 60px;
+  height: 60px;
+  background-color: #666;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: var(--spacing-sm);
+  border: 3px solid #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.compressor-motor.running .compressor-motor__icon {
+  background-color: #4caf50;
+  box-shadow: 0 0 20px #4caf50;
+}
+
+.compressor-motor__label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.compressor-motor__status {
+  font-size: var(--font-xs);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.compressor-motor.running .compressor-motor__status {
+  color: #4caf50;
+  font-weight: 700;
+}
+
+.compressor-motor__badge {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-family: 'Courier New', Courier, monospace;
+  margin-top: var(--spacing-xs);
+  padding: 2px 6px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+/* Pressure Switches */
+.pressure-switches {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.pressure-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  min-width: 100px;
+}
+
+.pressure-switch__label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.pressure-switch__led {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #666;
+  border: 2px solid var(--color-border);
+  margin-bottom: var(--spacing-xs);
+  transition: all 0.3s ease;
+}
+
+.pressure-switch.active .pressure-switch__led {
+  background-color: #ffc107;
+  box-shadow: 0 0 12px #ffc107;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.pressure-switch__range {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Controls */
+.compressor-scene__controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-width: 250px;
+  max-width: 350px;
+}
+
+.compressor-scene__control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.compressor-scene__control-title {
+  margin: 0;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+}
+
+.compressor-scene__buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.compressor-scene__button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.compressor-scene__button-label {
+  font-weight: 600;
+  font-size: var(--font-sm);
+  color: var(--color-text);
+  text-transform: uppercase;
+}
+
+.compressor-scene__button-status {
+  font-weight: 500;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Selector Switch */
+.selector-switch {
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.selector-switch__title {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.selector-switch__buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.selector-switch__button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.selector-switch__button:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-2px);
+}
+
+.selector-switch__button.active {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+.selector-switch__button-label {
+  font-size: var(--font-xs);
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.selector-switch__button-status {
+  font-size: var(--font-xs);
+  font-family: 'Courier New', Courier, monospace;
+  opacity: 0.7;
+}
+
+/* Flow Rate Control */
+.flow-rate-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.flow-rate-label {
+  font-weight: 600;
+  font-size: var(--font-sm);
+  color: var(--color-text);
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Pressure Configuration Controls */
+.pressure-config {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.pressure-config-label {
+  font-weight: 600;
+  font-size: var(--font-sm);
+  color: var(--color-text);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.pressure-config-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #2196f3 0%, #ffc107 50%, #f44336 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.pressure-config-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.pressure-config-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.pressure-config-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.pressure-config-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.flow-rate-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #4caf50 0%, #ffc107 50%, #f44336 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.flow-rate-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.flow-rate-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.flow-rate-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.flow-rate-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.flow-rate-markers {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.flow-rate-markers span {
+  flex: 1;
+  text-align: center;
+}
+
+.flow-rate-markers span:first-child {
+  text-align: left;
+}
+
+.flow-rate-markers span:last-child {
+  text-align: right;
+}
+
+/* Compressor Indicators */
+.compressor-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-md);
+  color: var(--color-text);
+}
+
+.compressor-indicator__led {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #666666;
+  border: 2px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.compressor-indicator__led--green {
+  background-color: #555;
+}
+
+.compressor-indicator.active .compressor-indicator__led--green {
+  background-color: #00aa00;
+  box-shadow: 0 0 15px #00aa00;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.compressor-indicator__led--yellow {
+  background-color: #555;
+}
+
+.compressor-indicator.active .compressor-indicator__led--yellow {
+  background-color: #ffc107;
+  box-shadow: 0 0 15px #ffc107;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.compressor-indicator__status {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  font-size: var(--font-xs);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Sensors */
+.compressor-scene__sensors {
+  padding: var(--spacing-md);
+  background-color: var(--color-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.sensor-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sensor-item {
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: #666666;
+  transition: all 0.3s ease;
+}
+
+.sensor-item.active {
+  color: #ffc107;
+  border-color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.compressor-scene__footer {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  border-top: 2px solid var(--color-border);
+}
+
+.compressor-scene__info {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .compressor-scene__container {
+    flex-direction: column;
+  }
+
+  .compressor-scene__controls {
+    max-width: 100%;
+  }
+
+  .pressure-gauge__face {
+    width: 200px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pressure-gauge__face {
+    width: 180px;
+    height: 90px;
+  }
+
+  .compressor-motors {
+    flex-direction: column;
+  }
+
+  .selector-switch__buttons {
+    flex-direction: column;
+  }
+}

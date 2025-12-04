@@ -32,7 +32,7 @@ export function MenuBar({
   hasUnsavedChanges = false,
   onMarkAsSaved,
   onResetSavedState,
-  onLoadingChange
+  onLoadingChange,
 }: MenuBarProps) {
   const { t, i18n } = useTranslation();
   const { state, dispatch } = usePLCState();
@@ -156,6 +156,7 @@ export function MenuBar({
           <option value={SceneType.BATCH_SIMULATION}>{t('scenes.batch')}</option>
           <option value={SceneType.TRAFFIC_LIGHT}>{t('scenes.trafficLight')}</option>
           <option value={SceneType.TRAFFIC_SIMULATION}>{t('scenes.trafficSimulation')}</option>
+          <option value={SceneType.COMPRESSOR}>{t('scenes.compressor')}</option>
         </select>
       </div>
 

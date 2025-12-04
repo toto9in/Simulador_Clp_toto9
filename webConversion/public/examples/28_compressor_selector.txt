@@ -1,0 +1,148 @@
+// ==================================
+// Compressor System - Dual Motor with Selector and Counter
+// ==================================
+// Complete dual compressor system with selector switch and cycle counter
+// Demonstrates Selector Logic, Dual Motors, and Counter (CTU)
+//
+// SYSTEM OPERATION:
+// - START button activates the system
+// - STOP button stops the system at any time
+// - Selector switch chooses which motor operates:
+//   Position A: Motor 1 operates based on PE1
+//   Position B: Motor 2 operates based on PE2
+//   Position C: System blocked, no motors can run
+// - Motors turn off when pressure reaches 100 PSI (pressure switch ON)
+// - Motors turn on when pressure drops to 50 PSI (pressure switch OFF)
+// - Counter tracks motor starts (10 starts = maintenance indicator)
+// - Changing selector manually increments counter
+// - STOP resets counter
+//
+// INPUTS:
+// I1.0 = START button (NO - Normally Open)
+// I1.1 = STOP button (NC - Normally Closed)
+// I1.2 = Pressure switch PE1 for Motor 1 (hysteresis: 50-100 PSI)
+// I1.3 = Pressure switch PE2 for Motor 2 (hysteresis: 50-100 PSI)
+// I1.4 = Selector position A (Motor 1)
+// I1.5 = Selector position B (Motor 2)
+// I1.6 = Selector position C (Blocked)
+//
+// OUTPUTS:
+// Q0.0 = Motor 1
+// Q0.1 = Motor 2
+// Q0.2 = RUN lamp (system active, blinks at maintenance)
+// Q0.3 = C1 lamp (Motor 1 indicator)
+// Q0.4 = C2 lamp (Motor 2 indicator)
+//
+// MEMORY:
+// M0 = System running state
+// M1 = Motor 1 should run
+// M2 = Motor 2 should run
+// M3 = Previous selector A state
+// M4 = Previous selector B state
+// M5 = Maintenance needed
+//
+// COUNTERS:
+// C0 = Motor switch counter (10 switches = maintenance)
+
+// ==================================
+// SR LATCH - System Running State
+// SET by START, RESET by STOP or position C
+// ==================================
+LD I1.0
+OR M0
+AND I1.1
+ANDN I1.6
+ST M0
+
+// ==================================
+// COUNTER - Track selector changes (motor switches)
+// Increment when selector A or B activates (rising edge)
+// ==================================
+// Detect Selector A rising edge
+LD I1.4
+ANDN M3
+AND M0
+CTU C0 10
+
+// Update M3 with current I1.4
+LD I1.4
+ST M3
+
+// Detect Selector B rising edge
+LD I1.5
+ANDN M4
+AND M0
+CTU C0 10
+
+// Update M4 with current I1.5
+LD I1.5
+ST M4
+
+// Reset counter on STOP
+LDN I1.1
+CTR C0
+RST M3
+RST M4
+
+// Maintenance flag
+LD C0.DN
+ST M5
+
+// ==================================
+// Motor 1 Control Logic
+// Runs when:
+// - System is running (M0)
+// - Selector is in position A (I1.4)
+// - Pressure switch PE1 is OFF (pressure < 100 PSI)
+// ==================================
+LD M0
+AND I1.4
+ANDN I1.2
+ST M1
+
+// ==================================
+// Motor 2 Control Logic
+// Runs when:
+// - System is running (M0)
+// - Selector is in position B (I1.5)
+// - Pressure switch PE2 is OFF (pressure < 100 PSI)
+// ==================================
+LD M0
+AND I1.5
+ANDN I1.3
+ST M2
+
+// ==================================
+// MOTOR 1 Output
+// ==================================
+LD M1
+ST Q0.0
+
+// ==================================
+// MOTOR 2 Output
+// ==================================
+LD M2
+ST Q0.1
+
+// ==================================
+// RUN Lamp - System is active (blinks when maintenance needed)
+// ==================================
+LD M0
+ST Q0.2
+
+// ==================================
+// C1 Lamp - Motor 1 Indicator
+// ==================================
+LD Q0.0
+ST Q0.3
+
+// ==================================
+// C2 Lamp - Motor 2 Indicator (blinks when maintenance)
+// ==================================
+LD Q0.1
+ANDN M5
+ST Q0.4
+
+LD M5
+OR Q0.4
+ST Q0.4

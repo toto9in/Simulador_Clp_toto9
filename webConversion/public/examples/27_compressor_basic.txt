@@ -1,0 +1,74 @@
+// ==================================
+// Compressor System - Basic Example with Timer
+// ==================================
+// Simple compressor control with startup delay timer
+// Demonstrates SR Latch and Timer (TON)
+//
+// INPUTS:
+// I1.0 = START button (NO - Normally Open)
+// I1.1 = STOP button (NC - Normally Closed, true when not pressed)
+// I1.4 = Selector position A (Motor 1 selected)
+//
+// OUTPUTS:
+// Q0.0 = Motor 1
+// Q0.2 = RUN lamp (system active)
+// Q0.3 = C1 lamp (Motor 1 indicator)
+//
+// MEMORY:
+// M0 = System running state (SR latch)
+// M1 = Motor should run (after timer completes)
+//
+// TIMERS:
+// T0 = Startup delay (3 seconds)
+
+// ==================================
+// SR LATCH - System Running State
+// SET by START button, RESET by STOP button
+// ==================================
+LD I1.0
+OR M0
+AND I1.1
+ST M0
+
+// ==================================
+// STARTUP DELAY TIMER (3 seconds)
+// Prevents motor from starting immediately
+// ==================================
+LD M0
+TON T0 30
+
+// ==================================
+// Motor Control Logic
+// Motor runs when:
+// 1. System is running (M0)
+// 2. Selector is in position A (I1.4)
+// 3. Startup delay completed (T0.DN)
+// ==================================
+LD M0
+AND I1.4
+AND T0.DN
+ST M1
+
+// ==================================
+// MOTOR 1 Output
+// ==================================
+LD M1
+ST Q0.0
+
+// ==================================
+// RUN Lamp - Shows system is active (blinks during startup delay)
+// ==================================
+LD M0
+ANDN T0.DN
+ST Q0.2
+
+LD M0
+AND T0.DN
+OR Q0.2
+ST Q0.2
+
+// ==================================
+// C1 Lamp - Shows Motor 1 is running
+// ==================================
+LD Q0.0
+ST Q0.3

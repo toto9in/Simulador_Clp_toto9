@@ -8,7 +8,7 @@
  * Corresponds to ExecutionMode.java enum
  */
 export enum ExecutionMode {
-  IDLE = 'IDLE',       // Program not running, paused
+  IDLE = 'IDLE', // Program not running, paused
   STOPPED = 'STOPPED', // Program stopped
   RUNNING = 'RUNNING', // Program actively executing
 }
@@ -19,8 +19,8 @@ export enum ExecutionMode {
  */
 export enum InputType {
   SWITCH = 'SWITCH', // Toggle switch (stays in state)
-  NO = 'NO',         // Normally Open (pressed=true, released=false)
-  NC = 'NC',         // Normally Closed (pressed=false, released=true)
+  NO = 'NO', // Normally Open (pressed=true, released=false)
+  NC = 'NC', // Normally Closed (pressed=false, released=true)
 }
 
 /**
@@ -28,27 +28,27 @@ export enum InputType {
  * All supported instructions
  */
 export enum ILInstruction {
-  LD = 'LD',       // Load
-  LDN = 'LDN',     // Load Negated
-  ST = 'ST',       // Store
-  STN = 'STN',     // Store Negated
-  OUT = 'OUT',     // Output (alias for ST)
-  AND = 'AND',     // AND operation
-  ANDN = 'ANDN',   // AND Negated
-  OR = 'OR',       // OR operation
-  ORN = 'ORN',     // OR Negated
-  NOT = 'NOT',     // Negate accumulator
-  SET = 'SET',     // Set/Latch output ON
-  S = 'S',         // Set (alias)
+  LD = 'LD', // Load
+  LDN = 'LDN', // Load Negated
+  ST = 'ST', // Store
+  STN = 'STN', // Store Negated
+  OUT = 'OUT', // Output (alias for ST)
+  AND = 'AND', // AND operation
+  ANDN = 'ANDN', // AND Negated
+  OR = 'OR', // OR operation
+  ORN = 'ORN', // OR Negated
+  NOT = 'NOT', // Negate accumulator
+  SET = 'SET', // Set/Latch output ON
+  S = 'S', // Set (alias)
   RESET = 'RESET', // Reset output OFF
-  R = 'R',         // Reset (alias)
-  TON = 'TON',     // Timer On Delay
-  TOFF = 'TOFF',   // Timer Off Delay
-  CTU = 'CTU',     // Count Up
-  CTD = 'CTD',     // Count Down
-  CTR = 'CTR',     // Counter Reset
-  CTL = 'CTL',     // Counter Load
-  RST = 'RST',     // Reset
+  R = 'R', // Reset (alias)
+  TON = 'TON', // Timer On Delay
+  TOFF = 'TOFF', // Timer Off Delay
+  CTU = 'CTU', // Count Up
+  CTD = 'CTD', // Count Down
+  CTR = 'CTR', // Counter Reset
+  CTL = 'CTL', // Counter Load
+  RST = 'RST', // Reset
 }
 
 /**
@@ -56,10 +56,11 @@ export enum ILInstruction {
  * Corresponds to ScenesEnum.java
  */
 export enum SceneType {
-  DEFAULT = 'DEFAULT',                   // Default I/O scene (8 inputs + 8 outputs)
+  DEFAULT = 'DEFAULT', // Default I/O scene (8 inputs + 8 outputs)
   BATCH_SIMULATION = 'BATCH_SIMULATION', // Tank filling simulation
-  TRAFFIC_LIGHT = 'TRAFFIC_LIGHT',       // Traffic light crossroad simulation
+  TRAFFIC_LIGHT = 'TRAFFIC_LIGHT', // Traffic light crossroad simulation
   TRAFFIC_SIMULATION = 'TRAFFIC_SIMULATION', // Traffic light with car simulation
+  COMPRESSOR = 'COMPRESSOR', // Compressor system with pressure sensors
 }
 
 /**
@@ -79,9 +80,9 @@ export enum Theme {
  */
 export enum Language {
   PT_BR = 'pt-BR', // Portuguese (Brazil)
-  EN = 'en',       // English
-  JA = 'ja',       // Japanese
-  DE = 'de',       // German
+  EN = 'en', // English
+  JA = 'ja', // Japanese
+  DE = 'de', // German
 }
 
 /**
@@ -132,21 +133,21 @@ export interface PLCState {
  * Corresponds to MemoryVariable.java
  */
 export interface MemoryVariable {
-  id: string;                // Variable identifier (e.g., "T0", "C0", "M0")
+  id: string; // Variable identifier (e.g., "T0", "C0", "M0")
   type: 'TIMER' | 'COUNTER' | 'MEMORY'; // Variable type
-  currentValue: boolean;     // Current output state
-  preset: number;            // Preset value (for timers: in 100ms units, for counters: count limit)
-  accumulated: number;       // Accumulated value (elapsed time or count)
-  enabled: boolean;          // Is currently enabled/running
-  done: boolean;             // Has reached preset value
+  currentValue: boolean; // Current output state
+  preset: number; // Preset value (for timers: in 100ms units, for counters: count limit)
+  accumulated: number; // Accumulated value (elapsed time or count)
+  enabled: boolean; // Is currently enabled/running
+  done: boolean; // Has reached preset value
 
   // Timer-specific
   timerType?: 'TON' | 'TOFF'; // Timer type (on-delay or off-delay)
-  startTime?: number;         // When timer started (timestamp)
+  startTime?: number; // When timer started (timestamp)
 
   // Counter-specific
   counterType?: 'CTU' | 'CTD'; // Counter type (up or down)
-  previousEnable?: boolean;   // Previous enable state for edge detection
+  previousEnable?: boolean; // Previous enable state for edge detection
 }
 
 /**
@@ -208,7 +209,9 @@ export function isValidMemoryVariable(id: string): boolean {
 /**
  * Parse a variable identifier to determine its type
  */
-export function getVariableType(id: string): 'INPUT' | 'OUTPUT' | 'MEMORY' | 'TIMER' | 'COUNTER' | 'UNKNOWN' {
+export function getVariableType(
+  id: string
+): 'INPUT' | 'OUTPUT' | 'MEMORY' | 'TIMER' | 'COUNTER' | 'UNKNOWN' {
   if (isValidInput(id)) return 'INPUT';
   if (isValidOutput(id)) return 'OUTPUT';
   if (id.startsWith(PLCConstants.MEMORY_PREFIX)) return 'MEMORY';

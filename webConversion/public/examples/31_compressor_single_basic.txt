@@ -1,0 +1,39 @@
+// ==================================
+// Program 1 — Operação básica (Apenas Compressor A)
+// ==================================
+// Requisitos: usar AND/OR/NOT (via ANDN/LDN) e memórias internas; sem timers/counters
+// Dica: Flow 100% tende a estabilizar; <100% acelera a subida do PSI
+// I/O:
+// I1.0 START (NO) | I1.1 STOP (NC)
+// I1.2 PE1 (ativo em PSI alto)
+// I1.4 Selector A | I1.5 Selector B | I1.6 Selector C
+// Q0.0 Motor 1 | Q0.1 Motor 2 | Q0.2 RUN | Q0.3 C1 | Q0.4 C2
+
+// SR LATCH — Sistema em execução (M0)
+LD I1.0
+OR M0
+AND I1.1
+ST M0
+
+// Lógica do Compressor A (somente A é usado)
+// Liga quando: Sistema ON (M0) AND Selector A (I1.4) AND NOT Selector C (ANDN I1.6) AND PSI baixo (ANDN I1.2)
+LD M0
+AND I1.4
+ANDN I1.6
+ANDN I1.2
+ST M1
+
+// Saídas
+LD M1
+ST Q0.0     // Motor 1
+
+RST Q0.1     // Motor 2 (não usado)
+
+// Lâmpadas
+LD M0
+ST Q0.2     // RUN
+
+LD Q0.0
+ST Q0.3     // C1 (Motor 1)
+
+RST Q0.4     // C2 (Motor 2)

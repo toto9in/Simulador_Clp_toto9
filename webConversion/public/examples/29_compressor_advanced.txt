@@ -1,0 +1,88 @@
+// ==================================
+// Compressor System - Advanced Logic
+// ==================================
+// Dual compressor with independent control
+// Demonstrates advanced ladder logic patterns and simultaneous operation
+//
+// OPERATION:
+// 1. Press START to activate system
+// 2. Select Motor A, Motor B, or BOTH (A+B together)
+// 3. Motors run independently based on pressure
+// 4. Selector C blocks the system
+// 5. Both motors share same pressure monitoring
+//
+// INPUTS:
+// I1.0 = START button (NO)
+// I1.1 = STOP button (NC)
+// I1.2 = Pressure switch PE1 (shared pressure monitor)
+// I1.4 = Selector A (Motor 1)
+// I1.5 = Selector B (Motor 2)
+// I1.6 = Selector C (Blocked)
+//
+// OUTPUTS:
+// Q0.0 = Motor 1
+// Q0.1 = Motor 2
+// Q0.2 = RUN lamp
+// Q0.3 = C1 lamp (Motor 1 indicator)
+// Q0.4 = C2 lamp (Motor 2 indicator)
+//
+// MEMORY:
+// M0 = System running (SR latch)
+// M1 = Motor 1 enabled
+// M2 = Motor 2 enabled
+
+// ==================================
+// SYSTEM RUNNING STATE (SR Latch)
+// ==================================
+LD I1.0
+OR M0
+AND I1.1
+ANDN I1.6
+ST M0
+
+// ==================================
+// MOTOR 1 CONTROL
+// Runs when:
+// - System is ON (M0)
+// - Selector A is active (I1.4)
+// - Pressure is low (PE1 not active - shared pressure)
+// ==================================
+LD M0
+AND I1.4
+ANDN I1.2
+ST M1
+
+// ==================================
+// MOTOR 2 CONTROL
+// Runs when:
+// - System is ON (M0)
+// - Selector B is active (I1.5)
+// - Pressure is low (PE1 not active - shared pressure)
+// ==================================
+LD M0
+AND I1.5
+ANDN I1.2
+ST M2
+
+// ==================================
+// OUTPUTS
+// ==================================
+// Motor 1 Output
+LD M1
+ST Q0.0
+
+// Motor 2 Output
+LD M2
+ST Q0.1
+
+// RUN Lamp
+LD M0
+ST Q0.2
+
+// C1 Lamp (Motor 1 indicator)
+LD Q0.0
+ST Q0.3
+
+// C2 Lamp (Motor 2 indicator)
+LD Q0.1
+ST Q0.4

@@ -17,6 +17,7 @@
     "batch": "Simulação Batch",
     "trafficLight": "Semáforo",
     "trafficSimulation": "Semáforo (Tráfego)",
+    "compressor": "Sistema de Compressores",
     "defaultInfo": "Clique nos botões para alternar as entradas. As saídas são controladas pelo programa IL.",
     "trafficLightInfo": "Sequência de semáforo: Vermelho (5s) → Verde (5s) → Amarelo (2s). Carregue o exemplo 11_traffic_light.txt"
   },
@@ -121,11 +122,15 @@
   },
   "batch": {
     "sensors": "Sensores de Nível",
-    "info": "Controle o tanque usando START/STOP. O programa IL controla as válvulas baseado nos sensores de nível.",
-    "fillSpeedControl": "Controle de Velocidade de Enchimento"
+    "info": "Controle o tanque usando START/STOP. O programa IL controla as válvulas baseado nos sensores de nível."
+  },
+  "compressor": {
+    "info": "Sistema de 2 compressores com sensores de pressão. Use a chave seletora para escolher Motor 1 (A), Motor 2 (B) ou Bloqueado (C). Ajuste o consumo para testar a alternância automática."
   },
   "examples": {
-    "01_hello_world": { "description": "Entrada/saída básica - Pressione I0.0 para controlar Q0.0" },
+    "01_hello_world": {
+      "description": "Entrada/saída básica - Pressione I0.0 para controlar Q0.0"
+    },
     "02_multiple_outputs": { "description": "Controle múltiplas saídas com diferentes entradas" },
     "03_and_logic": { "description": "Controle de segurança bimanual usando lógica AND" },
     "04_or_logic": { "description": "Múltiplos botões de início usando lógica OR" },
@@ -138,30 +143,61 @@
     "21_instruction_or": { "description": "Realiza operação OR com o acumulador" },
     "22_instruction_orn": { "description": "Realiza operação OR com entrada negada" },
     "23_instruction_ton": { "description": "Saída ativa após um atraso quando a entrada está ON" },
-    "24_instruction_toff": { "description": "Saída permanece ON por um tempo após a entrada desligar" },
-    "25_instruction_ctu": { "description": "Conta para cima cada vez que a entrada transita de OFF para ON" },
+    "24_instruction_toff": {
+      "description": "Saída permanece ON por um tempo após a entrada desligar"
+    },
+    "25_instruction_ctu": {
+      "description": "Conta para cima cada vez que a entrada transita de OFF para ON"
+    },
     "26_instruction_ctd": { "description": "Conta para baixo do valor predefinido até 0" },
     "05_start_stop_seal": { "description": "Controle de motor com retenção (selo)" },
     "06_timer_on_delay": { "description": "Atraso de 5 segundos antes da ativação da saída" },
-    "07_timer_off_delay": { "description": "Saída permanece ligada por 3 segundos após liberar a entrada" },
+    "07_timer_off_delay": {
+      "description": "Saída permanece ligada por 3 segundos após liberar a entrada"
+    },
     "08_blinker": { "description": "Cria uma saída piscante (1Hz)" },
     "09_counter_up": { "description": "Conta até 5, então ativa a saída" },
     "10_counter_down": { "description": "Conta de 10 até 0" },
     "11_traffic_light": { "description": "Ciclo único de semáforo (Vermelho→Verde→Amarelo)" },
-    "12_batch_automatic": { "description": "Enchimento, mistura e drenagem manual do tanque com botões START/STOP" },
-    "12b_batch_fully_automatic": { "description": "Ciclo automático completo: Encher → Misturar (5s) → Drenar com um único botão START" },
-    "12c_batch_overflow_detection": { "description": "Tratamento de erro: detecta transbordamento se o enchimento demorar >12s, aciona alarme e drenagem de emergência" },
-    "13_traffic_light_crossroad": { "description": "Dois semáforos independentes para um cruzamento" },
-    "14_traffic_light_safe_crossroad": { "description": "Semáforos sincronizados com lógica de prevenção de colisão" },
-    "27_button_switch_basic": { "description": "Botão de alternância simples: clique para ligar/desligar" },
-    "28_button_switch_and": { "description": "Dois interruptores em série: ambos ON para ativar a saída" },
-    "29_button_switch_or": { "description": "Dois interruptores em paralelo: qualquer um ativa a saída" },
+    "12_batch_automatic": {
+      "description": "Enchimento, mistura e drenagem manual do tanque com botões START/STOP"
+    },
+    "12b_batch_fully_automatic": {
+      "description": "Ciclo automático completo: Encher → Misturar (5s) → Drenar com um único botão START"
+    },
+    "12c_batch_overflow_detection": {
+      "description": "Tratamento de erro: detecta transbordamento se o enchimento demorar >12s, aciona alarme e drenagem de emergência"
+    },
+    "13_traffic_light_crossroad": {
+      "description": "Dois semáforos independentes para um cruzamento"
+    },
+    "14_traffic_light_safe_crossroad": {
+      "description": "Semáforos sincronizados com lógica de prevenção de colisão"
+    },
+    "27_button_switch_basic": {
+      "description": "Botão de alternância simples: clique para ligar/desligar"
+    },
+    "28_button_switch_and": {
+      "description": "Dois interruptores em série: ambos ON para ativar a saída"
+    },
+    "29_button_switch_or": {
+      "description": "Dois interruptores em paralelo: qualquer um ativa a saída"
+    },
     "30_button_no_basic": { "description": "Botão momentâneo: ativo apenas enquanto pressionado" },
     "31_button_no_start_stop": { "description": "Circuito de selo: START liga, STOP desliga" },
     "32_button_no_counter": { "description": "Conta pressionamentos de botão até 5" },
     "33_button_nc_basic": { "description": "Botão invertido: TRUE quando não pressionado" },
     "34_button_nc_stop": { "description": "Parada segura: fio rompido = motor para" },
     "35_button_nc_safety": { "description": "Dois NC em série para dupla proteção" },
-    "36_button_mixed_types": { "description": "SWITCH + NO + NC trabalhando juntos" }
+    "36_button_mixed_types": { "description": "SWITCH + NO + NC trabalhando juntos" },
+    "27_compressor_basic": {
+      "description": "Compressor simples com sensor de pressão e controle por histerese"
+    },
+    "28_compressor_selector": {
+      "description": "Sistema duplo de compressores com chave seletora (posições A/B/C)"
+    },
+    "29_compressor_advanced": {
+      "description": "Demonstração completa: alternância automática de motores, contador de manutenção, timers e todas as funcionalidades"
+    }
   }
 }

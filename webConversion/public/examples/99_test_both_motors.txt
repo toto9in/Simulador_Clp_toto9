@@ -1,0 +1,24 @@
+// ==================================
+// TESTE: Ambos Motores Simultaneamente
+// ==================================
+// Programa simples para verificar animação visual dos dois motores
+// Pressione START e ambos ficam verdes
+
+// SR LATCH
+LD I1.0
+OR M0
+AND I1.1
+ST M0
+
+// Liga ambos motores quando sistema ativo
+LD M0
+ST Q0.0
+ST Q0.1
+
+// Lâmpadas
+LD M0
+ST Q0.2
+LD Q0.0
+ST Q0.3
+LD Q0.1
+ST Q0.4

@@ -129,7 +129,7 @@ describe('BatchScene', () => {
     }));
 
     act(() => {
-      vi.advanceTimersByTime(60000); // Advance more to reach full (slower physics now)
+      vi.advanceTimersByTime(3000); // Advance more to reach full
     });
 
     // Should have triggered High Level sensor (I1.0)
@@ -154,7 +154,7 @@ describe('BatchScene', () => {
 
     // Fill past 100%
     act(() => {
-      vi.advanceTimersByTime(80000); // Advance enough to overflow
+      vi.advanceTimersByTime(5000);
     });
 
     expect(screen.getByText(/YOU OVERFILLED/i)).toBeInTheDocument();
