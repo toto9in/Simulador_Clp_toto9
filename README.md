@@ -1,3 +1,5 @@
+fork do trabalho original feito pelos integrantes Carlos Alexandre, Matheus Calegari, Luiz Antonio, Eder Queiroz
+
 # 🤖 Simulador de CLP com Interface Interativa (Instruction List - IL)
 
 📚 **Disciplina:** Controladores Lógicos Programáveis (CLP)
@@ -12,12 +14,22 @@
 
 ---
 
-## 👥 Alunos
+## 👥 Alunos do trabalho original
 
 - Carlos Alexandre
 - Matheus Calegari
 - Luiz Antonio
 - Eder Queiroz
+
+---
+
+---
+
+## 👥 Alunos do fork
+
+- Antônio Alves Borges de Almeida
+- Breno Marques Freitas
+- Nícollas Ferreira Fernandes
 
 ---
 
